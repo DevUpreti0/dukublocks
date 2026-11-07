@@ -356,3 +356,16 @@
 .design-preset-row button{border:1px solid rgba(150,150,170,.22);border-radius:7px;background:rgba(255,255,255,.04);color:inherit;padding:6px 8px;font-size:10px;cursor:pointer}
 .design-preset-row button:last-child{font-size:15px;padding:3px 8px;color:#e89b9b}
 @media(max-width:520px){.design-preset-create{align-items:stretch;flex-direction:column}.design-preset-create .ghost-btn{width:100%}.design-preset-row{gap:6px}}
+
+
+/* Published-site typography and button design tokens */
+.tenant-published .tenant-published-hero h1{font-size:clamp(calc(var(--tenant-heading-size,48px)*.82),7vw,var(--tenant-heading-size,48px));line-height:1.08}
+.tenant-published .tenant-published-hero p{font-size:var(--tenant-body-size,16px);line-height:var(--tenant-line-height,1.65)}
+.tenant-published .tenant-content-block h2{font-size:clamp(22px,4vw,calc(var(--tenant-heading-size,48px)*.62));line-height:1.15}
+.tenant-published .tenant-content-block p,.tenant-published .tenant-content-block li,.tenant-published .tenant-content-block blockquote{font-size:var(--tenant-body-size,16px);line-height:var(--tenant-line-height,1.65)}
+.tenant-published .tenant-content-block h3,.tenant-published .tenant-nested-child h3{font-size:calc(var(--tenant-heading-size,48px)*.42);line-height:1.2}
+.tenant-published .tenant-action-button,.tenant-published .tenant-contact-form button{transition:transform .2s ease,box-shadow .2s ease,border-radius .2s ease}
+.tenant-published.tenant-button-rounded .tenant-action-button,.tenant-published.tenant-button-rounded .tenant-contact-form button{border-radius:11px}
+.tenant-published.tenant-button-pill .tenant-action-button,.tenant-published.tenant-button-pill .tenant-contact-form button{border-radius:999px;padding-left:25px;padding-right:25px}
+.tenant-published.tenant-button-square .tenant-action-button,.tenant-published.tenant-button-square .tenant-contact-form button{border-radius:2px}
+.tenant-published .tenant-contact-form input,.tenant-published .tenant-contact-form textarea{font-size:var(--tenant-body-size,16px);line-height:var(--tenant-line-height,1.65)}
