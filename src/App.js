@@ -206,8 +206,14 @@ function MainApp() {
   const addCustomDomain = async () => {
     setDomainError(""); setDomainNotice("");
     if (!domainSiteId) { setDomainError("Create or select a website first."); return; }
-    const domain = domainInput.trim().toLowerCase().replace(/^https?:\/\//,"").replace(/^www\./,"").replace(/\/$/,"");
-    if (!/^(?=.{4,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/.test(domain)) { setDomainError("Enter a valid domain name, such as example.com. Do not include a path."); return; }
+    let domain = domainInput.trim().toLowerCase();
+    if (domain.startsWith("https://")) domain = domain.slice(8);
+    else if (domain.startsWith("http://")) domain = domain.slice(7);
+    if (domain.startsWith("www.")) domain = domain.slice(4);
+    if (domain.endsWith("/")) domain = domain.slice(0,-1);
+    const labels = domain.split(".");
+    const validDomain = domain.length >= 4 && domain.length <= 253 && labels.length >= 2 && labels.every(label => label.length >= 1 && label.length <= 63 && /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(label)) && /^[a-z]{2,63}$/.test(labels[labels.length-1]);
+    if (!validDomain) { setDomainError("Enter a valid domain name, such as example.com. Do not include a path."); return; }
     setDomainLoading(true);
     try {
       const token = "duku-fca=" + (window.crypto?.randomUUID ? window.crypto.randomUUID().replace(/-/g,"") : Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2));
