@@ -178,6 +178,12 @@ function MainApp() {
         const result = existing ? await supabase.from("site_pages").update(payload).eq("id", existing.id) : await supabase.from("site_pages").insert(payload);
         if (result.error) throw result.error;
       }
+      const desiredSlugs = pages.map(page => (page.id === activePageId ? siteSlug : page.slug || page.name || "page").toLowerCase().replace(/[^a-z0-9-]+/g,"-").replace(/^-|-$/g,"") || "page");
+      const stalePageIds = existingPages.filter(row => !desiredSlugs.includes(row.slug)).map(row => row.id);
+      if (stalePageIds.length) {
+        const { error } = await supabase.from("site_pages").delete().in("id", stalePageIds);
+        if (error) throw error;
+      }
       for (const asset of mediaAssets) {
         if (asset.cloudUploaded) continue;
         const blob = await fetch(asset.dataUrl).then(response => response.blob());
@@ -189,6 +195,7 @@ function MainApp() {
         if (assetError) throw assetError;
         setMediaAssets(current => current.map(item => item.id === asset.id ? { ...item, cloudUploaded: true, storagePath: path } : item));
       }
+      setCloudSites(current => [{ id: siteId, name: siteName, slug: sitePayload.slug, status: "draft", updated_at: new Date().toISOString() }, ...current.filter(item => item.id !== siteId)]);
       setCloudNotice("Saved to your DuKu FCA cloud workspace. Your website is still a draft and is not public.");
     } catch (error) { setCloudNotice("Cloud save failed: " + (error.message || "Please try again.")); }
     finally { setCloudBusy(false); }
