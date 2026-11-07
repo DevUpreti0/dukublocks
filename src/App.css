@@ -112,3 +112,7 @@
 .tenant-published footer{padding:24px;text-align:center;border-top:1px solid #ffffff16;color:#9897aa;font-size:12px}
 .publish-toast a{color:#d9ceff;text-decoration:underline}
 @media(max-width:650px){.tenant-published .tenant-nav{align-items:flex-start;flex-direction:column}.tenant-published .tenant-nav nav{gap:12px;font-size:12px}.tenant-published-hero{min-height:330px}}
+
+/* Published media delivery */
+.tenant-published-image{display:block;width:100%;height:auto;max-height:760px;object-fit:cover;border-radius:18px;margin:18px auto;background:#11131d}
+.tenant-content-block .tenant-published-image{box-shadow:0 18px 60px #0005}
