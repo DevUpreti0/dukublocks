@@ -41,3 +41,14 @@
 .block-controls button:hover:not(:disabled){background:rgba(155,138,255,.2);border-color:rgba(155,138,255,.55)}
 .block-controls button:disabled{opacity:.3;cursor:not-allowed}
 @media(max-width:700px){.editor-added-block{flex-direction:column;padding:16px}.block-controls{max-width:none;justify-content:flex-start}}
+
+
+/* Multi-page site navigator */
+.page-manager{display:flex;flex-direction:column;gap:6px;margin:12px 0 24px}
+.page-manager-row{display:flex;align-items:center;gap:4px;border:1px solid transparent;border-radius:10px;background:rgba(255,255,255,.035);padding:3px}
+.page-manager-row.active{background:rgba(145,125,255,.13);border-color:rgba(163,146,255,.32)}
+.page-select{flex:1;min-width:0;text-align:left;border:0;background:transparent;color:#e9e6f4;padding:9px 10px;font:inherit;font-size:13px;cursor:pointer}
+.page-delete{border:0;border-radius:7px;background:transparent;color:#bdb6ce;padding:5px 9px;font-size:18px;cursor:pointer}
+.page-delete:hover{background:rgba(255,90,110,.14);color:#ff9aa8}
+.add-page-btn{border:1px dashed rgba(170,155,255,.42);border-radius:10px;background:rgba(150,130,255,.07);color:#cfc5ff;padding:10px;text-align:left;font:inherit;font-size:12px;cursor:pointer}
+.add-page-btn:hover{background:rgba(150,130,255,.15)}
