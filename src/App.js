@@ -8,7 +8,20 @@ const templates = [
   { name: "Northstar", type: "Agency", color: "green", shape: "north", tag: "Minimal" }
 ];
 
-function App() {
+
+function AdminPortal() {
+  const [signedIn, setSignedIn] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [notice, setNotice] = useState("");
+  if (!signedIn) return <div className="admin-screen"><div className="admin-glow"></div><div className="admin-login"><div className="admin-logo">D</div><div className="eyebrow">DUKU FCA · CONTROL CENTRE</div><h1>Administrator <em>access.</em></h1><p>Manage websites, members, publishing and platform settings from one secure place.</p><label>Admin email<input value={email} onChange={e=>setEmail(e.target.value)} placeholder="admin@dukubusiness.online"/></label><label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="Enter your password"/></label><button className="primary-btn full" onClick={()=>setNotice("Secure admin authentication is pending database and role setup. No credentials have been activated yet.")}>Continue to admin ↗</button>{notice&&<div className="admin-notice">{notice}</div>}<small>Restricted access · DuKu Business FCA Lab</small></div></div>;
+  return <div className="admin-dashboard"><header><div className="brand"><span className="brand-mark">D</span>DuKu <b>FCA ADMIN</b></div><button className="ghost-btn" onClick={()=>setSignedIn(false)}>Sign out</button></header><div className="admin-layout"><aside><div className="eyebrow">CONTROL CENTRE</div>{["Overview","Members","Websites","Domains","Templates","Integrations","Reports","Platform settings","Audit log"].map((x,i)=><button key={x} className={i===0?"selected":""}>{["◫","♙","▣","◎","▦","⌘","▤","⚙","≡"][i]}　{x}</button>)}</aside><main><div className="eyebrow">PLATFORM OPERATIONS</div><h1>Welcome to your <em>command centre.</em></h1><p>Live platform metrics will appear when the database is connected.</p><div className="admin-metrics">{["Registered members","Published websites","Connected domains","Monthly visits"].map((x,i)=><div><small>{x}</small><b>—</b><span>Awaiting data connection</span></div>)}</div><section><h2>Platform management</h2><div className="admin-panels"><article><b>Website moderation</b><p>Review, suspend or restore customer websites.</p></article><article><b>Domain management</b><p>Manage tenant subdomains and custom domain verification.</p></article><article><b>Access control</b><p>Set admin roles, permissions and protected actions.</p></article></div></section><div className="admin-warning">Admin dashboard preview only. Authentication, audit logging and live data access must be enabled before production use.</div></main></div></div>;
+}
+function TenantSite() {
+  const tenant = window.location.hostname.split(".")[0];
+  return <div className="tenant-site"><div className="tenant-nav"><b>✦ {tenant}</b><span>HOME　 ABOUT　 CONTACT</span></div><div className="tenant-hero"><div className="eyebrow">POWERED BY DUKU FCA</div><h1>Your website,<br/><em>your own space.</em></h1><p>This DuKu subdomain is reserved for a published website. Once a site is published, its content will appear here.</p><a href="https://dukubusiness.online">Create your own website ↗</a></div><footer>Built with DuKu FCA · Free Website Builder</footer></div>;
+}
+\nfunction App() {\n  const host = window.location.hostname;\n  if (host.startsWith("admin.")) return <AdminPortal />;\n  if (host !== "dukubusiness.online" && host !== "www.dukubusiness.online" && host.endsWith(".dukubusiness.online")) return <TenantSite />;
   const [active, setActive] = useState("Overview");
   const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState("Create your free account");
