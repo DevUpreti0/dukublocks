@@ -308,3 +308,14 @@
 .nested-child-toolbar>div{display:flex;gap:4px}
 .nested-child-toolbar button{min-width:27px;height:25px;padding:2px 7px;border:1px solid #ffffff20;border-radius:6px;background:#ffffff0b;color:#eee9ff;cursor:pointer}
 .nested-child-toolbar button:disabled{opacity:.3;cursor:not-allowed}
+
+.tenant-nested-image{display:block;width:100%;height:auto;max-height:560px;object-fit:cover;border-radius:12px}
+.tenant-nested-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.tenant-nested-gallery img{display:block;width:100%;height:180px;object-fit:cover;border-radius:10px}
+.tenant-nested-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.tenant-nested-columns article{min-width:0;padding:16px;border-radius:12px;background:color-mix(in srgb,var(--tenant-accent,#8d7cff) 7%,transparent)}
+.tenant-nested-columns h4{margin:0 0 8px}
+.nested-child-row select[multiple]{min-height:105px;padding:8px;border:1px solid #ffffff20;border-radius:8px;background:#171522;color:#f2efff}
+.nested-columns-fields{display:grid;gap:8px}
+.nested-columns-fields>div{display:grid;gap:6px;padding:8px;border:1px solid #ffffff15;border-radius:8px}
+@media(max-width:650px){.tenant-nested-columns{grid-template-columns:1fr}.tenant-nested-gallery img{height:140px}}
