@@ -50,7 +50,7 @@ function TenantSite() {
   const tenant = window.location.hostname.split(".")[0];
   const [site, setSite] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [pageSlug, setPageSlug] = useState(() => window.location.pathname.split("/").filter(Boolean)[0] || "");
+  const pageSlug = window.location.pathname.split("/").filter(Boolean)[0] || "";
   const [formValues, setFormValues] = useState({});
   const [formStatus, setFormStatus] = useState({});
 
@@ -232,15 +232,15 @@ function MainApp() {
       if (assetError) throw assetError;
       const restoredPages = (pageRows || []).map((row,index) => ({
         id: row.id, name: row.title, slug: row.slug,
-        headline: row.content && row.content.headline || "",
-        subline: row.content && row.content.subline || "",
-        blocks: row.content && row.content.sections || [],
-        seoTitle: row.seo && row.seo.title || "",
-        seoDescription: row.seo && row.seo.description || ""
+        headline: (row.content && row.content.headline) || "",
+        subline: (row.content && row.content.subline) || "",
+        blocks: (row.content && row.content.sections) || [],
+        seoTitle: (row.seo && row.seo.title) || "",
+        seoDescription: (row.seo && row.seo.description) || ""
       }));
       const restoredAssets = await Promise.all((assetRows || []).map(async row => {
         const { data, error } = await supabase.storage.from("duku-fca-media").createSignedUrl(row.storage_path, 3600);
-        return { id: row.client_asset_key || row.id, name: row.file_name, type: row.mime_type || "image/*", size: row.file_size || 0, dataUrl: data && data.signedUrl || "", cloudUploaded: true, storagePath: row.storage_path, signedUrlError: error && error.message };
+        return { id: row.client_asset_key || row.id, name: row.file_name, type: row.mime_type || "image/*", size: row.file_size || 0, dataUrl: (data && data.signedUrl) || "", cloudUploaded: true, storagePath: row.storage_path, signedUrlError: error ? error.message : null };
       }));
       const first = restoredPages[0] || { id:"home", name:"Home", slug:"home", headline:"", subline:"", blocks:[], seoTitle:"", seoDescription:"" };
       setSiteName(siteData.name); setSiteSubdomain(siteData.subdomain || siteData.name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")); setHeadline(first.headline || siteData.site_settings?.headline || ""); setSubline(first.subline || siteData.site_settings?.subline || "");
@@ -361,7 +361,7 @@ function MainApp() {
   useEffect(() => {
     if (!showEditor) return;
     try { const updatedPages = pages.map(page => page.id === activePageId ? { ...page, headline, subline, blocks, seoTitle, seoDescription, slug: siteSlug } : page); setPages(updatedPages); window.localStorage.setItem("duku-fca-editor-draft", JSON.stringify({ siteName, headline, subline, blocks, seoTitle, seoDescription, siteSlug, pages: updatedPages, activePageId, mediaAssets, siteSubdomain, updatedAt: new Date().toISOString() })); } catch (error) { /* Local storage may be unavailable in private browsing. */ }
-  }, [showEditor, siteName, headline, subline, blocks, seoTitle, seoDescription, siteSlug, activePageId, mediaAssets, siteSubdomain]);
+  }, [showEditor, siteName, headline, subline, blocks, seoTitle, seoDescription, siteSlug, activePageId, mediaAssets, siteSubdomain, pages]);
   const filtered = useMemo(() => templates.filter(t => (filter === "All" || t.type === filter) && t.name.toLowerCase().includes(query.toLowerCase())), [filter, query]);
   const switchPage = (page) => {
     const current = { headline, subline, blocks, seoTitle, seoDescription, slug: siteSlug };
@@ -445,7 +445,7 @@ function MainApp() {
   return <div className="app-shell">
     <header className="topbar">
       <button className="mobile-menu" onClick={() => setMobileNav(!mobileNav)}>☰</button>
-      <a className="brand" href="#"><span className="brand-mark">D</span><span>DuKu <b>FCA</b></span><small>FREE WEBSITE BUILDER</small></a>
+      <a className="brand" href="/"><span className="brand-mark">D</span><span>DuKu <b>FCA</b></span><small>FREE WEBSITE BUILDER</small></a>
       <nav className="top-links"><a href="#features">Features</a><a href="#templates">Templates</a><a href="#how">How it works</a></nav>
       <div className="top-actions">{authUser?<><span className="signed-in-label">{authUser.email}</span><button className="text-btn" onClick={signOut}>Sign out</button></>:<><button className="text-btn" onClick={() => {setAuthMode("Welcome back");setShowAuth(true)}}>Log in</button><button className="primary-btn small" onClick={() => {setAuthMode("Create your free account");setShowAuth(true)}}>Start for free <span>↗</span></button></>}</div>
     </header>
