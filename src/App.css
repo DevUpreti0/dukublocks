@@ -116,3 +116,22 @@
 /* Published media delivery */
 .tenant-published-image{display:block;width:100%;height:auto;max-height:760px;object-fit:cover;border-radius:18px;margin:18px auto;background:#11131d}
 .tenant-content-block .tenant-published-image{box-shadow:0 18px 60px #0005}
+
+
+/* Published block renderer: actions, contact forms and trusted embeds */
+.tenant-block-button{padding-top:26px;padding-bottom:26px}
+.tenant-button-wrap{display:flex;align-items:center}
+.tenant-action-button,.tenant-contact-form button{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:13px 20px;border:1px solid #b9a5ff66;border-radius:11px;background:linear-gradient(120deg,#b9a5ff,#8c7be8);color:#10101a;text-decoration:none;font-size:13px;font-weight:800;box-shadow:0 12px 35px #8c7be822;transition:transform .2s ease,box-shadow .2s ease}
+.tenant-action-button:hover,.tenant-contact-form button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 16px 38px #8c7be844}
+.tenant-disabled-button{display:inline-block;padding:12px 18px;border:1px dashed #ffffff35;border-radius:10px;color:#9da0b5;font-size:12px}
+.tenant-contact-form{display:grid;gap:14px;max-width:620px;margin-top:20px}
+.tenant-contact-form label{display:grid;gap:7px;color:#d9d5e8;font-size:12px}
+.tenant-contact-form input,.tenant-contact-form textarea{width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid #ffffff20;border-radius:10px;background:#090d18;color:#fff;font:inherit;outline:none}
+.tenant-contact-form input:focus,.tenant-contact-form textarea:focus{border-color:#a995ff;box-shadow:0 0 0 3px #a995ff20}
+.tenant-contact-form textarea{resize:vertical;min-height:110px}
+.tenant-contact-form button{justify-self:start;cursor:pointer}
+.tenant-contact-form button:disabled{opacity:.6;cursor:wait}
+.tenant-contact-form .tenant-form-status{margin:0;padding:10px 12px;border-radius:9px;background:#a78bfa14;color:#d9d0ff;font-size:12px}
+.tenant-embed-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:1px solid #ffffff20;border-radius:16px;background:#070a12;margin-top:18px}
+.tenant-embed-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+@media(max-width:650px){.tenant-action-button,.tenant-contact-form button{width:100%}.tenant-contact-form{gap:12px}}
