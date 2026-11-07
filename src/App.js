@@ -238,7 +238,7 @@ function MainApp() {
       <button className="mobile-menu" onClick={() => setMobileNav(!mobileNav)}>☰</button>
       <a className="brand" href="#"><span className="brand-mark">D</span><span>DuKu <b>FCA</b></span><small>FREE WEBSITE BUILDER</small></a>
       <nav className="top-links"><a href="#features">Features</a><a href="#templates">Templates</a><a href="#how">How it works</a></nav>
-      <div className="top-actions"><button className="text-btn" onClick={() => {setAuthMode("Welcome back");setShowAuth(true)}}>Log in</button><button className="primary-btn small" onClick={() => {setAuthMode("Create your free account");setShowAuth(true)}}>Start for free <span>↗</span></button></div>
+      <div className="top-actions">{authUser?<><span className="signed-in-label">{authUser.email}</span><button className="text-btn" onClick={signOut}>Sign out</button></>:<><button className="text-btn" onClick={() => {setAuthMode("Welcome back");setShowAuth(true)}}>Log in</button><button className="primary-btn small" onClick={() => {setAuthMode("Create your free account");setShowAuth(true)}}>Start for free <span>↗</span></button></>}</div>
     </header>
     <div className="layout">
       <aside className={"sidebar " + (mobileNav ? "open" : "")}>
