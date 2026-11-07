@@ -279,7 +279,7 @@ function MainApp() {
     if(!name){setDesignPresetNotice("Give this design preset a name first.");return;}
     const preset={id:"preset-"+Date.now(),name,brandColor,surfaceColor,siteFont,headerStyle,footerLayout,headingSize,bodySize,textLineHeight,buttonStyle};
     setSavedDesignPresets(current=>[preset,...current.filter(item=>item.name.toLowerCase()!==name.toLowerCase())].slice(0,20));
-    setDesignPresetName("");setDesignPresetNotice("Design preset saved in this browser.");
+    setDesignPresetName("");setDesignPresetNotice("Preset saved. Save the website to sync it across devices.");
   };
   const applyDesignPreset = (preset) => {
     setBrandColor(preset.brandColor||"#7c5ce0");setSurfaceColor(preset.surfaceColor||"#ffffff");
