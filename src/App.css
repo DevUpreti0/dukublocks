@@ -277,3 +277,25 @@
 .tenant-columns-grid article p{margin:0;line-height:1.7;white-space:pre-wrap}
 .tenant-columns-grid article a{display:inline-block;margin-top:14px;color:var(--tenant-accent,#9b85ff);font-weight:700;text-decoration:none}
 @media(max-width:760px){.tenant-columns-grid,.tenant-columns-grid.tenant-columns-3,.tenant-columns-grid.tenant-columns-4{grid-template-columns:1fr}.tenant-columns-grid article{padding:18px}}
+
+
+/* Nested section / container builder */
+.nested-child-editor{display:grid;gap:10px;margin:12px 0;padding:12px;border:1px solid #a995ff33;border-radius:12px;background:#9b85ff0b}
+.nested-child-editor>label{display:grid;gap:6px;color:#bcb8d1;font-size:10px}
+.nested-child-editor>label select{width:100%;padding:9px;border:1px solid #ffffff20;border-radius:8px;background:#171522;color:#f2efff}
+.nested-child-editor>b{color:#cfc5ff;font-size:10px;letter-spacing:.08em}
+.nested-child-row{display:grid;gap:7px;padding:10px;border:1px solid #ffffff16;border-radius:9px;background:#ffffff06}
+.nested-child-row>small{color:#a99ae8;font-size:9px;font-weight:800;letter-spacing:.1em}
+.nested-child-row input,.nested-child-row textarea{width:100%;box-sizing:border-box}
+.nested-child-row>button,.nested-child-actions button{padding:7px 10px;border:1px solid #ffffff20;border-radius:7px;background:#ffffff0b;color:#e5e0f6;font-size:10px;cursor:pointer}
+.nested-child-actions{display:flex;gap:7px;flex-wrap:wrap}
+.nested-child-actions button{border-color:#a995ff55;background:#9b85ff18}
+.tenant-nested-container{display:grid;gap:14px;padding:clamp(16px,3vw,30px);border-radius:18px}
+.tenant-nested-card{background:var(--tenant-surface,#ffffff);box-shadow:0 15px 45px #00000012}
+.tenant-nested-plain{background:transparent;padding:0}
+.tenant-nested-bordered{border:1px solid color-mix(in srgb,var(--tenant-accent,#8d7cff) 35%,transparent);background:transparent}
+.tenant-nested-glass{border:1px solid #ffffff30;background:color-mix(in srgb,var(--tenant-surface,#ffffff) 65%,transparent);backdrop-filter:blur(16px);box-shadow:0 18px 50px #00000012}
+.tenant-nested-child h3{margin:0;font-size:clamp(19px,2.5vw,27px)}
+.tenant-nested-child p{margin:0;line-height:1.75;white-space:pre-wrap}
+.tenant-nested-child-button{justify-self:start}
+@media(max-width:650px){.tenant-nested-container{border-radius:13px}.nested-child-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.nested-child-actions button{padding:8px 4px}}
