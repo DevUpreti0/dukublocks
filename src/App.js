@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
+import { supabase, isSupabaseConfigured } from "./lib/supabase";
 
 const templates = [
   { name: "Studio", type: "Portfolio", color: "violet", shape: "studio", tag: "Popular" },
@@ -50,7 +51,104 @@ function MainApp() {
   const [activePageId, setActivePageId] = useState(() => readLocalDraft().activePageId || "home");
   const [mediaAssets, setMediaAssets] = useState(() => readLocalDraft().mediaAssets || []);
   const [mediaNotice, setMediaNotice] = useState("");
+  const [authUser, setAuthUser] = useState(null);
+  const [authEmail, setAuthEmail] = useState("");
+  const [authPassword, setAuthPassword] = useState("");
+  const [authBusy, setAuthBusy] = useState(false);
+  const [authNotice, setAuthNotice] = useState("");
+  const [workspace, setWorkspace] = useState(null);
+  const [cloudSiteId, setCloudSiteId] = useState(null);
+  const [cloudBusy, setCloudBusy] = useState(false);
+  const [cloudNotice, setCloudNotice] = useState("");
 
+  useEffect(() => {
+    if (!isSupabaseConfigured) return;
+    let active = true;
+    supabase.auth.getSession().then(({ data }) => { if (active) setAuthUser(data.session ? data.session.user : null); });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => { if (active) setAuthUser(session ? session.user : null); });
+    return () => { active = false; listener.subscription.unsubscribe(); };
+  }, []);
+  useEffect(() => {
+    if (!authUser || !isSupabaseConfigured) { setWorkspace(null); return; }
+    let active = true;
+    supabase.from("workspaces").select("*").eq("owner_id", authUser.id).maybeSingle().then(({ data, error }) => {
+      if (!active) return;
+      if (error) setCloudNotice("Account connected, but workspace could not load: " + error.message);
+      else setWorkspace(data || null);
+    });
+    return () => { active = false; };
+  }, [authUser]);
+  const submitAuth = async () => {
+    if (!isSupabaseConfigured) { setAuthNotice("Supabase configuration is missing. Please try again after deployment settings are applied."); return; }
+    if (!authEmail.trim() || !authPassword) { setAuthNotice("Enter your email and password to continue."); return; }
+    setAuthBusy(true); setAuthNotice("");
+    try {
+      if (authMode === "Welcome back") {
+        const { error } = await supabase.auth.signInWithPassword({ email: authEmail.trim(), password: authPassword });
+        if (error) throw error;
+        setShowAuth(false);
+      } else {
+        const { data, error } = await supabase.auth.signUp({ email: authEmail.trim(), password: authPassword, options: { data: { display_name: authEmail.trim().split("@")[0] }, emailRedirectTo: window.location.origin } });
+        if (error) throw error;
+        if (data.session) { setAuthUser(data.user); setShowAuth(false); setAuthNotice("Your DuKu FCA account is ready."); }
+        else setAuthNotice("Account created. Check your email to confirm your address, then log in.");
+      }
+    } catch (error) { setAuthNotice(error.message || "Authentication failed. Please try again."); }
+    finally { setAuthBusy(false); }
+  };
+  const signOut = async () => {
+    if (!supabase) return;
+    const { error } = await supabase.auth.signOut();
+    if (error) setCloudNotice(error.message);
+    else { setAuthUser(null); setWorkspace(null); setCloudSiteId(null); setCloudNotice("Signed out."); }
+  };
+  const saveCloudDraft = async () => {
+    if (!authUser) { setAuthMode("Welcome back"); setShowAuth(true); return; }
+    if (!workspace) { setCloudNotice("Your workspace is still loading. Please try again in a moment."); return; }
+    setCloudBusy(true); setCloudNotice("");
+    try {
+      let siteId = cloudSiteId;
+      if (!siteId) {
+        const { data: found, error } = await supabase.from("sites").select("id").eq("workspace_id", workspace.id).eq("name", siteName).limit(1).maybeSingle();
+        if (error) throw error;
+        if (found) siteId = found.id;
+      }
+      const sitePayload = { workspace_id: workspace.id, name: siteName, slug: (siteSlug || "my-website").toLowerCase().replace(/[^a-z0-9-]/g,"-"), status: "draft", site_settings: { headline, subline, template: "custom" }, seo_settings: { title: seoTitle, description: seoDescription } };
+      if (siteId) {
+        const { error } = await supabase.from("sites").update(sitePayload).eq("id", siteId);
+        if (error) throw error;
+      } else {
+        const { data, error } = await supabase.from("sites").insert(sitePayload).select("id").single();
+        if (error) throw error;
+        siteId = data.id;
+      }
+      setCloudSiteId(siteId);
+      const { data: existingPages, error: pageLoadError } = await supabase.from("site_pages").select("id,slug").eq("site_id", siteId);
+      if (pageLoadError) throw pageLoadError;
+      for (let index = 0; index < pages.length; index += 1) {
+        const page = pages[index];
+        const current = page.id === activePageId ? { ...page, headline, subline, blocks, seoTitle, seoDescription, slug: siteSlug } : page;
+        const slug = (current.slug || current.name || "page").toLowerCase().replace(/[^a-z0-9-]+/g,"-").replace(/^-|-$/g,"") || "page";
+        const payload = { site_id: siteId, title: current.name, slug, is_homepage: index === 0, is_published: false, sort_order: index, content: { headline: current.headline || headline, subline: current.subline || subline, sections: current.blocks || [] }, seo: { title: current.seoTitle || "", description: current.seoDescription || "" } };
+        const existing = existingPages.find(item => item.slug === slug);
+        const result = existing ? await supabase.from("site_pages").update(payload).eq("id", existing.id) : await supabase.from("site_pages").insert(payload);
+        if (result.error) throw result.error;
+      }
+      for (const asset of mediaAssets) {
+        if (asset.cloudUploaded) continue;
+        const blob = await fetch(asset.dataUrl).then(response => response.blob());
+        const safeName = asset.name.replace(/[^a-zA-Z0-9._-]/g,"-");
+        const path = workspace.id + "/" + siteId + "/" + asset.id + "-" + safeName;
+        const { error: uploadError } = await supabase.storage.from("duku-fca-media").upload(path, blob, { upsert: true, contentType: asset.type });
+        if (uploadError) throw uploadError;
+        const { error: assetError } = await supabase.from("site_assets").insert({ site_id: siteId, storage_path: path, file_name: asset.name, mime_type: asset.type, file_size: asset.size });
+        if (assetError) throw assetError;
+        setMediaAssets(current => current.map(item => item.id === asset.id ? { ...item, cloudUploaded: true, storagePath: path } : item));
+      }
+      setCloudNotice("Saved to your DuKu FCA cloud workspace. Your website is still a draft and is not public.");
+    } catch (error) { setCloudNotice("Cloud save failed: " + (error.message || "Please try again.")); }
+    finally { setCloudBusy(false); }
+  };
   useEffect(() => {
     if (!showEditor) return;
     try { const updatedPages = pages.map(page => page.id === activePageId ? { ...page, headline, subline, blocks, seoTitle, seoDescription, slug: siteSlug } : page); setPages(updatedPages); window.localStorage.setItem("duku-fca-editor-draft", JSON.stringify({ siteName, headline, subline, blocks, seoTitle, seoDescription, siteSlug, pages: updatedPages, activePageId, mediaAssets, updatedAt: new Date().toISOString() })); } catch (error) { /* Local storage may be unavailable in private browsing. */ }
@@ -161,8 +259,8 @@ function MainApp() {
         <footer><a className="brand footer-brand" href="#"><span className="brand-mark">D</span><span>DuKu <b>FCA</b></span></a><span>© 2026 DuKu Business. Built for what's next.</span><div><a href="#features">Features</a><a href="#templates">Templates</a><a href="mailto:support@dukubusiness.online">Support</a></div></footer>
       </main>
     </div>
-    {showAuth&&<div className="modal-backdrop" onClick={()=>setShowAuth(false)}><div className="auth-modal" onClick={e=>e.stopPropagation()}><button className="close-modal" onClick={()=>setShowAuth(false)}>×</button><div className="modal-mark">D</div><div className="eyebrow">WELCOME TO DUKU FCA</div><h2>{authMode}</h2><p>Save your projects, publish websites and manage everything in one place.</p><label>Email address<input type="email" placeholder="you@example.com"/></label><label>Password<input type="password" placeholder="At least 8 characters"/></label><button className="primary-btn full" onClick={()=>alert("Account services are being connected. Your signup will be enabled after secure authentication is configured.")}>{authMode==="Welcome back"?"Log in":"Create account"} ↗</button><small className="modal-legal">Authentication is not live yet. Connect the platform database to enable secure accounts.</small><button className="switch-auth" onClick={()=>setAuthMode(authMode==="Welcome back"?"Create your free account":"Welcome back")}>{authMode==="Welcome back"?"New to DuKu FCA? Create an account":"Already have an account? Log in"}</button></div></div>}
-    {showEditor&&<div className="editor-overlay"><div className="editor-top"><button className="brand editor-brand" onClick={()=>setShowEditor(false)}><span className="brand-mark">D</span><span>DuKu <b>FCA</b></span></button><div className="editor-site"><input value={siteName} onChange={e=>setSiteName(e.target.value)}/><span className="saved">● Auto-saved on this device</span></div><div className="editor-actions"><button className="ghost-btn" onClick={exportDraft}>Export backup ↓</button><button className="ghost-btn" onClick={()=>setShowEditor(false)}>Exit editor</button><button className="primary-btn small" onClick={()=>setPublished(true)}>Publish ↗</button></div></div><div className="editor-workspace"><aside className="editor-tools"><b>PAGES</b><div className="page-manager">{pages.map(page=><div className={"page-manager-row "+(page.id===activePageId?"active":"")} key={page.id}><button className="page-select" onClick={()=>switchPage(page)}>{page.name}</button>{pages.length>1&&<button className="page-delete" onClick={()=>deletePage(page)} title={"Delete "+page.name}>×</button>}</div>)}<button className="add-page-btn" onClick={addPage}>＋ Add page</button></div><b>ADD ELEMENTS</b>{["＋ Text","▧ Image","▤ Button","▥ Section","▱ Form","⌘ Embed code"].map(x=><button key={x} onClick={()=>addBlock(x)}>{x}</button>)}<b className="media-heading">MEDIA LIBRARY</b><label className="media-upload">＋ Upload images<input type="file" accept="image/*" multiple onChange={uploadMedia}/></label><div className="media-note">Images are stored locally in this browser. Max 2 MB each.</div>{mediaNotice&&<div className="media-notice">{mediaNotice}</div>}<div className="media-grid">{mediaAssets.map(asset=><div className="media-item" key={asset.id}><img src={asset.dataUrl} alt={asset.name}/><div><span title={asset.name}>{asset.name}</span><button onClick={()=>insertMedia(asset)}>Add</button><button onClick={()=>removeMedia(asset.id)} title="Remove from library">×</button></div></div>)}</div><div className="editor-help">Select text in the preview to edit your content.</div></aside><div className="editor-canvas-wrap"><div className="canvas-toolbar"><span>Live preview · {previewDevice==="desktop"?"Desktop":previewDevice==="tablet"?"Tablet":"Mobile"}</span><div className="device-switch"><button className={previewDevice==="desktop"?"active":""} onClick={()=>setPreviewDevice("desktop")}>Desktop</button><button className={previewDevice==="tablet"?"active":""} onClick={()=>setPreviewDevice("tablet")}>Tablet</button><button className={previewDevice==="mobile"?"active":""} onClick={()=>setPreviewDevice("mobile")}>Mobile</button></div></div><div className={"site-canvas preview-"+previewDevice}><div className="canvas-nav"><b>{siteName.toUpperCase()}</b><span>{pages.map(page=>page.name.toUpperCase()).join("　 ")}</span><button>LET'S TALK ↗</button></div><div className="canvas-hero"><div className="canvas-copy"><small>{activePageId==="home"?"DESIGNED WITH DUKU FCA":activePageId.toUpperCase()+" · DUKU FCA"}</small><h1 contentEditable suppressContentEditableWarning onBlur={e=>setHeadline(e.currentTarget.textContent)}>{headline}</h1><p contentEditable suppressContentEditableWarning onBlur={e=>setSubline(e.currentTarget.textContent)}>{subline}</p><button>Explore more ↗</button></div><div className="canvas-art"><div className="canvas-disc"></div><div className="canvas-block"></div></div></div><div className="canvas-lower"><span>01 / WHAT WE DO</span><b>Thoughtful design. Clear purpose.</b><span>SCROLL TO EXPLORE ↓</span></div>{blocks.map((block,index)=><div className="editor-added-block" key={block.id}><div className="block-editor-fields"><small>CONTENT BLOCK · {String(index+1).padStart(2,"0")} · {block.type.toUpperCase()}</small><input aria-label="Block heading" value={block.title||""} onChange={e=>updateBlock(block.id,"title",e.target.value)} placeholder="Block heading"/><textarea aria-label="Block content" value={block.content||""} onChange={e=>updateBlock(block.id,"content",e.target.value)} placeholder="Write your content here."/>{block.type==="Image"&&<div className="block-image-preview">{(()=>{const asset=mediaAssets.find(item=>item.id===block.assetId);return asset?<img src={asset.dataUrl} alt={block.title||asset.name}/>:<span>{block.assetId?"This image is no longer in your media library.":"Choose an image from the Media Library."}</span>;})()}</div>}</div><div className="block-controls"><button disabled={index===0} onClick={()=>moveBlock(index,-1)} title="Move up">↑</button><button disabled={index===blocks.length-1} onClick={()=>moveBlock(index,1)} title="Move down">↓</button><button onClick={()=>duplicateBlock(block)}>Duplicate</button><button onClick={()=>setBlocks(current=>current.filter(item=>item.id!==block.id))}>Remove</button></div></div>)}</div></div><aside className="properties"><b>PAGE SETTINGS</b><label>Page title<input value={siteName} onChange={e=>setSiteName(e.target.value)}/></label><label>Hero headline<textarea value={headline} onChange={e=>setHeadline(e.target.value)}/></label><label>Hero description<textarea value={subline} onChange={e=>setSubline(e.target.value)}/></label><div className="property-divider"></div><b>SEO & SEARCH</b><label>Search title<input value={seoTitle} onChange={e=>setSeoTitle(e.target.value)} placeholder={siteName}/></label><label>Meta description<textarea value={seoDescription} onChange={e=>setSeoDescription(e.target.value)} placeholder="Describe this page for search engines."/></label><label>Page URL slug<input value={siteSlug} onChange={e=>setSiteSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g,"-"))}/></label><div className="seo-preview"><small>SEARCH PREVIEW</small><b>{seoTitle||siteName}</b><span>dukubusiness.online/{siteSlug}</span><p>{seoDescription||"Your page description will appear here in search results."}</p></div><div className="property-note">Changes update the preview and save on this device. SEO settings are draft-only until publishing is connected.</div></aside></div>{published&&<div className="publish-toast">✓ Publish flow previewed. Connect hosting and a database to make this site live.</div>}</div>}
+    {showAuth&&<div className="modal-backdrop" onClick={()=>setShowAuth(false)}><div className="auth-modal" onClick={e=>e.stopPropagation()}><button className="close-modal" onClick={()=>setShowAuth(false)}>×</button><div className="modal-mark">D</div><div className="eyebrow">WELCOME TO DUKU FCA</div><h2>{authMode}</h2><p>Save your projects, publish websites and manage everything in one place.</p><label>Email address<input type="email" value={authEmail} onChange={e=>setAuthEmail(e.target.value)} placeholder="you@example.com" autoComplete="email"/></label><label>Password<input type="password" value={authPassword} onChange={e=>setAuthPassword(e.target.value)} placeholder="At least 8 characters" autoComplete={authMode==="Welcome back"?"current-password":"new-password"}/></label><button className="primary-btn full" disabled={authBusy} onClick={submitAuth}>{authBusy?"Please wait…":authMode==="Welcome back"?"Log in":"Create account"} ↗</button>{authNotice&&<div className="auth-feedback">{authNotice}</div>}<small className="modal-legal">{isSupabaseConfigured?"Secure sign-in powered by DuKu FCA Supabase.":"Account service configuration is not available in this deployment yet."}</small><button className="switch-auth" onClick={()=>setAuthMode(authMode==="Welcome back"?"Create your free account":"Welcome back")}>{authMode==="Welcome back"?"New to DuKu FCA? Create an account":"Already have an account? Log in"}</button></div></div>}
+    {showEditor&&<div className="editor-overlay"><div className="editor-top"><button className="brand editor-brand" onClick={()=>setShowEditor(false)}><span className="brand-mark">D</span><span>DuKu <b>FCA</b></span></button><div className="editor-site"><input value={siteName} onChange={e=>setSiteName(e.target.value)}/><span className="saved">{authUser?"● "+authUser.email:"● Auto-saved on this device"}</span></div><div className="editor-actions"><button className="ghost-btn" onClick={exportDraft}>Export backup ↓</button><button className="ghost-btn" disabled={!authUser||cloudBusy} onClick={saveCloudDraft}>{cloudBusy?"Saving…":"Save to cloud"}</button><button className="ghost-btn" onClick={()=>setShowEditor(false)}>Exit editor</button>{authUser&&<button className="ghost-btn" onClick={signOut}>Sign out</button>}<button className="primary-btn small" onClick={()=>setPublished(true)}>Publish ↗</button></div>{cloudNotice&&<div className="cloud-save-notice">{cloudNotice}</div>}</div><div className="editor-workspace"><aside className="editor-tools"><b>PAGES</b><div className="page-manager">{pages.map(page=><div className={"page-manager-row "+(page.id===activePageId?"active":"")} key={page.id}><button className="page-select" onClick={()=>switchPage(page)}>{page.name}</button>{pages.length>1&&<button className="page-delete" onClick={()=>deletePage(page)} title={"Delete "+page.name}>×</button>}</div>)}<button className="add-page-btn" onClick={addPage}>＋ Add page</button></div><b>ADD ELEMENTS</b>{["＋ Text","▧ Image","▤ Button","▥ Section","▱ Form","⌘ Embed code"].map(x=><button key={x} onClick={()=>addBlock(x)}>{x}</button>)}<b className="media-heading">MEDIA LIBRARY</b><label className="media-upload">＋ Upload images<input type="file" accept="image/*" multiple onChange={uploadMedia}/></label><div className="media-note">Images are stored locally in this browser. Max 2 MB each.</div>{mediaNotice&&<div className="media-notice">{mediaNotice}</div>}<div className="media-grid">{mediaAssets.map(asset=><div className="media-item" key={asset.id}><img src={asset.dataUrl} alt={asset.name}/><div><span title={asset.name}>{asset.name}</span><button onClick={()=>insertMedia(asset)}>Add</button><button onClick={()=>removeMedia(asset.id)} title="Remove from library">×</button></div></div>)}</div><div className="editor-help">Select text in the preview to edit your content.</div></aside><div className="editor-canvas-wrap"><div className="canvas-toolbar"><span>Live preview · {previewDevice==="desktop"?"Desktop":previewDevice==="tablet"?"Tablet":"Mobile"}</span><div className="device-switch"><button className={previewDevice==="desktop"?"active":""} onClick={()=>setPreviewDevice("desktop")}>Desktop</button><button className={previewDevice==="tablet"?"active":""} onClick={()=>setPreviewDevice("tablet")}>Tablet</button><button className={previewDevice==="mobile"?"active":""} onClick={()=>setPreviewDevice("mobile")}>Mobile</button></div></div><div className={"site-canvas preview-"+previewDevice}><div className="canvas-nav"><b>{siteName.toUpperCase()}</b><span>{pages.map(page=>page.name.toUpperCase()).join("　 ")}</span><button>LET'S TALK ↗</button></div><div className="canvas-hero"><div className="canvas-copy"><small>{activePageId==="home"?"DESIGNED WITH DUKU FCA":activePageId.toUpperCase()+" · DUKU FCA"}</small><h1 contentEditable suppressContentEditableWarning onBlur={e=>setHeadline(e.currentTarget.textContent)}>{headline}</h1><p contentEditable suppressContentEditableWarning onBlur={e=>setSubline(e.currentTarget.textContent)}>{subline}</p><button>Explore more ↗</button></div><div className="canvas-art"><div className="canvas-disc"></div><div className="canvas-block"></div></div></div><div className="canvas-lower"><span>01 / WHAT WE DO</span><b>Thoughtful design. Clear purpose.</b><span>SCROLL TO EXPLORE ↓</span></div>{blocks.map((block,index)=><div className="editor-added-block" key={block.id}><div className="block-editor-fields"><small>CONTENT BLOCK · {String(index+1).padStart(2,"0")} · {block.type.toUpperCase()}</small><input aria-label="Block heading" value={block.title||""} onChange={e=>updateBlock(block.id,"title",e.target.value)} placeholder="Block heading"/><textarea aria-label="Block content" value={block.content||""} onChange={e=>updateBlock(block.id,"content",e.target.value)} placeholder="Write your content here."/>{block.type==="Image"&&<div className="block-image-preview">{(()=>{const asset=mediaAssets.find(item=>item.id===block.assetId);return asset?<img src={asset.dataUrl} alt={block.title||asset.name}/>:<span>{block.assetId?"This image is no longer in your media library.":"Choose an image from the Media Library."}</span>;})()}</div>}</div><div className="block-controls"><button disabled={index===0} onClick={()=>moveBlock(index,-1)} title="Move up">↑</button><button disabled={index===blocks.length-1} onClick={()=>moveBlock(index,1)} title="Move down">↓</button><button onClick={()=>duplicateBlock(block)}>Duplicate</button><button onClick={()=>setBlocks(current=>current.filter(item=>item.id!==block.id))}>Remove</button></div></div>)}</div></div><aside className="properties"><b>PAGE SETTINGS</b><label>Page title<input value={siteName} onChange={e=>setSiteName(e.target.value)}/></label><label>Hero headline<textarea value={headline} onChange={e=>setHeadline(e.target.value)}/></label><label>Hero description<textarea value={subline} onChange={e=>setSubline(e.target.value)}/></label><div className="property-divider"></div><b>SEO & SEARCH</b><label>Search title<input value={seoTitle} onChange={e=>setSeoTitle(e.target.value)} placeholder={siteName}/></label><label>Meta description<textarea value={seoDescription} onChange={e=>setSeoDescription(e.target.value)} placeholder="Describe this page for search engines."/></label><label>Page URL slug<input value={siteSlug} onChange={e=>setSiteSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g,"-"))}/></label><div className="seo-preview"><small>SEARCH PREVIEW</small><b>{seoTitle||siteName}</b><span>dukubusiness.online/{siteSlug}</span><p>{seoDescription||"Your page description will appear here in search results."}</p></div><div className="property-note">Changes update the preview and save on this device. SEO settings are draft-only until publishing is connected.</div></aside></div>{published&&<div className="publish-toast">✓ Publish flow previewed. Connect hosting and a database to make this site live.</div>}</div>}
   </div>;
 }
 function App() {
