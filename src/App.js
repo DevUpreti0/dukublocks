@@ -287,8 +287,8 @@ function MainApp() {
       ...marketplaceLedger.map(entry=>["Ledger",entry.id,entry.created_at,entry.entry_type,entry.currency||"INR","","","","",Number(entry.amount_paise||0)/100,entry.description||""]),
       ...marketplacePayouts.map(payout=>["Payout",payout.id,payout.requested_at,payout.status,"INR","","","","",Number(payout.amount_paise||0)/100,payout.failure_reason||""])
     ];
-    const csv = rows.map(row=>row.map(value=>{const cell=String(value??"");return /[",\\n]/.test(cell)?'"'+cell.replace(/"/g,'""')+'"':cell;}).join(",")).join("\\r\\n");
-    const blob = new Blob(["\\uFEFF",csv],{type:"text/csv;charset=utf-8"});
+    const csv = rows.map(row=>row.map(value=>{const cell=String(value??"");return /[",\n]/.test(cell)?'"'+cell.replace(/"/g,'""')+'"':cell;}).join(",")).join("\r\n");
+    const blob = new Blob(["\uFEFF",csv],{type:"text/csv;charset=utf-8"});
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
