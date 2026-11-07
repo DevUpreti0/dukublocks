@@ -266,3 +266,14 @@
 .editor-added-block{box-sizing:border-box}
 .tenant-content-block{box-sizing:border-box}
 @media(max-width:700px){.reusable-section-row{flex-wrap:wrap}.reusable-section-row>span{flex-basis:100%}.tenant-content-block[style*="width: 100%"]{border-radius:0}}
+
+/* Multi-column section layouts */
+.tenant-columns-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:stretch}
+.tenant-columns-grid.tenant-columns-1{grid-template-columns:minmax(0,1fr)}
+.tenant-columns-grid.tenant-columns-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.tenant-columns-grid.tenant-columns-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.tenant-columns-grid article{min-width:0;padding:22px;border:1px solid var(--tenant-accent, #8d7cff33);border-radius:16px;background:color-mix(in srgb,var(--tenant-surface,#ffffff) 88%,transparent);box-shadow:0 12px 36px #0000000b}
+.tenant-columns-grid article h3{margin:0 0 10px;font-size:clamp(17px,2vw,23px)}
+.tenant-columns-grid article p{margin:0;line-height:1.7;white-space:pre-wrap}
+.tenant-columns-grid article a{display:inline-block;margin-top:14px;color:var(--tenant-accent,#9b85ff);font-weight:700;text-decoration:none}
+@media(max-width:760px){.tenant-columns-grid,.tenant-columns-grid.tenant-columns-3,.tenant-columns-grid.tenant-columns-4{grid-template-columns:1fr}.tenant-columns-grid article{padding:18px}}
