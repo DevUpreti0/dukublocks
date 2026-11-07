@@ -299,3 +299,12 @@
 .tenant-nested-child p{margin:0;line-height:1.75;white-space:pre-wrap}
 .tenant-nested-child-button{justify-self:start}
 @media(max-width:650px){.tenant-nested-container{border-radius:13px}.nested-child-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.nested-child-actions button{padding:8px 4px}}
+
+.nested-child-row{cursor:grab;transition:border-color .18s,transform .18s}
+.nested-child-row:active{cursor:grabbing}
+.nested-child-row[draggable="true"]:hover{border-color:#a995ff66}
+.nested-child-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.nested-child-toolbar>small{color:#b9aaff;font-size:9px;font-weight:800;letter-spacing:.09em}
+.nested-child-toolbar>div{display:flex;gap:4px}
+.nested-child-toolbar button{min-width:27px;height:25px;padding:2px 7px;border:1px solid #ffffff20;border-radius:6px;background:#ffffff0b;color:#eee9ff;cursor:pointer}
+.nested-child-toolbar button:disabled{opacity:.3;cursor:not-allowed}
