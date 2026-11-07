@@ -280,6 +280,21 @@ function MainApp() {
     } catch(error) { setMarketplaceError(error.message||"Could not load payment earnings."); }
     finally { setMarketplaceLoading(false); }
   };
+  const exportMarketplaceReport = () => {
+    const rows = [
+      ["Record type","Reference","Date","Status","Currency","Gross amount","DuKu commission","Gateway fee","Refund amount","Seller net / amount","Description"],
+      ...marketplaceOrders.map(order=>["Order",order.provider_order_id||order.id,order.created_at,order.status,order.currency||"INR",Number(order.gross_amount_paise||0)/100,Number(order.commission_amount_paise||0)/100,Number(order.gateway_fee_paise||0)/100,Number(order.refund_amount_paise||0)/100,Number(order.seller_net_amount_paise||0)/100,""]),
+      ...marketplaceLedger.map(entry=>["Ledger",entry.id,entry.created_at,entry.entry_type,entry.currency||"INR","","","","",Number(entry.amount_paise||0)/100,entry.description||""]),
+      ...marketplacePayouts.map(payout=>["Payout",payout.id,payout.requested_at,payout.status,"INR","","","","",Number(payout.amount_paise||0)/100,payout.failure_reason||""])
+    ];
+    const csv = rows.map(row=>row.map(value=>{const cell=String(value??"");return /[",\\n]/.test(cell)?'"'+cell.replace(/"/g,'""')+'"':cell;}).join(",")).join("\\r\\n");
+    const blob = new Blob(["\\uFEFF",csv],{type:"text/csv;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "duku-marketplace-financial-report-"+new Date().toISOString().slice(0,10)+".csv";
+    document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
+  };
   const loadAnalytics = async (range = analyticsRange) => {
     if (!workspace) return;
     setAnalyticsLoading(true); setAnalyticsError("");
@@ -652,7 +667,7 @@ function MainApp() {
           {analyticsLoading&&!analyticsEvents.length?<div className="cloud-empty">Loading analytics…</div>:!analyticsSites.length?<div className="cloud-empty">Create and publish a website to start collecting analytics.</div>:<div className="analytics-grid"><article className="analytics-card"><h2>Views by website</h2>{analyticsSites.map(site=>{const count=analyticsEvents.filter(event=>event.site_id===site.id).length;return <div className="analytics-bar-row" key={site.id}><span>{site.name}</span><div><i style={{width:(analyticsEvents.length?Math.max(3,count/Math.max(1,...analyticsSites.map(s=>analyticsEvents.filter(e=>e.site_id===s.id).length))*100):0)+"%"}}/></div><b>{count}</b></div>})}</article><article className="analytics-card"><h2>Top pages</h2>{Object.entries(analyticsEvents.reduce((acc,event)=>{const key=event.page_slug||"home";acc[key]=(acc[key]||0)+1;return acc;},{})).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([slug,count])=><div className="analytics-list-row" key={slug}><span>/{slug}</span><b>{count}</b></div>)}{!analyticsEvents.length&&<p>No page views recorded in this period yet.</p>}</article><article className="analytics-card"><h2>Traffic sources</h2>{Object.entries(analyticsEvents.reduce((acc,event)=>{const key=event.referrer_host||"Direct / unknown";acc[key]=(acc[key]||0)+1;return acc;},{})).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([source,count])=><div className="analytics-list-row" key={source}><span>{source}</span><b>{count}</b></div>)}{!analyticsEvents.length&&<p>Sources appear as visitors arrive from other websites.</p>}</article><article className="analytics-card"><h2>Recent activity</h2>{analyticsEvents.slice(0,8).map(event=><div className="analytics-list-row" key={event.id}><span>/{event.page_slug||"home"} · {analyticsSites.find(site=>site.id===event.site_id)?.name||"Website"}<small>{new Date(event.created_at).toLocaleString()}</small></span><b>View</b></div>)}{!analyticsEvents.length&&<p>Published page views will appear here.</p>}</article></div>}
           <p className="analytics-privacy-note">DuKu FCA records page views, page paths and referring hostnames only. It does not currently estimate unique visitors or collect visitor names, email addresses or IP addresses.</p>
         </section> : active === "Payments & earnings" ? <section className="analytics-panel marketplace-panel">
-          <div className="form-inbox-heading"><div><div className="eyebrow">SELLER PAYMENTS</div><h1>Your <em>earnings.</em></h1><p>Track sales, DuKu commission, refunds and seller settlements from your published websites.</p></div><button className="ghost-btn" onClick={loadMarketplace} disabled={marketplaceLoading}>{marketplaceLoading?"Refreshing…":"↻ Refresh"}</button></div>
+          <div className="form-inbox-heading"><div><div className="eyebrow">SELLER PAYMENTS</div><h1>Your <em>earnings.</em></h1><p>Track sales, DuKu commission, refunds and seller settlements from your published websites.</p></div><div className="analytics-actions"><button className="ghost-btn" onClick={exportMarketplaceReport} disabled={!marketplaceOrders.length&&!marketplaceLedger.length&&!marketplacePayouts.length}>↓ Export CSV</button><button className="ghost-btn" onClick={loadMarketplace} disabled={marketplaceLoading}>{marketplaceLoading?"Refreshing…":"↻ Refresh"}</button></div></div>
           {marketplaceError&&<div className="form-inbox-error">{marketplaceError}</div>}
           <div className="marketplace-banner"><div><b>Marketplace payments · Cashfree Easy Split</b><p>Customer payments are designed to split automatically: 2.1% DuKu platform commission and the remaining eligible amount to your verified seller account.</p></div><span className={"domain-status "+(marketplaceAccount?.onboarding_status==="verified"?"verified":"pending")}>{marketplaceAccount?.onboarding_status==="verified"?"KYC verified":"Gateway setup required"}</span></div>
           <div className="analytics-stats marketplace-stats">
