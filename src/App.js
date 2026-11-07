@@ -22,7 +22,7 @@ function TenantSite() {
   const tenant = window.location.hostname.split(".")[0];
   const [site, setSite] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [pageSlug, setPageSlug] = useState(() => decodeURIComponent(window.location.pathname.replace(/^\\/+|\\/+$/g, "")));
+  const [pageSlug, setPageSlug] = useState(() => window.location.pathname.split("/").filter(Boolean)[0] || "");
   useEffect(() => {
     let active = true;
     if (!isSupabaseConfigured) { setLoading(false); return () => { active = false; }; }
@@ -37,6 +37,13 @@ function TenantSite() {
   const currentPage = pages.find(page => page.slug === pageSlug) || pages.find(page => page.is_homepage) || pages[0];
   const content = currentPage && currentPage.content ? currentPage.content : {};
   const blocks = Array.isArray(content.sections) ? content.sections : [];
+  useEffect(() => {
+    if (!site || !currentPage) return;
+    document.title = (currentPage.seo && currentPage.seo.title) || (site.seo_settings && site.seo_settings.title) || site.name;
+    const description = (currentPage.seo && currentPage.seo.description) || (site.seo_settings && site.seo_settings.description) || "";
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta && description) meta.setAttribute("content", description);
+  }, [site, currentPage]);
   if (loading) return <div className="tenant-site"><div className="tenant-loading">Loading published website…</div></div>;
   if (!site || !currentPage) return <div className="tenant-site"><div className="tenant-nav"><b>✦ {tenant}</b><a href="https://dukubusiness.online">DuKu FCA</a></div><div className="tenant-hero"><div className="eyebrow">DUKU FCA WEBSITE</div><h1>This website is <em>not available.</em></h1><p>It may not have been published yet, or the address may be incorrect.</p><a href="https://dukubusiness.online">Create your own website ↗</a></div><footer>Built with DuKu FCA · Free Website Builder</footer></div>;
   return <div className="tenant-site tenant-published">
