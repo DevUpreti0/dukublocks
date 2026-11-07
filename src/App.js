@@ -114,7 +114,7 @@ function MainApp() {
       }));
       const restoredAssets = await Promise.all((assetRows || []).map(async row => {
         const { data, error } = await supabase.storage.from("duku-fca-media").createSignedUrl(row.storage_path, 3600);
-        return { id: row.alt_text || row.id, name: row.file_name, type: row.mime_type || "image/*", size: row.file_size || 0, dataUrl: data && data.signedUrl || "", cloudUploaded: true, storagePath: row.storage_path, signedUrlError: error && error.message };
+        return { id: row.client_asset_key || row.id, name: row.file_name, type: row.mime_type || "image/*", size: row.file_size || 0, dataUrl: data && data.signedUrl || "", cloudUploaded: true, storagePath: row.storage_path, signedUrlError: error && error.message };
       }));
       const first = restoredPages[0] || { id:"home", name:"Home", slug:"home", headline:"", subline:"", blocks:[], seoTitle:"", seoDescription:"" };
       setSiteName(siteData.name); setHeadline(first.headline || siteData.site_settings?.headline || ""); setSubline(first.subline || siteData.site_settings?.subline || "");
@@ -185,7 +185,7 @@ function MainApp() {
         const path = workspace.id + "/" + siteId + "/" + asset.id + "-" + safeName;
         const { error: uploadError } = await supabase.storage.from("duku-fca-media").upload(path, blob, { upsert: true, contentType: asset.type });
         if (uploadError) throw uploadError;
-        const { error: assetError } = await supabase.from("site_assets").insert({ site_id: siteId, storage_path: path, file_name: asset.name, mime_type: asset.type, file_size: asset.size, alt_text: asset.id });
+        const { error: assetError } = await supabase.from("site_assets").insert({ site_id: siteId, storage_path: path, file_name: asset.name, mime_type: asset.type, file_size: asset.size, client_asset_key: asset.id });
         if (assetError) throw assetError;
         setMediaAssets(current => current.map(item => item.id === asset.id ? { ...item, cloudUploaded: true, storagePath: path } : item));
       }
