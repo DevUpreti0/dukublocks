@@ -21,7 +21,11 @@ function TenantSite() {
   const tenant = window.location.hostname.split(".")[0];
   return <div className="tenant-site"><div className="tenant-nav"><b>✦ {tenant}</b><span>HOME　 ABOUT　 CONTACT</span></div><div className="tenant-hero"><div className="eyebrow">POWERED BY DUKU FCA</div><h1>Your website,<br/><em>your own space.</em></h1><p>This DuKu subdomain is reserved for a published website. Once a site is published, its content will appear here.</p><a href="https://dukubusiness.online">Create your own website ↗</a></div><footer>Built with DuKu FCA · Free Website Builder</footer></div>;
 }
-\nfunction App() {\n  const host = window.location.hostname;\n  if (host.startsWith("admin.")) return <AdminPortal />;\n  if (host !== "dukubusiness.online" && host !== "www.dukubusiness.online" && host.endsWith(".dukubusiness.online")) return <TenantSite />;
+
+function App() {
+  const host = window.location.hostname;
+  if (host.startsWith("admin.")) return <AdminPortal />;
+  if (host !== "dukubusiness.online" && host !== "www.dukubusiness.online" && host.endsWith(".dukubusiness.online")) return <TenantSite />;
   const [active, setActive] = useState("Overview");
   const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState("Create your free account");
