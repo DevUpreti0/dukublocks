@@ -22,25 +22,29 @@ function TenantSite() {
   return <div className="tenant-site"><div className="tenant-nav"><b>✦ {tenant}</b><span>HOME　 ABOUT　 CONTACT</span></div><div className="tenant-hero"><div className="eyebrow">POWERED BY DUKU FCA</div><h1>Your website,<br/><em>your own space.</em></h1><p>This DuKu subdomain is reserved for a published website. Once a site is published, its content will appear here.</p><a href="https://dukubusiness.online">Create your own website ↗</a></div><footer>Built with DuKu FCA · Free Website Builder</footer></div>;
 }
 
+function readLocalDraft() {
+  try { return JSON.parse(window.localStorage.getItem("duku-fca-editor-draft") || "null") || {}; } catch (error) { return {}; }
+}
+
 function MainApp() {
   const [active, setActive] = useState("Overview");
   const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState("Create your free account");
   const [showEditor, setShowEditor] = useState(false);
-  const [siteName, setSiteName] = useState("My first website");
+  const [siteName, setSiteName] = useState(() => readLocalDraft().siteName || "My first website");
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("All");
   const [mobileNav, setMobileNav] = useState(false);
   const [published, setPublished] = useState(false);
-  const [headline, setHeadline] = useState("Make your next idea unforgettable.");
-  const [subline, setSubline] = useState("A beautiful online home for everything you do.");
-  const [blocks, setBlocks] = useState([]);
+  const [headline, setHeadline] = useState(() => readLocalDraft().headline || "Make your next idea unforgettable.");
+  const [subline, setSubline] = useState(() => readLocalDraft().subline || "A beautiful online home for everything you do.");
+  const [blocks, setBlocks] = useState(() => readLocalDraft().blocks || []);
   useEffect(() => {
     if (!showEditor) return;
     try { window.localStorage.setItem("duku-fca-editor-draft", JSON.stringify({ siteName, headline, subline, blocks, updatedAt: new Date().toISOString() })); } catch (error) { /* Local storage may be unavailable in private browsing. */ }
   }, [showEditor, siteName, headline, subline, blocks]);
   const filtered = useMemo(() => templates.filter(t => (filter === "All" || t.type === filter) && t.name.toLowerCase().includes(query.toLowerCase())), [filter, query]);
-  const startEditor = (name) => { setSiteName(name ? name + " website" : "My first website"); setHeadline("Make your next idea unforgettable."); setSubline("A beautiful online home for everything you do."); setBlocks([]); setShowEditor(true); setPublished(false); };
+  const startEditor = (name) => { const saved = readLocalDraft(); if (name) { setSiteName(name + " website"); setHeadline("Make your next idea unforgettable."); setSubline("A beautiful online home for everything you do."); setBlocks([]); } else if (saved.siteName) { setSiteName(saved.siteName); setHeadline(saved.headline || "Make your next idea unforgettable."); setSubline(saved.subline || "A beautiful online home for everything you do."); setBlocks(saved.blocks || []); } else { setSiteName("My first website"); setHeadline("Make your next idea unforgettable."); setSubline("A beautiful online home for everything you do."); setBlocks([]); } setShowEditor(true); setPublished(false); };
   return <div className="app-shell">
     <header className="topbar">
       <button className="mobile-menu" onClick={() => setMobileNav(!mobileNav)}>☰</button>
