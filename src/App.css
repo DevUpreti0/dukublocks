@@ -323,3 +323,16 @@
 
 /* Fine-grained container layout controls */
 .nested-child-editor input[type="range"]{width:100%;accent-color:#9b85ff}.tenant-nested-container{box-sizing:border-box;min-width:0}.tenant-nested-container>*{min-width:0}.tenant-nested-container[style*="border-width: 0px"]{border-style:none}
+
+
+/* Marketplace earnings and seller payment dashboard */
+.marketplace-panel{display:flex;flex-direction:column;gap:22px}
+.marketplace-banner,.marketplace-setup-card{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px;border:1px solid rgba(160,145,255,.2);border-radius:20px;background:linear-gradient(120deg,rgba(124,92,224,.13),rgba(255,255,255,.025))}
+.marketplace-banner b,.marketplace-setup-card h2{color:var(--text-primary,#fff)}
+.marketplace-banner p,.marketplace-setup-card p{max-width:760px;color:var(--text-muted,#aaa);line-height:1.65;margin:8px 0}
+.marketplace-setup-card small{display:block;color:var(--text-muted,#aaa);margin-top:12px}
+.marketplace-setup-card{align-items:flex-start}
+.marketplace-setup-card>div{flex:1}
+.marketplace-stats>div b{font-size:clamp(20px,2.4vw,30px)}
+.marketplace-lists .analytics-card{min-height:220px}
+@media(max-width:700px){.marketplace-banner,.marketplace-setup-card{align-items:flex-start;flex-direction:column}.marketplace-setup-card .primary-btn{width:100%}}
