@@ -60,6 +60,8 @@ function MainApp() {
   const [cloudSiteId, setCloudSiteId] = useState(null);
   const [cloudBusy, setCloudBusy] = useState(false);
   const [cloudNotice, setCloudNotice] = useState("");
+  const [cloudSites, setCloudSites] = useState([]);
+  const [cloudSitesLoading, setCloudSitesLoading] = useState(false);
 
   useEffect(() => {
     if (!isSupabaseConfigured) return;
@@ -78,6 +80,48 @@ function MainApp() {
     });
     return () => { active = false; };
   }, [authUser]);
+  useEffect(() => {
+    if (!workspace || !authUser) { setCloudSites([]); return; }
+    let active = true;
+    setCloudSitesLoading(true);
+    supabase.from("sites").select("id,name,slug,status,updated_at,created_at").eq("workspace_id", workspace.id).order("updated_at", { ascending: false })
+      .then(({ data, error }) => {
+        if (!active) return;
+        if (error) setCloudNotice("Could not load saved websites: " + error.message);
+        else setCloudSites(data || []);
+        setCloudSitesLoading(false);
+      });
+    return () => { active = false; };
+  }, [workspace, authUser]);
+  const openCloudSite = async (site) => {
+    setCloudNotice("");
+    try {
+      const [{ data: siteData, error: siteError }, { data: pageRows, error: pageError }, { data: assetRows, error: assetError }] = await Promise.all([
+        supabase.from("sites").select("*").eq("id", site.id).single(),
+        supabase.from("site_pages").select("*").eq("site_id", site.id).order("sort_order"),
+        supabase.from("site_assets").select("*").eq("site_id", site.id)
+      ]);
+      if (siteError) throw siteError;
+      if (pageError) throw pageError;
+      if (assetError) throw assetError;
+      const restoredPages = (pageRows || []).map((row,index) => ({
+        id: row.id, name: row.title, slug: row.slug,
+        headline: row.content && row.content.headline || "",
+        subline: row.content && row.content.subline || "",
+        blocks: row.content && row.content.sections || [],
+        seoTitle: row.seo && row.seo.title || "",
+        seoDescription: row.seo && row.seo.description || ""
+      }));
+      const restoredAssets = await Promise.all((assetRows || []).map(async row => {
+        const { data, error } = await supabase.storage.from("duku-fca-media").createSignedUrl(row.storage_path, 3600);
+        return { id: row.id, name: row.file_name, type: row.mime_type || "image/*", size: row.file_size || 0, dataUrl: data && data.signedUrl || "", cloudUploaded: true, storagePath: row.storage_path, signedUrlError: error && error.message };
+      }));
+      const first = restoredPages[0] || { id:"home", name:"Home", slug:"home", headline:"", subline:"", blocks:[], seoTitle:"", seoDescription:"" };
+      setSiteName(siteData.name); setHeadline(first.headline || siteData.site_settings?.headline || ""); setSubline(first.subline || siteData.site_settings?.subline || "");
+      setBlocks(first.blocks || []); setSeoTitle(first.seoTitle || ""); setSeoDescription(first.seoDescription || ""); setSiteSlug(first.slug || siteData.slug || "home");
+      setPages(restoredPages.length ? restoredPages : [first]); setActivePageId(first.id); setMediaAssets(restoredAssets); setCloudSiteId(siteData.id); setShowEditor(true);
+    } catch (error) { setCloudNotice("Could not open this website: " + (error.message || "Please try again.")); }
+  };
   const submitAuth = async () => {
     if (!isSupabaseConfigured) { setAuthNotice("Supabase configuration is missing. Please try again after deployment settings are applied."); return; }
     if (!authEmail.trim() || !authPassword) { setAuthNotice("Enter your email and password to continue."); return; }
@@ -250,6 +294,7 @@ function MainApp() {
         <div className="side-bottom"><div className="upgrade-card"><div className="spark">✦</div><b>Build without limits</b><p>Explore more ways to grow your online presence.</p><button onClick={()=>setShowAuth(true)}>Explore plans ↗</button></div><div className="profile-row"><div className="avatar">G</div><div><b>Guest workspace</b><small>Sign in to sync your work</small></div><span>···</span></div></div>
       </aside>
       <main className="main-content">
+        {authUser&&<section className="cloud-websites-panel"><div><div className="eyebrow">YOUR CLOUD WORKSPACE</div><h2>My saved websites</h2><p>Open your projects from any device after signing in.</p></div>{cloudSitesLoading?<span>Loading your websites…</span>:cloudSites.length?<div className="cloud-site-list">{cloudSites.map(site=><div className="cloud-site-row" key={site.id}><div><b>{site.name}</b><small>{site.slug} · {site.status}</small></div><button onClick={()=>openCloudSite(site)}>Open editor ↗</button></div>)}</div>:<div className="cloud-empty">No cloud websites yet. Create a website and choose Save to cloud in the editor.</div>}</section>}
         <div className="welcome-row"><div><div className="eyebrow"><span className="live-dot"></span> YOUR CREATIVE SPACE</div><h1>Build something <em>brilliant.</em></h1><p className="welcome-copy">Your ideas deserve a place on the internet. Make it happen with DuKu FCA.</p></div><div className="welcome-orb"><div className="orb-inner">D<span>✦</span></div><i className="orbit-dot one"></i><i className="orbit-dot two"></i></div></div>
         <section className="launch-card"><div className="launch-copy"><div className="pill"><span></span> YOUR NEXT BIG THING STARTS HERE</div><h2>From blank canvas<br/>to <span>live website.</span></h2><p>Design, customise and publish a website that feels unmistakably yours. No code required.</p><div className="launch-actions"><button className="primary-btn" onClick={()=>startEditor()}>Create a website <span>↗</span></button><button className="ghost-btn" onClick={()=>document.getElementById("templates").scrollIntoView({behavior:"smooth"})}>Explore templates <span>→</span></button></div><div className="trust-line"><span>✦</span> Free to start <b>·</b> No credit card required <b>·</b> Your site, your rules</div></div><div className="launch-art"><div className="float-card card-a"><span className="mini-icon">✦</span><div><b>Creative freedom</b><small>Make it yours</small></div></div><div className="browser-mock"><div className="browser-bar"><i></i><i></i><i></i><span>yourbrand.dukubusiness.online</span></div><div className="mock-page"><div className="mock-nav"><b>STUDIO<span>®</span></b><small>WORK　 ABOUT　 CONTACT</small></div><div className="mock-hero"><div><small>DESIGN THAT MOVES YOU</small><strong>Ideas into<br/><i>experiences.</i></strong><span className="mock-button">DISCOVER MORE ↗</span></div><div className="mock-image"><div className="mock-sun"></div><div className="mock-arch"></div></div></div></div></div><div className="float-card card-b"><span className="check-icon">✓</span><div><b>Ready to publish</b><small>Your vision, online</small></div></div><div className="art-glow"></div></div></section>
         <div className="stats-strip"><div><b>01</b><span>Start with an idea</span></div><div><b>02</b><span>Make it your own</span></div><div><b>03</b><span>Publish to the world</span></div><div className="stats-note">A simpler way to build online <span>✳</span></div></div>
