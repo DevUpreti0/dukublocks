@@ -83,6 +83,12 @@ function TenantSite() {
   const content = currentPage && currentPage.content ? currentPage.content : {};
   const blocks = Array.isArray(content.sections) ? content.sections : [];
   useEffect(() => {
+    if (!site || !currentPage || !isSupabaseConfigured) return;
+    let referrerHost = null;
+    try { referrerHost = document.referrer ? new URL(document.referrer).hostname : null; } catch (error) { referrerHost = null; }
+    supabase.rpc("track_site_page_view", { p_subdomain: tenant, p_page_slug: currentPage.slug || "", p_referrer_host: referrerHost });
+  }, [site, currentPage, tenant]);
+  useEffect(() => {
     if (!site || !currentPage) return;
     document.title = (currentPage.seo && currentPage.seo.title) || (site.seo_settings && site.seo_settings.title) || site.name;
     const description = (currentPage.seo && currentPage.seo.description) || (site.seo_settings && site.seo_settings.description) || "";
@@ -167,6 +173,28 @@ function MainApp() {
   const [formInboxLoading, setFormInboxLoading] = useState(false);
   const [formInboxError, setFormInboxError] = useState("");
   const [selectedSubmission, setSelectedSubmission] = useState(null);
+  const [analyticsRange, setAnalyticsRange] = useState("30");
+  const [analyticsEvents, setAnalyticsEvents] = useState([]);
+  const [analyticsSites, setAnalyticsSites] = useState([]);
+  const [analyticsLoading, setAnalyticsLoading] = useState(false);
+  const [analyticsError, setAnalyticsError] = useState("");
+  const loadAnalytics = async () => {
+    if (!workspace) return;
+    setAnalyticsLoading(true); setAnalyticsError("");
+    try {
+      const { data: ownedSites, error: sitesError } = await supabase.from("sites").select("id,name,subdomain,status").eq("workspace_id", workspace.id);
+      if (sitesError) throw sitesError;
+      const ids = (ownedSites || []).map(site => site.id);
+      setAnalyticsSites(ownedSites || []);
+      if (!ids.length) { setAnalyticsEvents([]); return; }
+      const since = new Date(Date.now() - Number(analyticsRange) * 86400000).toISOString();
+      const { data, error } = await supabase.from("site_analytics_events").select("id,site_id,page_slug,referrer_host,created_at").in("site_id", ids).gte("created_at", since).order("created_at", { ascending: false }).limit(10000);
+      if (error) throw error;
+      setAnalyticsEvents(data || []);
+    } catch (error) { setAnalyticsError(error.message || "Could not load analytics."); }
+    finally { setAnalyticsLoading(false); }
+  };
+
 
   useEffect(() => {
     if (!isSupabaseConfigured) return;
@@ -455,14 +483,14 @@ function MainApp() {
       <aside className={"sidebar " + (mobileNav ? "open" : "")}>
         <div className="workspace"><div className="workspace-icon">D</div><div><b>My workspace</b><small>Free plan</small></div><span className="chevron">⌄</span></div>
         <div className="side-label">WORKSPACE</div>
-        {["Overview","My websites","Templates","Domains","Media library","Form submissions"].map((item,i)=><button key={item} className={"side-link "+(active===item?"selected":"")} onClick={()=>{setActive(item);setMobileNav(false);if(item==="Templates")document.getElementById("templates")?.scrollIntoView({behavior:"smooth"});if(item==="Form submissions")loadFormInbox()}}><span>{["⌂","▣","▦","◎","▤","✉"][i]}</span>{item}{item==="My websites" ? <i>0</i> : null}</button>)}
+        {["Overview","My websites","Templates","Domains","Media library","Form submissions"].map((item,i)=><button key={item} className={"side-link "+(active===item?"selected":"")} onClick={()=>{setActive(item);setMobileNav(false);if(item==="Templates")document.getElementById("templates")?.scrollIntoView({behavior:"smooth"});if(item==="Form submissions")loadFormInbox();if(item==="Analytics")loadAnalytics()}}><span>{["⌂","▣","▦","◎","▤","✉"][i]}</span>{item}{item==="My websites" ? <i>0</i> : null}</button>)}
         <div className="side-label second">TOOLS</div>
         {["App integrations","Analytics","Help centre"].map((item,i)=><button key={item} className={"side-link "+(active===item?"selected":"")} onClick={()=>setActive(item)}><span>{["⌘","↗","?"][i]}</span>{item}</button>)}
         <div className="side-bottom"><div className="upgrade-card"><div className="spark">✦</div><b>Build without limits</b><p>Explore more ways to grow your online presence.</p><button onClick={()=>setShowAuth(true)}>Explore plans ↗</button></div><div className="profile-row"><div className="avatar">G</div><div><b>Guest workspace</b><small>Sign in to sync your work</small></div><span>···</span></div></div>
       </aside>
       <main className="main-content">
         {authUser&&<section className="cloud-websites-panel"><div><div className="eyebrow">YOUR CLOUD WORKSPACE</div><h2>My saved websites</h2><p>Open your projects from any device after signing in.</p></div>{cloudSitesLoading?<span>Loading your websites…</span>:cloudSites.length?<div className="cloud-site-list">{cloudSites.map(site=><div className="cloud-site-row" key={site.id}><div><b>{site.name}</b><small>{site.slug} · {site.status}</small></div><button onClick={()=>openCloudSite(site)}>Open editor ↗</button></div>)}</div>:<div className="cloud-empty">No cloud websites yet. Create a website and choose Save to cloud in the editor.</div>}</section>}
-        {active === "Form submissions" ? <section className="form-inbox-panel">
+        {active === "Analytics" ? <section className="analytics-panel">\n          <div className="form-inbox-heading"><div><div className="eyebrow">WEBSITE PERFORMANCE</div><h1>Site <em>analytics.</em></h1><p>Privacy-conscious page-view reporting for your published websites.</p></div><div className="analytics-actions"><select value={analyticsRange} onChange={event=>{setAnalyticsRange(event.target.value);setTimeout(loadAnalytics,0)}}><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select><button className="ghost-btn" onClick={loadAnalytics} disabled={analyticsLoading}>{analyticsLoading?"Refreshing…":"↻ Refresh"}</button></div></div>\n          {analyticsError&&<div className="form-inbox-error">{analyticsError}</div>}\n          <div className="analytics-stats"><div><small>Page views</small><b>{analyticsEvents.length.toLocaleString()}</b><span>Recorded visits to pages</span></div><div><small>Published websites</small><b>{analyticsSites.filter(site=>site.status==="published").length}</b><span>Currently live</span></div><div><small>Top page</small><b>{analyticsEvents.length ? (analyticsEvents.reduce((acc,event)=>{const key=event.page_slug||"home";acc[key]=(acc[key]||0)+1;return acc;},{}) && Object.entries(analyticsEvents.reduce((acc,event)=>{const key=event.page_slug||"home";acc[key]=(acc[key]||0)+1;return acc;},{})).sort((a,b)=>b[1]-a[1])[0][0]) : "—"}</b><span>By page views</span></div></div>\n          {analyticsLoading&&!analyticsEvents.length?<div className="cloud-empty">Loading analytics…</div>:!analyticsSites.length?<div className="cloud-empty">Create and publish a website to start collecting analytics.</div>:<div className="analytics-grid"><article className="analytics-card"><h2>Views by website</h2>{analyticsSites.map(site=>{const count=analyticsEvents.filter(event=>event.site_id===site.id).length;return <div className="analytics-bar-row" key={site.id}><span>{site.name}</span><div><i style={{width:(analyticsEvents.length?Math.max(3,count/Math.max(1,...analyticsSites.map(s=>analyticsEvents.filter(e=>e.site_id===s.id).length))*100):0)+"%"}}/></div><b>{count}</b></div>})}</article><article className="analytics-card"><h2>Top pages</h2>{Object.entries(analyticsEvents.reduce((acc,event)=>{const key=event.page_slug||"home";acc[key]=(acc[key]||0)+1;return acc;},{})).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([slug,count])=><div className="analytics-list-row" key={slug}><span>/{slug}</span><b>{count}</b></div>)}{!analyticsEvents.length&&<p>No page views recorded in this period yet.</p>}</article><article className="analytics-card"><h2>Traffic sources</h2>{Object.entries(analyticsEvents.reduce((acc,event)=>{const key=event.referrer_host||"Direct / unknown";acc[key]=(acc[key]||0)+1;return acc;},{})).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([source,count])=><div className="analytics-list-row" key={source}><span>{source}</span><b>{count}</b></div>)}{!analyticsEvents.length&&<p>Sources appear as visitors arrive from other websites.</p>}</article><article className="analytics-card"><h2>Recent activity</h2>{analyticsEvents.slice(0,8).map(event=><div className="analytics-list-row" key={event.id}><span>/{event.page_slug||"home"} · {analyticsSites.find(site=>site.id===event.site_id)?.name||"Website"}<small>{new Date(event.created_at).toLocaleString()}</small></span><b>View</b></div>)}{!analyticsEvents.length&&<p>Published page views will appear here.</p>}</article></div>}\n          <p className="analytics-privacy-note">DuKu FCA records page views, page paths and referring hostnames only. It does not currently estimate unique visitors or collect visitor names, email addresses or IP addresses.</p>\n        </section> : active === "Form submissions" ? <section className="form-inbox-panel">
           <div className="form-inbox-heading"><div><div className="eyebrow">CUSTOMER MESSAGES</div><h1>Form <em>submissions.</em></h1><p>Messages sent through contact forms on your published websites.</p></div><button className="ghost-btn" onClick={loadFormInbox} disabled={formInboxLoading}>{formInboxLoading ? "Refreshing…" : "↻ Refresh"}</button></div>
           <div className="form-inbox-stats"><div><small>Total messages</small><b>{formSubmissions.length}</b></div><div><small>Unread</small><b>{formSubmissions.filter(item=>!item.is_read).length}</b></div><div><small>Websites</small><b>{new Set(formSubmissions.map(item=>item.site_id)).size}</b></div></div>
           {formInboxError && <div className="form-inbox-error">{formInboxError}</div>}
