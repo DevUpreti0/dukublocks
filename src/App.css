@@ -80,3 +80,17 @@
 .signed-in-label{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#c9c1e9;font-size:10px}
 .editor-actions button:disabled{opacity:.45;cursor:not-allowed}
 @media(max-width:760px){.signed-in-label{max-width:95px}.cloud-save-notice{font-size:10px}}
+
+
+/* Cloud website library */
+.cloud-websites-panel{margin:0 0 26px;padding:22px 24px;border:1px solid #9b88ed35;border-radius:17px;background:linear-gradient(125deg,#17172a,#111827 70%);box-shadow:0 16px 40px #0003}
+.cloud-websites-panel h2{margin:7px 0 4px;color:#f2efff;font-size:19px}
+.cloud-websites-panel p{margin:0;color:#a5a6bd;font-size:11px}
+.cloud-site-list{display:grid;gap:8px;margin-top:17px}
+.cloud-site-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 13px;border:1px solid #ffffff13;border-radius:10px;background:#ffffff06}
+.cloud-site-row>div{display:grid;gap:4px;min-width:0}
+.cloud-site-row b{color:#eeeaff;font-size:12px}
+.cloud-site-row small{color:#979bb2;font-size:9px}
+.cloud-site-row button{flex-shrink:0;padding:8px 11px;border:1px solid #a78bfa55;border-radius:8px;background:#a78bfa18;color:#ddd4ff;font-size:10px;cursor:pointer}
+.cloud-site-row button:hover{background:#a78bfa30}
+.cloud-empty{margin-top:14px;padding:13px;border:1px dashed #ffffff25;border-radius:10px;color:#a8abc0;font-size:11px}
