@@ -470,7 +470,7 @@ function MainApp() {
     try { const updatedPages = pages.map(page => page.id === activePageId ? { ...page, headline, subline, blocks, seoTitle, seoDescription, slug: siteSlug } : page); setPages(updatedPages); window.localStorage.setItem("duku-fca-editor-draft", JSON.stringify({ siteName, headline, subline, blocks, seoTitle, seoDescription, siteSlug, pages: updatedPages, activePageId, mediaAssets, siteSubdomain, brandColor, surfaceColor, siteFont, headerStyle, logoText, footerText, customNavText, socialLinksText, footerLayout, reusableSections, updatedAt: new Date().toISOString() })); } catch (error) { /* Local storage may be unavailable in private browsing. */ }
   // pages is read to merge the current editor state; adding it here would create a state-update loop.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showEditor, siteName, headline, subline, blocks, seoTitle, seoDescription, siteSlug, activePageId, mediaAssets, siteSubdomain, brandColor, surfaceColor, siteFont, headerStyle, logoText, footerText, customNavText, socialLinksText, footerLayout]);
+  }, [showEditor, siteName, headline, subline, blocks, seoTitle, seoDescription, siteSlug, activePageId, mediaAssets, siteSubdomain, brandColor, surfaceColor, siteFont, headerStyle, logoText, footerText, customNavText, socialLinksText, footerLayout, reusableSections]);
   const filtered = useMemo(() => templates.filter(t => (filter === "All" || t.type === filter) && t.name.toLowerCase().includes(query.toLowerCase())), [filter, query]);
   const switchPage = (page) => {
     const current = { headline, subline, blocks, seoTitle, seoDescription, slug: siteSlug };
