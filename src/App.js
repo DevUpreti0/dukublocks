@@ -2,6 +2,30 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import { supabase, isSupabaseConfigured } from "./lib/supabase";
 
+async function copyToClipboard(value) {
+  const text = String(value ?? "");
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+    const field = document.createElement("textarea");
+    field.value = text;
+    field.setAttribute("readonly", "");
+    field.style.position = "fixed";
+    field.style.opacity = "0";
+    document.body.appendChild(field);
+    field.select();
+    const copied = document.execCommand("copy");
+    field.remove();
+    if (!copied) throw new Error("Clipboard copy was blocked");
+    return true;
+  } catch (error) {
+    console.error("Unable to copy text", error);
+    return false;
+  }
+}
+
 const templates = [
   { name: "Studio", type: "Portfolio", color: "violet", shape: "studio", tag: "Popular" },
   { name: "Forma", type: "Business", color: "blue", shape: "forma", tag: "New" },
@@ -109,7 +133,7 @@ function TenantSite() {
         const link = safeTenantLink(block.linkUrl);
         const embed = type === "embed code" ? safeEmbedUrl(block.content) : "";
         const values = formValues[block.id] || { name: "", email: "", message: "" };
-        return <section className={"tenant-content-block tenant-block-" + type.replace(/[^a-z]/g,"")} key={block.id || index} style={{maxWidth:block.widthMode==="standard"?"760px":block.widthMode==="wide"?"1100px":"none",width:block.widthMode==="full"?"100%":"calc(100% - 48px)",margin:block.widthMode==="full"?"20px 0":"20px auto",background:block.gradientStyle&&block.gradientStyle!=="none"?({sunset:"linear-gradient(135deg,#ff9966,#ff5e62)",ocean:"linear-gradient(135deg,#2193b0,#6dd5ed)",violet:"linear-gradient(135deg,#654ea3,#eaafc8)",forest:"linear-gradient(135deg,#134e5e,#71b280)",midnight:"linear-gradient(135deg,#232526,#414345)"}[block.gradientStyle]):(block.backgroundColor||undefined),textAlign:block.textAlign||"left",padding:(block.padding||24)+"px",border:block.borderWidth?`${block.borderWidth}px solid ${block.borderColor||"#777777"}`:undefined,borderRadius:(block.borderRadius||0)+"px",boxShadow:({none:"none",soft:"0 8px 24px #00000022",medium:"0 14px 36px #00000038",strong:"0 22px 55px #00000055"}[block.shadowStyle||"none"])}}}>
+        return <section className={"tenant-content-block tenant-block-" + type.replace(/[^a-z]/g,"")} key={block.id || index} style={{maxWidth:block.widthMode==="standard"?"760px":block.widthMode==="wide"?"1100px":"none",width:block.widthMode==="full"?"100%":"calc(100% - 48px)",margin:block.widthMode==="full"?"20px 0":"20px auto",background:block.gradientStyle&&block.gradientStyle!=="none"?({sunset:"linear-gradient(135deg,#ff9966,#ff5e62)",ocean:"linear-gradient(135deg,#2193b0,#6dd5ed)",violet:"linear-gradient(135deg,#654ea3,#eaafc8)",forest:"linear-gradient(135deg,#134e5e,#71b280)",midnight:"linear-gradient(135deg,#232526,#414345)"}[block.gradientStyle]):(block.backgroundColor||undefined),textAlign:block.textAlign||"left",padding:(block.padding||24)+"px",border:block.borderWidth?`${block.borderWidth}px solid ${block.borderColor||"#777777"}`:undefined,borderRadius:(block.borderRadius||0)+"px",boxShadow:({none:"none",soft:"0 8px 24px #00000022",medium:"0 14px 36px #00000038",strong:"0 22px 55px #00000055"}[block.shadowStyle||"none"])}}>
           <div className="eyebrow">{String(index+1).padStart(2,"0")} · {(block.type || "CONTENT").toUpperCase()}</div>
           {type !== "button" && <h2>{block.title}</h2>}
           {type === "image" ? (asset && asset.public_url ? <img className="tenant-published-image" src={asset.public_url} alt={asset.alt_text || block.title || asset.file_name || "Website image"} loading="lazy" /> : <div className="tenant-image-placeholder">This image is not available yet.</div>) :
@@ -681,7 +705,7 @@ function MainApp() {
           <div className="form-inbox-heading"><div><div className="eyebrow">DOMAIN MANAGEMENT</div><h1>Your custom <em>domains.</em></h1><p>Connect a domain you own and prove DNS ownership securely.</p></div><button className="ghost-btn" onClick={loadDomains} disabled={domainLoading}>{domainLoading?"Refreshing…":"↻ Refresh"}</button></div>
           <div className="domain-add-card"><h2>Add a custom domain</h2><div className="domain-add-fields"><input value={domainInput} onChange={event=>setDomainInput(event.target.value)} placeholder="example.com" aria-label="Custom domain"/><select value={domainSiteId} onChange={event=>setDomainSiteId(event.target.value)} aria-label="Website">{domainSites.map(site=><option key={site.id} value={site.id}>{site.name}</option>)}</select><button className="primary-btn" onClick={addCustomDomain} disabled={domainLoading}>Add domain</button></div><p>Use a domain you already own. DuKu FCA will provide a DNS TXT challenge to verify ownership.</p></div>
           {domainError&&<div className="form-inbox-error">{domainError}</div>}{domainNotice&&<div className="domain-notice">{domainNotice}</div>}
-          {domainLoading&&!domainRows.length?<div className="cloud-empty">Loading domains…</div>:!domainRows.length?<div className="cloud-empty">{domainSites.length?"No custom domains added yet.":"Create and save a website before adding a domain."}</div>:<div className="domain-list">{domainRows.map(row=><article className="domain-card" key={row.id}><div className="domain-card-head"><div><b>{row.domain}</b><small>{row.siteName} · Added {new Date(row.created_at).toLocaleDateString()}</small></div><span className={"domain-status "+(row.verification_status==="verified"?"verified":"pending")}>{row.verification_status==="verified"?"DNS verified":"Verification pending"}</span></div><div className="domain-dns-record"><small>1. Add this TXT record in your domain DNS settings</small><div><span>Type</span><b>TXT</b></div><div><span>Name / Host</span><code>{row.dns_record_name || "_duku-verification."+row.domain}</code><button onClick={()=>GenUI.copy(row.dns_record_name || "_duku-verification."+row.domain)}>Copy</button></div><div><span>Value</span><code>{row.verification_token}</code><button onClick={()=>GenUI.copy(row.verification_token)}>Copy</button></div></div><div className="domain-card-footer"><span>{row.verified_at?"Verified "+new Date(row.verified_at).toLocaleString():"DNS may take time to propagate."}</span><button className="ghost-btn" onClick={()=>verifyCustomDomain(row)} disabled={domainVerifying===row.id}>{domainVerifying===row.id?"Checking DNS…":"Verify DNS ownership"}</button></div><p className="domain-routing-note">DNS ownership verification is separate from connecting traffic. Domain routing to your published website will be enabled after the domain is attached to DuKu FCA hosting.</p></article>)}</div>}
+          {domainLoading&&!domainRows.length?<div className="cloud-empty">Loading domains…</div>:!domainRows.length?<div className="cloud-empty">{domainSites.length?"No custom domains added yet.":"Create and save a website before adding a domain."}</div>:<div className="domain-list">{domainRows.map(row=><article className="domain-card" key={row.id}><div className="domain-card-head"><div><b>{row.domain}</b><small>{row.siteName} · Added {new Date(row.created_at).toLocaleDateString()}</small></div><span className={"domain-status "+(row.verification_status==="verified"?"verified":"pending")}>{row.verification_status==="verified"?"DNS verified":"Verification pending"}</span></div><div className="domain-dns-record"><small>1. Add this TXT record in your domain DNS settings</small><div><span>Type</span><b>TXT</b></div><div><span>Name / Host</span><code>{row.dns_record_name || "_duku-verification."+row.domain}</code><button onClick={()=>copyToClipboard(row.dns_record_name || "_duku-verification."+row.domain)}>Copy</button></div><div><span>Value</span><code>{row.verification_token}</code><button onClick={()=>copyToClipboard(row.verification_token)}>Copy</button></div></div><div className="domain-card-footer"><span>{row.verified_at?"Verified "+new Date(row.verified_at).toLocaleString():"DNS may take time to propagate."}</span><button className="ghost-btn" onClick={()=>verifyCustomDomain(row)} disabled={domainVerifying===row.id}>{domainVerifying===row.id?"Checking DNS…":"Verify DNS ownership"}</button></div><p className="domain-routing-note">DNS ownership verification is separate from connecting traffic. Domain routing to your published website will be enabled after the domain is attached to DuKu FCA hosting.</p></article>)}</div>}
         </section> : active === "Analytics" ? <section className="analytics-panel">
           <div className="form-inbox-heading"><div><div className="eyebrow">WEBSITE PERFORMANCE</div><h1>Site <em>analytics.</em></h1><p>Privacy-conscious page-view reporting for your published websites.</p></div><div className="analytics-actions"><select value={analyticsRange} onChange={event=>{setAnalyticsRange(event.target.value);loadAnalytics(event.target.value)}}><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select><button className="ghost-btn" onClick={loadAnalytics} disabled={analyticsLoading}>{analyticsLoading?"Refreshing…":"↻ Refresh"}</button></div></div>
           {analyticsError&&<div className="form-inbox-error">{analyticsError}</div>}
