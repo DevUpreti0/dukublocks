@@ -319,3 +319,7 @@
 .nested-columns-fields{display:grid;gap:8px}
 .nested-columns-fields>div{display:grid;gap:6px;padding:8px;border:1px solid #ffffff15;border-radius:8px}
 @media(max-width:650px){.tenant-nested-columns{grid-template-columns:1fr}.tenant-nested-gallery img{height:140px}}
+
+
+/* Fine-grained container layout controls */
+.nested-child-editor input[type="range"]{width:100%;accent-color:#9b85ff}.tenant-nested-container{box-sizing:border-box;min-width:0}.tenant-nested-container>*{min-width:0}.tenant-nested-container[style*="border-width: 0px"]{border-style:none}
