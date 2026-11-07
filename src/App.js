@@ -502,6 +502,7 @@ function MainApp() {
       Stats: ["Results that speak", ""],
       Team: ["Meet the people behind it", ""],
       "Logo strip": ["Trusted by teams", ""],
+      Callout: ["Ready to get started?", "Tell visitors what to do next."],
       Callout: ["Ready to get started?", "Tell visitors what to do next."]
     };
     const [title, content] = defaults[type] || ["New element", "Add your content here."];
