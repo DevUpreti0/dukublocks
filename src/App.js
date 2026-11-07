@@ -178,6 +178,56 @@ function MainApp() {
   const [analyticsSites, setAnalyticsSites] = useState([]);
   const [analyticsLoading, setAnalyticsLoading] = useState(false);
   const [analyticsError, setAnalyticsError] = useState("");
+  const [domainRows, setDomainRows] = useState([]);
+  const [domainSites, setDomainSites] = useState([]);
+  const [domainInput, setDomainInput] = useState("");
+  const [domainSiteId, setDomainSiteId] = useState("");
+  const [domainLoading, setDomainLoading] = useState(false);
+  const [domainError, setDomainError] = useState("");
+  const [domainNotice, setDomainNotice] = useState("");
+  const [domainVerifying, setDomainVerifying] = useState("");
+  const loadDomains = async () => {
+    if (!workspace) return;
+    setDomainLoading(true); setDomainError("");
+    try {
+      const { data: sites, error: sitesError } = await supabase.from("sites").select("id,name,subdomain,status").eq("workspace_id", workspace.id);
+      if (sitesError) throw sitesError;
+      setDomainSites(sites || []);
+      if (!sites?.length) { setDomainRows([]); return; }
+      const { data, error } = await supabase.from("site_domains").select("*").in("site_id", sites.map(site=>site.id)).eq("domain_type","custom").order("created_at",{ascending:false});
+      if (error) throw error;
+      setDomainRows((data || []).map(row=>({...row,siteName:sites.find(site=>site.id===row.site_id)?.name || "Website"})));
+      if (!domainSiteId && sites[0]) setDomainSiteId(sites[0].id);
+    } catch (error) { setDomainError(error.message || "Could not load domains."); }
+    finally { setDomainLoading(false); }
+  };
+  const addCustomDomain = async () => {
+    setDomainError(""); setDomainNotice("");
+    if (!domainSiteId) { setDomainError("Create or select a website first."); return; }
+    const domain = domainInput.trim().toLowerCase().replace(/^https?:\\/\\//,"").replace(/^www\\./,"").replace(/\\/$/,"");
+    if (!/^(?=.{4,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$/.test(domain)) { setDomainError("Enter a valid domain name, such as example.com. Do not include a path."); return; }
+    setDomainLoading(true);
+    try {
+      const token = "duku-fca=" + (window.crypto?.randomUUID ? window.crypto.randomUUID().replace(/-/g,"") : Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2));
+      const { error } = await supabase.from("site_domains").insert({site_id:domainSiteId,domain,domain_type:"custom",verification_status:"pending",verification_token:token,dns_record_name:"_duku-verification."+domain});
+      if (error) throw error;
+      setDomainInput(""); setDomainNotice("Domain added. Publish the TXT record below, then verify ownership.");
+      await loadDomains();
+    } catch (error) { setDomainError(error.message || "Could not add this domain."); }
+    finally { setDomainLoading(false); }
+  };
+  const verifyCustomDomain = async (row) => {
+    setDomainVerifying(row.id); setDomainError(""); setDomainNotice("");
+    try {
+      const { data, error } = await supabase.functions.invoke("verify-custom-domain",{body:{domain_id:row.id}});
+      if (error) throw error;
+      if (data?.verified) setDomainNotice(row.domain+" ownership verified successfully.");
+      else setDomainNotice(data?.message || "DNS record is not visible yet. Try again after propagation.");
+      await loadDomains();
+    } catch (error) { setDomainError(error.message || "Could not verify domain."); }
+    finally { setDomainVerifying(""); }
+  };
+
   const loadAnalytics = async (range = analyticsRange) => {
     if (!workspace) return;
     setAnalyticsLoading(true); setAnalyticsError("");
@@ -483,14 +533,19 @@ function MainApp() {
       <aside className={"sidebar " + (mobileNav ? "open" : "")}>
         <div className="workspace"><div className="workspace-icon">D</div><div><b>My workspace</b><small>Free plan</small></div><span className="chevron">⌄</span></div>
         <div className="side-label">WORKSPACE</div>
-        {["Overview","My websites","Templates","Domains","Media library","Form submissions"].map((item,i)=><button key={item} className={"side-link "+(active===item?"selected":"")} onClick={()=>{setActive(item);setMobileNav(false);if(item==="Templates")document.getElementById("templates")?.scrollIntoView({behavior:"smooth"});if(item==="Form submissions")loadFormInbox();if(item==="Analytics")loadAnalytics()}}><span>{["⌂","▣","▦","◎","▤","✉"][i]}</span>{item}{item==="My websites" ? <i>0</i> : null}</button>)}
+        {["Overview","My websites","Templates","Domains","Media library","Form submissions"].map((item,i)=><button key={item} className={"side-link "+(active===item?"selected":"")} onClick={()=>{setActive(item);setMobileNav(false);if(item==="Templates")document.getElementById("templates")?.scrollIntoView({behavior:"smooth"});if(item==="Form submissions")loadFormInbox();if(item==="Analytics")loadAnalytics();if(item==="Domains")loadDomains()}}><span>{["⌂","▣","▦","◎","▤","✉"][i]}</span>{item}{item==="My websites" ? <i>0</i> : null}</button>)}
         <div className="side-label second">TOOLS</div>
         {["App integrations","Analytics","Help centre"].map((item,i)=><button key={item} className={"side-link "+(active===item?"selected":"")} onClick={()=>setActive(item)}><span>{["⌘","↗","?"][i]}</span>{item}</button>)}
         <div className="side-bottom"><div className="upgrade-card"><div className="spark">✦</div><b>Build without limits</b><p>Explore more ways to grow your online presence.</p><button onClick={()=>setShowAuth(true)}>Explore plans ↗</button></div><div className="profile-row"><div className="avatar">G</div><div><b>Guest workspace</b><small>Sign in to sync your work</small></div><span>···</span></div></div>
       </aside>
       <main className="main-content">
         {authUser&&<section className="cloud-websites-panel"><div><div className="eyebrow">YOUR CLOUD WORKSPACE</div><h2>My saved websites</h2><p>Open your projects from any device after signing in.</p></div>{cloudSitesLoading?<span>Loading your websites…</span>:cloudSites.length?<div className="cloud-site-list">{cloudSites.map(site=><div className="cloud-site-row" key={site.id}><div><b>{site.name}</b><small>{site.slug} · {site.status}</small></div><button onClick={()=>openCloudSite(site)}>Open editor ↗</button></div>)}</div>:<div className="cloud-empty">No cloud websites yet. Create a website and choose Save to cloud in the editor.</div>}</section>}
-        {active === "Analytics" ? <section className="analytics-panel">
+        {active === "Domains" ? <section className="analytics-panel">
+          <div className="form-inbox-heading"><div><div className="eyebrow">DOMAIN MANAGEMENT</div><h1>Your custom <em>domains.</em></h1><p>Connect a domain you own and prove DNS ownership securely.</p></div><button className="ghost-btn" onClick={loadDomains} disabled={domainLoading}>{domainLoading?"Refreshing…":"↻ Refresh"}</button></div>
+          <div className="domain-add-card"><h2>Add a custom domain</h2><div className="domain-add-fields"><input value={domainInput} onChange={event=>setDomainInput(event.target.value)} placeholder="example.com" aria-label="Custom domain"/><select value={domainSiteId} onChange={event=>setDomainSiteId(event.target.value)} aria-label="Website">{domainSites.map(site=><option key={site.id} value={site.id}>{site.name}</option>)}</select><button className="primary-btn" onClick={addCustomDomain} disabled={domainLoading}>Add domain</button></div><p>Use a domain you already own. DuKu FCA will provide a DNS TXT challenge to verify ownership.</p></div>
+          {domainError&&<div className="form-inbox-error">{domainError}</div>}{domainNotice&&<div className="domain-notice">{domainNotice}</div>}
+          {domainLoading&&!domainRows.length?<div className="cloud-empty">Loading domains…</div>:!domainRows.length?<div className="cloud-empty">{domainSites.length?"No custom domains added yet.":"Create and save a website before adding a domain."}</div>:<div className="domain-list">{domainRows.map(row=><article className="domain-card" key={row.id}><div className="domain-card-head"><div><b>{row.domain}</b><small>{row.siteName} · Added {new Date(row.created_at).toLocaleDateString()}</small></div><span className={"domain-status "+(row.verification_status==="verified"?"verified":"pending")}>{row.verification_status==="verified"?"DNS verified":"Verification pending"}</span></div><div className="domain-dns-record"><small>1. Add this TXT record in your domain DNS settings</small><div><span>Type</span><b>TXT</b></div><div><span>Name / Host</span><code>{row.dns_record_name || "_duku-verification."+row.domain}</code><button onClick={()=>GenUI.copy(row.dns_record_name || "_duku-verification."+row.domain)}>Copy</button></div><div><span>Value</span><code>{row.verification_token}</code><button onClick={()=>GenUI.copy(row.verification_token)}>Copy</button></div></div><div className="domain-card-footer"><span>{row.verified_at?"Verified "+new Date(row.verified_at).toLocaleString():"DNS may take time to propagate."}</span><button className="ghost-btn" onClick={()=>verifyCustomDomain(row)} disabled={domainVerifying===row.id}>{domainVerifying===row.id?"Checking DNS…":"Verify DNS ownership"}</button></div><p className="domain-routing-note">DNS ownership verification is separate from connecting traffic. Domain routing to your published website will be enabled after the domain is attached to DuKu FCA hosting.</p></article>)}</div>}
+        </section> : active === "Analytics" ? <section className="analytics-panel">
           <div className="form-inbox-heading"><div><div className="eyebrow">WEBSITE PERFORMANCE</div><h1>Site <em>analytics.</em></h1><p>Privacy-conscious page-view reporting for your published websites.</p></div><div className="analytics-actions"><select value={analyticsRange} onChange={event=>{setAnalyticsRange(event.target.value);loadAnalytics(event.target.value)}}><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select><button className="ghost-btn" onClick={loadAnalytics} disabled={analyticsLoading}>{analyticsLoading?"Refreshing…":"↻ Refresh"}</button></div></div>
           {analyticsError&&<div className="form-inbox-error">{analyticsError}</div>}
           <div className="analytics-stats"><div><small>Page views</small><b>{analyticsEvents.length.toLocaleString()}</b><span>Recorded visits to pages</span></div><div><small>Published websites</small><b>{analyticsSites.filter(site=>site.status==="published").length}</b><span>Currently live</span></div><div><small>Top page</small><b>{analyticsEvents.length ? (analyticsEvents.reduce((acc,event)=>{const key=event.page_slug||"home";acc[key]=(acc[key]||0)+1;return acc;},{}) && Object.entries(analyticsEvents.reduce((acc,event)=>{const key=event.page_slug||"home";acc[key]=(acc[key]||0)+1;return acc;},{})).sort((a,b)=>b[1]-a[1])[0][0]) : "—"}</b><span>By page views</span></div></div>
