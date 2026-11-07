@@ -27,3 +27,17 @@
 
 .editor-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.editor-actions .ghost-btn{white-space:nowrap}.editor-actions .primary-btn{white-space:nowrap}
 @media(max-width:760px){.editor-actions{gap:5px}.editor-actions .ghost-btn{padding:8px;font-size:9px}}
+
+
+/* Editable content block controls */
+.editor-added-block{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:22px;margin:18px 0;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(255,255,255,.045);box-shadow:0 12px 36px rgba(0,0,0,.12)}
+.block-editor-fields{display:flex;flex:1;min-width:0;flex-direction:column;gap:10px}
+.block-editor-fields small{font-size:10px;letter-spacing:.13em;color:#a99bff;font-weight:700}
+.block-editor-fields input,.block-editor-fields textarea{width:100%;box-sizing:border-box;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(8,10,20,.68);color:#f5f3ff;padding:12px 14px;font:inherit;outline:none}
+.block-editor-fields input:focus,.block-editor-fields textarea:focus{border-color:#9b8aff;box-shadow:0 0 0 3px rgba(155,138,255,.12)}
+.block-editor-fields textarea{min-height:76px;resize:vertical}
+.block-controls{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:180px}
+.block-controls button{border:1px solid rgba(255,255,255,.13);border-radius:9px;background:rgba(255,255,255,.07);color:#e8e5f4;padding:8px 10px;font-size:12px;cursor:pointer}
+.block-controls button:hover:not(:disabled){background:rgba(155,138,255,.2);border-color:rgba(155,138,255,.55)}
+.block-controls button:disabled{opacity:.3;cursor:not-allowed}
+@media(max-width:700px){.editor-added-block{flex-direction:column;padding:16px}.block-controls{max-width:none;justify-content:flex-start}}
