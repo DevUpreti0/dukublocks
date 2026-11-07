@@ -94,3 +94,21 @@
 .cloud-site-row button{flex-shrink:0;padding:8px 11px;border:1px solid #a78bfa55;border-radius:8px;background:#a78bfa18;color:#ddd4ff;font-size:10px;cursor:pointer}
 .cloud-site-row button:hover{background:#a78bfa30}
 .cloud-empty{margin-top:14px;padding:13px;border:1px dashed #ffffff25;border-radius:10px;color:#a8abc0;font-size:11px}
+
+/* Published customer websites */
+.tenant-loading{min-height:100vh;display:grid;place-items:center;color:#d7d1f4;font-size:14px}
+.tenant-published{min-height:100vh;background:radial-gradient(ellipse at 75% 0%,#252044 0%,#0a0c15 48%,#080a10 100%);color:#f5f3ff}
+.tenant-published .tenant-nav{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:24px clamp(20px,7vw,100px);border-bottom:1px solid #ffffff16}
+.tenant-published .tenant-nav nav{display:flex;gap:22px;flex-wrap:wrap}
+.tenant-published .tenant-nav a,.tenant-published footer a{color:#cfc5ff;text-decoration:none}
+.tenant-published-main{max-width:1100px;margin:auto;padding:40px 24px 90px}
+.tenant-published-hero{min-height:430px;display:flex;flex-direction:column;justify-content:center;padding:50px clamp(10px,5vw,60px)}
+.tenant-published-hero h1{max-width:850px;margin:18px 0;font-size:clamp(42px,8vw,92px);line-height:1.02;letter-spacing:-.055em}
+.tenant-published-hero p{max-width:650px;color:#b7b6c9;font-size:clamp(15px,2vw,20px);line-height:1.7}
+.tenant-content-block{margin:20px 0;padding:clamp(22px,5vw,48px);border:1px solid #ffffff17;border-radius:22px;background:#ffffff08;backdrop-filter:blur(16px)}
+.tenant-content-block h2{font-size:clamp(24px,4vw,42px);margin:12px 0}
+.tenant-content-block p{white-space:pre-wrap;color:#c2c0d0;line-height:1.8}
+.tenant-image-placeholder{min-height:160px;display:grid;place-items:center;border:1px dashed #aaa0d455;border-radius:16px;color:#a8a4bd;background:#101625}
+.tenant-published footer{padding:24px;text-align:center;border-top:1px solid #ffffff16;color:#9897aa;font-size:12px}
+.publish-toast a{color:#d9ceff;text-decoration:underline}
+@media(max-width:650px){.tenant-published .tenant-nav{align-items:flex-start;flex-direction:column}.tenant-published .tenant-nav nav{gap:12px;font-size:12px}.tenant-published-hero{min-height:330px}}
