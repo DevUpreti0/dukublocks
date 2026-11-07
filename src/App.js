@@ -204,8 +204,8 @@ function MainApp() {
   const addCustomDomain = async () => {
     setDomainError(""); setDomainNotice("");
     if (!domainSiteId) { setDomainError("Create or select a website first."); return; }
-    const domain = domainInput.trim().toLowerCase().replace(/^https?:\\/\\//,"").replace(/^www\\./,"").replace(/\\/$/,"");
-    if (!/^(?=.{4,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$/.test(domain)) { setDomainError("Enter a valid domain name, such as example.com. Do not include a path."); return; }
+    const domain = domainInput.trim().toLowerCase().replace(/^https?:\/\//,"").replace(/^www\./,"").replace(/\/$/,"");
+    if (!/^(?=.{4,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/.test(domain)) { setDomainError("Enter a valid domain name, such as example.com. Do not include a path."); return; }
     setDomainLoading(true);
     try {
       const token = "duku-fca=" + (window.crypto?.randomUUID ? window.crypto.randomUUID().replace(/-/g,"") : Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2));
