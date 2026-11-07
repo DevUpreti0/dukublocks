@@ -50,7 +50,7 @@ function TenantSite() {
     <div className="tenant-nav"><b>✦ {site.name}</b><nav>{pages.map(page => <a key={page.id} href={page.is_homepage ? "/" : "/" + page.slug}>{page.title}</a>)}</nav></div>
     <main className="tenant-published-main">
       <section className="tenant-published-hero"><div className="eyebrow">POWERED BY DUKU FCA</div><h1>{content.headline || site.name}</h1><p>{content.subline || ""}</p></section>
-      {blocks.map((block,index) => <section className="tenant-content-block" key={block.id || index}><div className="eyebrow">{String(index+1).padStart(2,"0")} · {(block.type || "CONTENT").toUpperCase()}</div><h2>{block.title}</h2>{block.type === "Image" ? <div className="tenant-image-placeholder">Image asset delivery will be enabled in the next media-publishing step.</div> : <p>{block.content}</p>}</section>)}
+      {blocks.map((block,index) => <section className="tenant-content-block" key={block.id || index}><div className="eyebrow">{String(index+1).padStart(2,"0")} · {(block.type || "CONTENT").toUpperCase()}</div><h2>{block.title}</h2>{block.type === "Image" ? (() => { const asset = (site.assets || []).find(item => item.id === block.assetId); return asset && asset.public_url ? <img className="tenant-published-image" src={asset.public_url} alt={asset.alt_text || block.title || asset.file_name || "Website image"} loading="lazy" /> : <div className="tenant-image-placeholder">This image is not available yet.</div>; })() : <p>{block.content}</p>}</section>)}
     </main>
     <footer>Built with <a href="https://dukubusiness.online">DuKu FCA</a> · Free Website Builder</footer>
   </div>;
@@ -242,6 +242,23 @@ function MainApp() {
     setCloudBusy(true); setCloudNotice("");
     try {
       const chosenSubdomain = (siteSubdomain || siteName).toLowerCase().replace(/[^a-z0-9-]+/g,"-").replace(/^-|-$/g,"");
+      const { data: assets, error: assetsError } = await supabase.from("site_assets").select("id,storage_path,file_name,mime_type,client_asset_key,public_url").eq("site_id", cloudSiteId);
+      if (assetsError) throw assetsError;
+      for (const asset of (assets || [])) {
+        if (asset.public_url) continue;
+        const { data: signed, error: signedError } = await supabase.storage.from("duku-fca-media").createSignedUrl(asset.storage_path, 300);
+        if (signedError || !signed?.signedUrl) throw signedError || new Error("Could not access a saved media file.");
+        const response = await fetch(signed.signedUrl);
+        if (!response.ok) throw new Error("Could not download " + asset.file_name + " from your private media library.");
+        const blob = await response.blob();
+        const safeName = (asset.file_name || "image").replace(/[^a-zA-Z0-9._-]/g,"-");
+        const publicPath = workspace.id + "/" + cloudSiteId + "/" + (asset.client_asset_key || asset.id) + "-" + safeName;
+        const { error: uploadError } = await supabase.storage.from("duku-fca-public-media").upload(publicPath, blob, { upsert: true, contentType: asset.mime_type || blob.type || "image/jpeg" });
+        if (uploadError) throw uploadError;
+        const { data: publicData } = supabase.storage.from("duku-fca-public-media").getPublicUrl(publicPath);
+        const { error: updateError } = await supabase.from("site_assets").update({ public_storage_path: publicPath, public_url: publicData.publicUrl }).eq("id", asset.id);
+        if (updateError) throw updateError;
+      }
       const { data, error } = await supabase.rpc("publish_site", { p_site_id: cloudSiteId, p_subdomain: chosenSubdomain });
       if (error) throw error;
       setPublished(true); setPublishedUrl(data.url);
