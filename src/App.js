@@ -22,15 +22,11 @@ function TenantSite() {
   return <div className="tenant-site"><div className="tenant-nav"><b>✦ {tenant}</b><span>HOME　 ABOUT　 CONTACT</span></div><div className="tenant-hero"><div className="eyebrow">POWERED BY DUKU FCA</div><h1>Your website,<br/><em>your own space.</em></h1><p>This DuKu subdomain is reserved for a published website. Once a site is published, its content will appear here.</p><a href="https://dukubusiness.online">Create your own website ↗</a></div><footer>Built with DuKu FCA · Free Website Builder</footer></div>;
 }
 
-function App() {
-  const host = window.location.hostname;
-  if (host.startsWith("admin.")) return <AdminPortal />;
-  if (host !== "dukubusiness.online" && host !== "www.dukubusiness.online" && host.endsWith(".dukubusiness.online")) return <TenantSite />;
+function MainApp() {
   const [active, setActive] = useState("Overview");
   const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState("Create your free account");
   const [showEditor, setShowEditor] = useState(false);
-  const [selected, setSelected] = useState("Studio");
   const [siteName, setSiteName] = useState("My first website");
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("All");
@@ -39,7 +35,7 @@ function App() {
   const [headline, setHeadline] = useState("Make your next idea unforgettable.");
   const [subline, setSubline] = useState("A beautiful online home for everything you do.");
   const filtered = useMemo(() => templates.filter(t => (filter === "All" || t.type === filter) && t.name.toLowerCase().includes(query.toLowerCase())), [filter, query]);
-  const startEditor = (name) => { setSelected(name || "Studio"); setSiteName(name ? name + " website" : "My first website"); setShowEditor(true); setPublished(false); };
+  const startEditor = (name) => { setSiteName(name ? name + " website" : "My first website"); setShowEditor(true); setPublished(false); };
   return <div className="app-shell">
     <header className="topbar">
       <button className="mobile-menu" onClick={() => setMobileNav(!mobileNav)}>☰</button>
@@ -51,7 +47,7 @@ function App() {
       <aside className={"sidebar " + (mobileNav ? "open" : "")}>
         <div className="workspace"><div className="workspace-icon">D</div><div><b>My workspace</b><small>Free plan</small></div><span className="chevron">⌄</span></div>
         <div className="side-label">WORKSPACE</div>
-        {["Overview","My websites","Templates","Domains","Media library"].map((item,i)=><button key={item} className={"side-link "+(active===item?"selected":"")} onClick={()=>{setActive(item);setMobileNav(false);if(item==="Templates")document.getElementById("templates")?.scrollIntoView({behavior:"smooth"})}}><span>{["⌂","▣","▦","◎","▤"][i]}</span>{item}{item==="My websites"&&<i>0</i>}</button>)}
+        {["Overview","My websites","Templates","Domains","Media library"].map((item,i)=><button key={item} className={"side-link "+(active===item?"selected":"")} onClick={()=>{setActive(item);setMobileNav(false);if(item==="Templates")document.getElementById("templates")?.scrollIntoView({behavior:"smooth"})}}><span>{["⌂","▣","▦","◎","▤"][i]}</span>{item}{item==="My websites" ? <i>0</i> : null}</button>)}
         <div className="side-label second">TOOLS</div>
         {["App integrations","Analytics","Help centre"].map((item,i)=><button key={item} className={"side-link "+(active===item?"selected":"")} onClick={()=>setActive(item)}><span>{["⌘","↗","?"][i]}</span>{item}</button>)}
         <div className="side-bottom"><div className="upgrade-card"><div className="spark">✦</div><b>Build without limits</b><p>Explore more ways to grow your online presence.</p><button onClick={()=>setShowAuth(true)}>Explore plans ↗</button></div><div className="profile-row"><div className="avatar">G</div><div><b>Guest workspace</b><small>Sign in to sync your work</small></div><span>···</span></div></div>
@@ -70,4 +66,11 @@ function App() {
     {showEditor&&<div className="editor-overlay"><div className="editor-top"><button className="brand editor-brand" onClick={()=>setShowEditor(false)}><span className="brand-mark">D</span><span>DuKu <b>FCA</b></span></button><div className="editor-site"><input value={siteName} onChange={e=>setSiteName(e.target.value)}/><span className="saved">● Saved locally</span></div><div className="editor-actions"><button className="ghost-btn" onClick={()=>setShowEditor(false)}>Exit editor</button><button className="primary-btn small" onClick={()=>setPublished(true)}>Publish ↗</button></div></div><div className="editor-workspace"><aside className="editor-tools"><b>ADD ELEMENTS</b>{["＋ Text","▧ Image","▤ Button","▥ Section","▱ Form","⌘ Embed code"].map(x=><button key={x} onClick={()=>setHeadline(headline+" ✦")}>{x}</button>)}<div className="editor-help">Select text in the preview to edit your content.</div></aside><div className="editor-canvas-wrap"><div className="canvas-toolbar"><span>Desktop preview</span><span>100%　⌄</span></div><div className="site-canvas"><div className="canvas-nav"><b>{siteName.toUpperCase()}</b><span>HOME　 ABOUT　 SERVICES　 CONTACT</span><button>LET'S TALK ↗</button></div><div className="canvas-hero"><div className="canvas-copy"><small>DESIGNED WITH DUKU FCA</small><h1 contentEditable suppressContentEditableWarning onBlur={e=>setHeadline(e.currentTarget.textContent)}>{headline}</h1><p contentEditable suppressContentEditableWarning onBlur={e=>setSubline(e.currentTarget.textContent)}>{subline}</p><button>Explore more ↗</button></div><div className="canvas-art"><div className="canvas-disc"></div><div className="canvas-block"></div></div></div><div className="canvas-lower"><span>01 / WHAT WE DO</span><b>Thoughtful design. Clear purpose.</b><span>SCROLL TO EXPLORE ↓</span></div></div></div><aside className="properties"><b>PAGE SETTINGS</b><label>Page title<input value={siteName} onChange={e=>setSiteName(e.target.value)}/></label><label>Hero headline<textarea value={headline} onChange={e=>setHeadline(e.target.value)}/></label><label>Hero description<textarea value={subline} onChange={e=>setSubline(e.target.value)}/></label><div className="property-note">Changes update the live preview. More design controls are coming next.</div></aside></div>{published&&<div className="publish-toast">✓ Publish flow previewed. Connect hosting and a database to make this site live.</div>}</div>}
   </div>;
 }
+function App() {
+  const host = window.location.hostname;
+  if (host.startsWith("admin.")) return <AdminPortal />;
+  if (host !== "dukubusiness.online" && host !== "www.dukubusiness.online" && host.endsWith(".dukubusiness.online")) return <TenantSite />;
+  return <MainApp />;
+}
+
 export default App;
