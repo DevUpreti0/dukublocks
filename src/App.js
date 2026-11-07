@@ -163,6 +163,10 @@ function MainApp() {
   const [cloudNotice, setCloudNotice] = useState("");
   const [cloudSites, setCloudSites] = useState([]);
   const [cloudSitesLoading, setCloudSitesLoading] = useState(false);
+  const [formSubmissions, setFormSubmissions] = useState([]);
+  const [formInboxLoading, setFormInboxLoading] = useState(false);
+  const [formInboxError, setFormInboxError] = useState("");
+  const [selectedSubmission, setSelectedSubmission] = useState(null);
 
   useEffect(() => {
     if (!isSupabaseConfigured) return;
@@ -194,6 +198,27 @@ function MainApp() {
       });
     return () => { active = false; };
   }, [workspace, authUser]);
+  const loadFormInbox = async () => {
+    if (!workspace) return;
+    setFormInboxLoading(true); setFormInboxError("");
+    try {
+      const { data: ownedSites, error: sitesError } = await supabase.from("sites").select("id,name,subdomain").eq("workspace_id", workspace.id);
+      if (sitesError) throw sitesError;
+      const ids = (ownedSites || []).map(site => site.id);
+      if (!ids.length) { setFormSubmissions([]); setFormInboxLoading(false); return; }
+      const { data, error } = await supabase.from("form_submissions").select("*").in("site_id", ids).order("created_at", { ascending: false }).limit(250);
+      if (error) throw error;
+      const siteMap = Object.fromEntries((ownedSites || []).map(site => [site.id, site]));
+      setFormSubmissions((data || []).map(item => ({ ...item, site: siteMap[item.site_id] || null })));
+    } catch (error) { setFormInboxError(error.message || "Could not load form submissions."); }
+    finally { setFormInboxLoading(false); }
+  };
+  const markSubmissionRead = async (submission) => {
+    const { error } = await supabase.from("form_submissions").update({ is_read: !submission.is_read }).eq("id", submission.id);
+    if (error) { setFormInboxError(error.message || "Could not update submission."); return; }
+    setFormSubmissions(current => current.map(item => item.id === submission.id ? { ...item, is_read: !submission.is_read } : item));
+    setSelectedSubmission(current => current && current.id === submission.id ? { ...current, is_read: !submission.is_read } : current);
+  };
   const openCloudSite = async (site) => {
     setCloudNotice("");
     try {
@@ -428,13 +453,21 @@ function MainApp() {
       <aside className={"sidebar " + (mobileNav ? "open" : "")}>
         <div className="workspace"><div className="workspace-icon">D</div><div><b>My workspace</b><small>Free plan</small></div><span className="chevron">⌄</span></div>
         <div className="side-label">WORKSPACE</div>
-        {["Overview","My websites","Templates","Domains","Media library"].map((item,i)=><button key={item} className={"side-link "+(active===item?"selected":"")} onClick={()=>{setActive(item);setMobileNav(false);if(item==="Templates")document.getElementById("templates")?.scrollIntoView({behavior:"smooth"})}}><span>{["⌂","▣","▦","◎","▤"][i]}</span>{item}{item==="My websites" ? <i>0</i> : null}</button>)}
+        {["Overview","My websites","Templates","Domains","Media library","Form submissions"].map((item,i)=><button key={item} className={"side-link "+(active===item?"selected":"")} onClick={()=>{setActive(item);setMobileNav(false);if(item==="Templates")document.getElementById("templates")?.scrollIntoView({behavior:"smooth"});if(item==="Form submissions")loadFormInbox()}}><span>{["⌂","▣","▦","◎","▤","✉"][i]}</span>{item}{item==="My websites" ? <i>0</i> : null}</button>)}
         <div className="side-label second">TOOLS</div>
         {["App integrations","Analytics","Help centre"].map((item,i)=><button key={item} className={"side-link "+(active===item?"selected":"")} onClick={()=>setActive(item)}><span>{["⌘","↗","?"][i]}</span>{item}</button>)}
         <div className="side-bottom"><div className="upgrade-card"><div className="spark">✦</div><b>Build without limits</b><p>Explore more ways to grow your online presence.</p><button onClick={()=>setShowAuth(true)}>Explore plans ↗</button></div><div className="profile-row"><div className="avatar">G</div><div><b>Guest workspace</b><small>Sign in to sync your work</small></div><span>···</span></div></div>
       </aside>
       <main className="main-content">
         {authUser&&<section className="cloud-websites-panel"><div><div className="eyebrow">YOUR CLOUD WORKSPACE</div><h2>My saved websites</h2><p>Open your projects from any device after signing in.</p></div>{cloudSitesLoading?<span>Loading your websites…</span>:cloudSites.length?<div className="cloud-site-list">{cloudSites.map(site=><div className="cloud-site-row" key={site.id}><div><b>{site.name}</b><small>{site.slug} · {site.status}</small></div><button onClick={()=>openCloudSite(site)}>Open editor ↗</button></div>)}</div>:<div className="cloud-empty">No cloud websites yet. Create a website and choose Save to cloud in the editor.</div>}</section>}
+        {active === "Form submissions" ? <section className="form-inbox-panel">
+          <div className="form-inbox-heading"><div><div className="eyebrow">CUSTOMER MESSAGES</div><h1>Form <em>submissions.</em></h1><p>Messages sent through contact forms on your published websites.</p></div><button className="ghost-btn" onClick={loadFormInbox} disabled={formInboxLoading}>{formInboxLoading ? "Refreshing…" : "↻ Refresh"}</button></div>
+          <div className="form-inbox-stats"><div><small>Total messages</small><b>{formSubmissions.length}</b></div><div><small>Unread</small><b>{formSubmissions.filter(item=>!item.is_read).length}</b></div><div><small>Websites</small><b>{new Set(formSubmissions.map(item=>item.site_id)).size}</b></div></div>
+          {formInboxError && <div className="form-inbox-error">{formInboxError}</div>}
+          {formInboxLoading && !formSubmissions.length ? <div className="cloud-empty">Loading your messages…</div> : !formSubmissions.length ? <div className="cloud-empty">No form submissions yet. Messages from your published website forms will appear here.</div> :
+            <div className="form-inbox-layout"><div className="form-inbox-list">{formSubmissions.map(item=><button key={item.id} className={"form-inbox-item "+(!item.is_read?"unread ":"")+(selectedSubmission?.id===item.id?"selected":"")} onClick={()=>{setSelectedSubmission(item);if(!item.is_read)markSubmissionRead(item)}}><span className="form-inbox-item-top"><b>{item.sender_name}</b><small>{new Date(item.created_at).toLocaleString()}</small></span><span className="form-inbox-site">{item.site?.name || "Website"} · {item.form_title}</span><span className="form-inbox-preview">{item.message}</span></button>)}</div>
+            {selectedSubmission ? <article className="form-inbox-detail"><div className="eyebrow">MESSAGE DETAILS</div><h2>{selectedSubmission.sender_name}</h2><a href={"mailto:"+selectedSubmission.sender_email}>{selectedSubmission.sender_email}</a><p className="form-inbox-meta">{selectedSubmission.site?.name || "Website"} · {selectedSubmission.form_title} · {new Date(selectedSubmission.created_at).toLocaleString()}</p><div className="form-inbox-message">{selectedSubmission.message}</div><button className="ghost-btn" onClick={()=>markSubmissionRead(selectedSubmission)}>{selectedSubmission.is_read?"Mark as unread":"Mark as unread"}</button></article> : <div className="form-inbox-detail form-inbox-empty">Select a message to read it.</div>}</div>}
+        </section> : <>
         <div className="welcome-row"><div><div className="eyebrow"><span className="live-dot"></span> YOUR CREATIVE SPACE</div><h1>Build something <em>brilliant.</em></h1><p className="welcome-copy">Your ideas deserve a place on the internet. Make it happen with DuKu FCA.</p></div><div className="welcome-orb"><div className="orb-inner">D<span>✦</span></div><i className="orbit-dot one"></i><i className="orbit-dot two"></i></div></div>
         <section className="launch-card"><div className="launch-copy"><div className="pill"><span></span> YOUR NEXT BIG THING STARTS HERE</div><h2>From blank canvas<br/>to <span>live website.</span></h2><p>Design, customise and publish a website that feels unmistakably yours. No code required.</p><div className="launch-actions"><button className="primary-btn" onClick={()=>startEditor()}>Create a website <span>↗</span></button><button className="ghost-btn" onClick={()=>document.getElementById("templates").scrollIntoView({behavior:"smooth"})}>Explore templates <span>→</span></button></div><div className="trust-line"><span>✦</span> Free to start <b>·</b> No credit card required <b>·</b> Your site, your rules</div></div><div className="launch-art"><div className="float-card card-a"><span className="mini-icon">✦</span><div><b>Creative freedom</b><small>Make it yours</small></div></div><div className="browser-mock"><div className="browser-bar"><i></i><i></i><i></i><span>yourbrand.dukubusiness.online</span></div><div className="mock-page"><div className="mock-nav"><b>STUDIO<span>®</span></b><small>WORK　 ABOUT　 CONTACT</small></div><div className="mock-hero"><div><small>DESIGN THAT MOVES YOU</small><strong>Ideas into<br/><i>experiences.</i></strong><span className="mock-button">DISCOVER MORE ↗</span></div><div className="mock-image"><div className="mock-sun"></div><div className="mock-arch"></div></div></div></div></div><div className="float-card card-b"><span className="check-icon">✓</span><div><b>Ready to publish</b><small>Your vision, online</small></div></div><div className="art-glow"></div></div></section>
         <div className="stats-strip"><div><b>01</b><span>Start with an idea</span></div><div><b>02</b><span>Make it your own</span></div><div><b>03</b><span>Publish to the world</span></div><div className="stats-note">A simpler way to build online <span>✳</span></div></div>
@@ -442,6 +475,7 @@ function MainApp() {
         <section className="feature-section" id="features"><div className="eyebrow">EVERYTHING IN ONE PLACE</div><h2>Tools that make the<br/><em>hard part feel easy.</em></h2><div className="feature-grid"><div className="feature-card"><span>✥</span><h3>Visual website editor</h3><p>Arrange sections, update content and shape your site with a visual-first workflow.</p></div><div className="feature-card"><span>◈</span><h3>Responsive by design</h3><p>Create experiences that look considered on desktop, tablet and mobile.</p></div><div className="feature-card"><span>⌘</span><h3>Connect your stack</h3><p>Plan integrations for APIs, databases, forms and the tools your business already uses.</p></div><div className="feature-card"><span>↗</span><h3>Your own web address</h3><p>Publish on a DuKu subdomain and connect a domain you already own.</p></div></div></section>
         <section className="bottom-cta" id="how"><div><div className="eyebrow">YOUR NEXT CHAPTER IS ONLINE</div><h2>Good ideas look better<br/>on the <em>internet.</em></h2><p>Start building your website with DuKu FCA.</p></div><button className="primary-btn" onClick={()=>{setAuthMode("Create your free account");setShowAuth(true)}}>Create your free account ↗</button><div className="cta-star">✳</div></section>
         <footer><a className="brand footer-brand" href="#"><span className="brand-mark">D</span><span>DuKu <b>FCA</b></span></a><span>© 2026 DuKu Business. Built for what's next.</span><div><a href="#features">Features</a><a href="#templates">Templates</a><a href="mailto:support@dukubusiness.online">Support</a></div></footer>
+        </>}
       </main>
     </div>
     {showAuth&&<div className="modal-backdrop" onClick={()=>setShowAuth(false)}><div className="auth-modal" onClick={e=>e.stopPropagation()}><button className="close-modal" onClick={()=>setShowAuth(false)}>×</button><div className="modal-mark">D</div><div className="eyebrow">WELCOME TO DUKU FCA</div><h2>{authMode}</h2><p>Save your projects, publish websites and manage everything in one place.</p><label>Email address<input type="email" value={authEmail} onChange={e=>setAuthEmail(e.target.value)} placeholder="you@example.com" autoComplete="email"/></label><label>Password<input type="password" value={authPassword} onChange={e=>setAuthPassword(e.target.value)} placeholder="At least 8 characters" autoComplete={authMode==="Welcome back"?"current-password":"new-password"}/></label><button className="primary-btn full" disabled={authBusy} onClick={submitAuth}>{authBusy?"Please wait…":authMode==="Welcome back"?"Log in":"Create account"} ↗</button>{authNotice&&<div className="auth-feedback">{authNotice}</div>}<small className="modal-legal">{isSupabaseConfigured?"Secure sign-in powered by DuKu FCA Supabase.":"Account service configuration is not available in this deployment yet."}</small><button className="switch-auth" onClick={()=>setAuthMode(authMode==="Welcome back"?"Create your free account":"Welcome back")}>{authMode==="Welcome back"?"New to DuKu FCA? Create an account":"Already have an account? Log in"}</button></div></div>}
