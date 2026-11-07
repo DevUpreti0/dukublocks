@@ -191,3 +191,29 @@
 .analytics-list-row small{display:block;margin-top:5px;color:#85899f;font-size:9px}
 .analytics-privacy-note{margin:16px 2px;color:#81859a;font-size:10px;line-height:1.6}
 @media(max-width:760px){.analytics-stats{gap:8px}.analytics-stats>div{padding:13px}.analytics-stats b{font-size:21px}.analytics-grid{grid-template-columns:1fr}.analytics-actions{align-items:stretch;flex-direction:column}.analytics-actions .ghost-btn{width:100%}}
+
+
+/* Custom domain ownership manager */
+.domain-add-card,.domain-card{padding:22px;margin:18px 0;border:1px solid #ffffff18;border-radius:16px;background:linear-gradient(145deg,#ffffff0d,#ffffff04)}
+.domain-add-card h2{margin:0 0 14px;font-size:16px;color:#f4f0ff}
+.domain-add-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(150px,.7fr) auto;gap:10px}
+.domain-add-fields input,.domain-add-fields select{width:100%;min-width:0;padding:12px 14px;border:1px solid #ffffff20;border-radius:10px;background:#111522;color:#f1edff;outline:none}
+.domain-add-card>p,.domain-routing-note{margin:12px 0 0;color:#9295aa;font-size:10px;line-height:1.6}
+.domain-notice{padding:12px 15px;margin:12px 0;border:1px solid #7cdaa044;border-radius:10px;background:#7cdaa010;color:#a7e8c0;font-size:12px}
+.domain-list{display:grid;gap:14px}
+.domain-card-head,.domain-card-footer{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.domain-card-head>div{min-width:0}
+.domain-card-head b{display:block;color:#f5f1ff;font-size:16px;overflow-wrap:anywhere}
+.domain-card-head small,.domain-card-footer>span{display:block;margin-top:5px;color:#9295aa;font-size:10px}
+.domain-status{padding:6px 9px;border-radius:30px;font-size:9px;white-space:nowrap}
+.domain-status.verified{background:#6cda9919;color:#8ce6b0}
+.domain-status.pending{background:#f4bf5b19;color:#e9c47b}
+.domain-dns-record{display:grid;gap:9px;margin-top:18px;padding:15px;border-radius:12px;background:#080b13;border:1px solid #ffffff12}
+.domain-dns-record>small{margin-bottom:4px;color:#a9a5bd;font-size:10px}
+.domain-dns-record>div{display:grid;grid-template-columns:90px minmax(0,1fr) auto;align-items:center;gap:10px}
+.domain-dns-record>div>span{color:#9295aa;font-size:10px}
+.domain-dns-record code{min-width:0;color:#e7ddff;font-size:11px;overflow-wrap:anywhere}
+.domain-dns-record button{border:0;background:transparent;color:#bba6ff;font-size:10px;cursor:pointer}
+.domain-card-footer{margin-top:15px}
+.domain-card-footer .ghost-btn{flex-shrink:0}
+@media(max-width:700px){.domain-add-fields{grid-template-columns:1fr}.domain-card-head,.domain-card-footer{align-items:flex-start;flex-direction:column}.domain-dns-record>div{grid-template-columns:68px minmax(0,1fr) auto}.domain-card-footer .ghost-btn{width:100%}}
