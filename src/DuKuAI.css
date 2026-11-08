@@ -576,3 +576,18 @@
 .dai-thinking-activity-step.active b{color:#3975c7}
 @keyframes dai-activity-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.dai-thinking-activity,.dai-thinking-activity-step.active>i{animation:none!important}}
+
+
+/* Live waveform and adaptive wait guidance */
+.dai-thinking-subrow{display:flex;align-items:center;justify-content:space-between;gap:9px;min-width:0}
+.dai-thinking-subline{min-width:0;flex:1}
+.dai-thinking-wave{height:17px;display:flex;align-items:center;justify-content:flex-end;gap:2px;flex:0 0 63px;overflow:hidden}
+.dai-thinking-wave i{display:block;width:2px;height:4px;border-radius:4px;background:linear-gradient(180deg,#8baaf0,#65c4c4);transform-origin:center;animation:dai-wave 850ms ease-in-out infinite alternate}
+.dai-thinking-wave i:nth-child(3n){height:8px}
+.dai-thinking-wave i:nth-child(4n){height:12px}
+.dai-thinking-wave i:nth-child(5n){height:15px}
+.dai-thinking-hint{display:block;font-size:8px;line-height:1.35;color:#9aa5b5;animation:dai-hint-fade .3s ease both}
+@keyframes dai-wave{0%{transform:scaleY(.35);opacity:.55}100%{transform:scaleY(1);opacity:1}}
+@keyframes dai-hint-fade{from{opacity:0;transform:translateY(2px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.dai-thinking-wave i{animation:none!important;height:6px!important}.dai-thinking-hint{animation:none!important}}
+@media(max-width:540px){.dai-thinking-wave{flex-basis:48px}.dai-thinking-hint{font-size:8px}}
