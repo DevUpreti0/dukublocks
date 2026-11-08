@@ -373,3 +373,9 @@
  .dai-studio-tabs button{padding:7px 9px}
 }
 @media(prefers-reduced-motion:reduce){.dai-app *{scroll-behavior:auto!important}}
+
+/* Response preference control */
+.dai-response-style{display:flex;align-items:center;gap:6px;margin-left:8px;padding:5px 9px;border:1px solid #e3e7ed;border-radius:20px;background:#fff;color:#5f6368;font:500 10px 'Google Sans','Roboto',sans-serif}
+.dai-response-style select{max-width:104px;border:0;outline:0;background:transparent;color:#30343b;font:500 11px 'Google Sans','Roboto',sans-serif;cursor:pointer}
+.dai-response-style:focus-within{border-color:#8ab4f8;box-shadow:0 0 0 2px #d3e3fd}
+@media(max-width:760px){.dai-response-style{gap:3px;margin-left:3px;padding:4px 6px}.dai-response-style>span{display:none}.dai-response-style select{max-width:82px;font-size:10px}}
