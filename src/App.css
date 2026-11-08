@@ -1177,3 +1177,16 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .github-import-panel-app .github-import-fields input{background:#0b1220;border-color:#35435d;color:#eef3ff}
 .github-import-panel-app .github-import-fields input::placeholder{color:#8795ac}
 @media(max-width:760px){.github-import-fields{grid-template-columns:1fr}.github-import-fields button{width:100%}}
+
+
+.duku-growth-panel{max-width:1100px}
+.duku-growth-panel>p{color:#726b88;line-height:1.65}
+.duku-growth-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:20px 0;padding:16px;background:#f8f7fc;border:1px solid #e7e2f2;border-radius:12px}
+.duku-growth-form input,.duku-growth-form select{min-width:0;width:100%;border:1px solid #dcd6e9;border-radius:8px;background:#fff;color:#251b49;padding:11px 12px;font:inherit}
+.duku-growth-form button{min-height:42px}
+.duku-growth-panel .form-inbox-list{max-height:520px;overflow:auto;display:grid;gap:8px}
+.duku-growth-panel .form-inbox-item{border:1px solid #e8e4f0;border-radius:9px;padding:12px;background:#fff}
+.duku-growth-panel .form-inbox-item-top{display:flex;justify-content:space-between;gap:10px}
+.duku-growth-panel .form-inbox-site{display:block;color:#4e3a88;margin-top:5px}
+.duku-growth-panel .form-inbox-preview{display:block;color:#7d778c;font-size:12px;margin-top:5px}
+@media(max-width:680px){.duku-growth-form{grid-template-columns:1fr}}
