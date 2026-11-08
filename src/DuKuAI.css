@@ -533,3 +533,27 @@
 .dai-image-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:13px 0 16px}.dai-image-controls label{display:flex;flex-direction:column;gap:6px;color:#526176;font-size:11px;font-weight:650}.dai-image-controls select{width:100%;min-height:42px;padding:9px 11px;border:1px solid #dfe5ee;border-radius:10px;background:#fff;color:#26364e;font:inherit;font-size:12px}.dai-image-controls select:focus{outline:2px solid #c7dcff;border-color:#6b9fe8}@media(max-width:540px){.dai-image-controls{grid-template-columns:1fr 1fr;gap:8px}.dai-image-controls select{font-size:11px;padding:8px}}
 
 .dai-generated-grid button{display:inline-block;margin:12px 4px 4px;border:1px solid #dbe3ef;border-radius:8px;background:#f8faff;color:#355d91;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer}
+
+
+/* Advanced live thinking panel */
+.dai-thinking-wrap{display:flex;align-items:center;gap:13px;width:min(390px,100%);min-height:76px;padding:12px 14px;border:1px solid #e4eaf3;border-radius:16px;background:linear-gradient(135deg,#fff 0%,#f7faff 100%);box-shadow:0 5px 20px rgba(44,75,125,.055);color:#344054}
+.dai-thinking-orb{width:35px;height:35px;flex:0 0 35px;gap:0;background:conic-gradient(from 0deg,#4285f4,#8ab4f8,#a78bfa,#55b8c7,#4285f4);box-shadow:0 3px 16px #4285f433;animation:dai-orb-spin 2.5s linear infinite}
+.dai-thinking-orb:before{inset:3px;background:radial-gradient(circle at 35% 30%,#fff,#edf4ff)}
+.dai-thinking-orb i{width:4px;height:4px;background:#4285f4;box-shadow:0 0 6px #4285f466}
+.dai-thinking-orb b{position:absolute;inset:-4px;border:1px solid #8ab4f84d;border-radius:50%;animation:dai-thinking-ring 2s ease-out infinite}
+.dai-thinking-panel{display:flex;flex:1;min-width:0;flex-direction:column;gap:5px}
+.dai-thinking-topline,.dai-thinking-meta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.dai-thinking-label{font-size:12px;font-weight:700;color:#344054;animation:dai-label-in .25s ease both}
+.dai-thinking-live{display:inline-flex;align-items:center;gap:4px;color:#23845c;font-size:8px;font-weight:800;letter-spacing:.08em}
+.dai-thinking-live i{width:5px;height:5px;border-radius:50%;background:#22a06b;box-shadow:0 0 0 3px #22a06b20;animation:dai-live-blink 1.5s ease infinite}
+.dai-thinking-subline{font-size:10px;color:#8792a4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dai-thinking-progress{display:block;height:3px;overflow:hidden;border-radius:8px;background:#e9eff8}
+.dai-thinking-progress i{display:block;width:36%;height:100%;border-radius:8px;background:linear-gradient(90deg,#4285f4,#9b8cf2,#55b8c7);animation:dai-progress-sweep 2.8s ease-in-out infinite}
+.dai-thinking-meta{font-size:9px;color:#9aa4b3}
+.dai-thinking-meta>span{display:flex;align-items:center;gap:4px}
+.dai-thinking-spark{font-style:normal;color:#7195d4}
+@keyframes dai-thinking-ring{0%{transform:scale(.82);opacity:.75}100%{transform:scale(1.35);opacity:0}}
+@keyframes dai-live-blink{50%{opacity:.35;transform:scale(.8)}}
+@keyframes dai-progress-sweep{0%{transform:translateX(-110%);width:28%}50%{width:58%}100%{transform:translateX(260%);width:28%}}
+@media(prefers-reduced-motion:reduce){.dai-thinking-orb,.dai-thinking-orb i,.dai-thinking-orb b,.dai-thinking-live i,.dai-thinking-progress i{animation:none!important}.dai-thinking-progress i{width:65%}}
+@media(max-width:540px){.dai-thinking-wrap{width:100%;padding:11px 12px}.dai-thinking-orb{width:31px;height:31px;flex-basis:31px}}
