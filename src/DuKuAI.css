@@ -621,3 +621,21 @@
 .dai-message-actions .dai-feedback-btn.selected{opacity:1;background:#edf5ff;border-color:#cfe0f8;color:#285d9e}
 @media(max-width:540px){.dai-message-actions{gap:3px}.dai-message-actions button{font-size:9px;padding:5px 6px}}
 @media(prefers-reduced-motion:reduce){.dai-message-actions button{transition:none!important}}
+
+
+/* Search across messages with clickable, highlighted results */
+.dai-search-results{margin:7px 0 12px;max-height:270px;overflow:auto;border:1px solid #e5eaf1;border-radius:11px;background:#fff;box-shadow:0 5px 18px #24344a0b}
+.dai-search-results-head{position:sticky;top:0;z-index:1;display:flex;justify-content:space-between;align-items:center;padding:9px 10px;background:#f7f9fc;border-bottom:1px solid #edf0f5;color:#77869b;font-size:8px;letter-spacing:.08em}
+.dai-search-results-head small{font-size:9px;letter-spacing:0}
+.dai-search-result{display:block;width:100%;padding:9px 10px;text-align:left;border:0;border-bottom:1px solid #f0f2f6;background:#fff;cursor:pointer}
+.dai-search-result:last-child{border-bottom:0}
+.dai-search-result:hover{background:#f5f8fd}
+.dai-search-result-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
+.dai-search-result-top b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#34445b;font-size:10px}
+.dai-search-result-top small{flex-shrink:0;color:#8b98a9;font-size:8px}
+.dai-search-result-excerpt{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:#758196;font-size:9px;line-height:1.5}
+.dai-search-result-excerpt mark{background:#fff0b8;color:#765515;border-radius:2px;padding:0 1px}
+.dai-search-empty{margin:0;padding:13px;color:#8b98a9;font-size:10px;text-align:center}
+.dai-message.dai-search-match{outline:2px solid #8bb7ef;outline-offset:8px;border-radius:9px;animation:dai-search-pulse 1.8s ease both}
+@keyframes dai-search-pulse{0%,100%{outline-color:#8bb7ef;box-shadow:0 0 0 0 #8bb7ef00}35%{outline-color:#4b91e7;box-shadow:0 0 0 7px #8bb7ef25}}
+@media(prefers-reduced-motion:reduce){.dai-message.dai-search-match{animation:none!important}}
