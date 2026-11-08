@@ -2042,3 +2042,69 @@ body{background:#fff!important;color:#111018!important}
 #root:has(.editor-studio-toolbar) .studio-save-state{color:#08784f!important}
 @media(prefers-reduced-motion:reduce){.uil-ribbon-track,.uil-ribbon-star{animation:none!important}}
 @media(max-width:600px){.uil-subsidiary-ribbon{height:25px;font-size:8px;letter-spacing:1.1px;gap:8px}.uil-ribbon-track{gap:28px;animation-duration:19s}}
+
+
+/* ACCESSIBILITY COLOR PASS — consistent contrast for every DuKu surface */
+:root{
+  --duku-text:#171321;
+  --duku-text-secondary:#514b5d;
+  --duku-text-muted:#625b6d;
+  --duku-primary:#5420d8;
+  --duku-primary-hover:#4315b8;
+  --duku-primary-pressed:#35108f;
+  --duku-primary-contrast:#ffffff;
+  --duku-control-bg:#ffffff;
+  --duku-control-border:#c9c3d2;
+  --duku-focus:#8b5cf6;
+}
+/* Never let inherited opacity make interface text faint. */
+#root :is(.dd-hope,.admin-dashboard,.admin-screen,.editor-overlay,.editor-workspace,.main-content,.ai-builder-modal,.auth-modal,.profile-setup-modal){
+  color:var(--duku-text);
+}
+#root :is(.dd-hope,.admin-dashboard,.admin-screen,.editor-overlay,.editor-workspace,.main-content,.ai-builder-modal,.auth-modal,.profile-setup-modal) :is(h1,h2,h3,h4,h5,strong,b,label,legend){
+  color:var(--duku-text);
+}
+#root :is(.dd-hope,.admin-dashboard,.admin-screen,.editor-overlay,.editor-workspace,.main-content,.ai-builder-modal,.auth-modal,.profile-setup-modal) :is(p,small,.muted,.helper-text,.description,.subtitle){
+  color:var(--duku-text-secondary);
+}
+/* Default secondary/action buttons: white surface + dark readable label. */
+#root :is(.dd-hope,.admin-dashboard,.admin-screen,.editor-overlay,.editor-workspace,.main-content,.ai-builder-modal,.auth-modal,.profile-setup-modal) button:not(.primary-btn):not(.dd-primary):not(.danger-btn):not(.destructive):not([aria-label*="close" i]):not([title*="close" i]){
+  color:#292334;
+}
+#root :is(.dd-hope,.admin-dashboard,.admin-screen,.editor-overlay,.editor-workspace,.main-content,.ai-builder-modal,.auth-modal,.profile-setup-modal) button:disabled{
+  color:#777181!important;background:#eeecf1!important;border-color:#e0dce5!important;opacity:1!important;cursor:not-allowed!important;
+}
+/* Primary actions always use saturated violet with white text. */
+#root :is(.dd-hope,.admin-dashboard,.admin-screen,.editor-overlay,.editor-workspace,.main-content,.ai-builder-modal,.auth-modal,.profile-setup-modal) :is(button.primary-btn,button.dd-primary,button[class*="primary"],a.primary-btn){
+  background:#5420d8!important;
+  border-color:#5420d8!important;
+  color:#fff!important;
+  font-weight:750!important;
+  text-shadow:none!important;
+}
+#root :is(.dd-hope,.admin-dashboard,.admin-screen,.editor-overlay,.editor-workspace,.main-content,.ai-builder-modal,.auth-modal,.profile-setup-modal) :is(button.primary-btn,button.dd-primary,button[class*="primary"]):hover{
+  background:#4315b8!important;border-color:#4315b8!important;color:#fff!important;
+}
+#root :is(.dd-hope,.admin-dashboard,.admin-screen,.editor-overlay,.editor-workspace,.main-content,.ai-builder-modal,.auth-modal,.profile-setup-modal) :is(button.primary-btn,button.dd-primary,button[class*="primary"]):active{
+  background:#35108f!important;border-color:#35108f!important;color:#fff!important;
+}
+/* Explicit destructive actions stay red and high contrast. */
+#root :is(.dd-hope,.admin-dashboard,.admin-screen,.editor-overlay,.editor-workspace,.main-content,.ai-builder-modal,.auth-modal,.profile-setup-modal) :is(button.danger-btn,button.destructive,button[class*="danger"]){
+  background:#b42318!important;border-color:#b42318!important;color:#fff!important;
+}
+/* Inputs and select controls need dark typed text and visible borders. */
+#root :is(.dd-hope,.admin-dashboard,.admin-screen,.editor-overlay,.editor-workspace,.main-content,.ai-builder-modal,.auth-modal,.profile-setup-modal) :is(input,textarea,select){
+  color:#171321!important;
+  background:#fff!important;
+  border-color:#bdb6c9!important;
+  caret-color:#5420d8;
+}
+#root :is(.dd-hope,.admin-dashboard,.admin-screen,.editor-overlay,.editor-workspace,.main-content,.ai-builder-modal,.auth-modal,.profile-setup-modal) :is(input,textarea,select)::placeholder{
+  color:#716a7b!important;opacity:1!important;
+}
+#root :is(.dd-hope,.admin-dashboard,.admin-screen,.editor-overlay,.editor-workspace,.main-content,.ai-builder-modal,.auth-modal,.profile-setup-modal) :is(button,a,input,textarea,select,[tabindex]):focus-visible{
+  outline:3px solid #8b5cf6!important;outline-offset:2px!important;
+}
+#root :is(.dd-hope,.admin-dashboard,.admin-screen,.editor-overlay,.editor-workspace,.main-content,.ai-builder-modal,.auth-modal,.profile-setup-modal) :is(.dd-side-active,.side-link.selected,.filter-pills button.active){
+  color:#3f16a8!important;
+}
