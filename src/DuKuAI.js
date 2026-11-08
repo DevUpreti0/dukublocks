@@ -97,7 +97,47 @@ export default function DuKuAI() {
   const deleteChat = (id) => {setChats(prev=>prev.filter(c=>c.id!==id));if(activeId===id)setActiveId("");};
   const copyMessage = async (value,id) => {try{await navigator.clipboard.writeText(value);setCopied(id);setTimeout(()=>setCopied(""),1400);}catch{setError("Clipboard access was blocked by your browser.");}};
   const filteredChats=useMemo(()=>chats.filter(c=>c.title.toLowerCase().includes(search.toLowerCase())),[chats,search]);
-  const attachFiles=(files)=>{Array.from(files||[]).slice(0,4).forEach(file=>{if(file.size>50000){setError(file.name+" is too large. Text/code files must be under 50 KB.");return;}const reader=new FileReader();reader.onload=()=>{setInput(prev=>(prev?prev+"\\n\\n":"")+"[Attached file: "+file.name+"]\\n"+String(reader.result||""));};reader.onerror=()=>setError("Could not read "+file.name+".");reader.readAsText(file);});};
+  const extractPdfText = async (file) => {
+    if (!window.pdfjsLib) {
+      await new Promise((resolve,reject)=>{const script=document.createElement("script");script.src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";script.onload=resolve;script.onerror=()=>reject(new Error("PDF reader could not load. Try again."));document.head.appendChild(script);});
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    }
+    const pdf=await window.pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
+    if(pdf.numPages>60)throw new Error("PDF limit is 60 pages.");
+    const pages=[];for(let n=1;n<=pdf.numPages;n++){const page=await pdf.getPage(n);const content=await page.getTextContent();pages.push(content.items.map(item=>item.str).join(" "));}
+    return pages.join("\n\n");
+  };
+  const attachFiles=async(files)=>{
+    for(const file of Array.from(files||[]).slice(0,5)){
+      const type=file.type||"";
+      if(file.size>8*1024*1024){setError(file.name+" exceeds the 8 MB file limit.");continue;}
+      try{
+        if(type.startsWith("image/")&&["image/png","image/jpeg","image/webp","image/gif"].includes(type)){
+          const dataUrl=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file);});
+          setAttached(prev=>[...prev,{name:file.name,type,dataUrl,size:file.size}].slice(-5));
+        }else if(type==="application/pdf"||file.name.toLowerCase().endsWith(".pdf")){
+          const extractedText=await extractPdfText(file);setAttached(prev=>[...prev,{name:file.name,type:"application/pdf",extractedText,size:file.size}].slice(-5));
+        }else if(type.startsWith("text/")||/\.(txt|md|csv|json|js|jsx|ts|tsx|py|html|css|xml|yaml|yml)$/i.test(file.name)){
+          if(file.size>500000){setError(file.name+" exceeds the 500 KB text limit.");continue;}
+          const extractedText=await file.text();setAttached(prev=>[...prev,{name:file.name,type,extractedText,size:file.size}].slice(-5));
+        }else{setError("Unsupported file type: "+file.name);}
+      }catch(err){setError(err.message||("Could not read "+file.name));}
+    }
+  };
+  const startVoice=()=>{
+    const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SpeechRecognition){setError("Voice input needs a browser with speech recognition, such as Chrome.");return;}
+    if(listening){recognitionRef.current?.stop();setListening(false);return;}
+    const recognition=new SpeechRecognition();recognition.lang=navigator.language||"en-IN";recognition.interimResults=true;recognition.continuous=true;
+    recognition.onresult=(event)=>{let transcript="";for(let i=0;i<event.results.length;i++)transcript+=event.results[i][0].transcript;setInput(transcript);};
+    recognition.onerror=()=>{setListening(false);setError("Voice input stopped. Please try again.");};
+    recognition.onend=()=>setListening(false);recognitionRef.current=recognition;recognition.start();setListening(true);setError("");
+  };
+  const speakMessage=(content,id)=>{
+    if(!window.speechSynthesis){setError("Spoken replies are not supported in this browser.");return;}
+    if(speakingId===id){window.speechSynthesis.cancel();setSpeakingId("");return;}
+    window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(content);utterance.onend=()=>setSpeakingId("");utterance.onerror=()=>setSpeakingId("");setSpeakingId(id);window.speechSynthesis.speak(utterance);
+  };
   if(!authReady)return <div className="dai-loading"><span className="dai-mark">D</span> Loading DuKu AI…</div>;
   if(!user)return <div className="dai-auth-page"><div className="dai-auth-glow"></div><div className="dai-auth-card"><a className="dai-brand" href="https://dukubusiness.online"><span className="dai-mark">D</span><span>DuKu <b>AI</b></span></a><div className="dai-auth-icon">✦</div><h1>{authMode==="signin"?"Welcome back":"Create your DuKu account"}</h1><p>One workspace for GPT, Gemini and your everyday AI work.</p><form onSubmit={signIn}><label>Email address<input type="email" value={email} onChange={e=>setEmail(e.target.value)} required placeholder="you@example.com"/></label><label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} minLength={6} required placeholder="At least 6 characters"/></label>{authError&&<div className="dai-auth-error">{authError}</div>}<button className="dai-auth-submit" type="submit">{authMode==="signin"?"Sign in to DuKu AI":"Create account"} <span>→</span></button></form><button className="dai-auth-switch" onClick={()=>{setAuthMode(authMode==="signin"?"signup":"signin");setAuthError("");}}>{authMode==="signin"?"New to DuKu? Create an account":"Already have an account? Sign in"}</button><small>By continuing, you agree to use AI responsibly. Your chats are private to your account.</small></div><div className="dai-auth-footer">A product by Upreti Industries Limited · <a href="https://dukubusiness.online">DuKu Business</a></div></div>;
 
