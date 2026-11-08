@@ -140,6 +140,25 @@ export default function DuKuAI() {
     const pdf=await window.pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
     if(pdf.numPages>60)throw new Error("PDF limit is 60 pages.");
     const pages=[];for(let n=1;n<=pdf.numPages;n++){const page=await pdf.getPage(n);const content=await page.getTextContent();pages.push(content.items.map(item=>item.str).join(" "));}
+    const extracted=pages.join("\n\n").trim();return extracted.length>30?extracted:await ocrPdf(pdf);
+  };
+  const loadExternalScript = (src, globalName) => new Promise((resolve,reject) => {
+    if(window[globalName])return resolve(window[globalName]);
+    const script=document.createElement("script");script.src=src;script.async=true;
+    script.onload=()=>window[globalName]?resolve(window[globalName]):reject(new Error("Document reader failed to initialize."));
+    script.onerror=()=>reject(new Error("Could not load document reader. Check your connection."));
+    document.head.appendChild(script);
+  });
+  const extractOfficeText = async (file) => {
+    const name=file.name.toLowerCase();
+    if(name.endsWith(".docx")){const mammoth=await loadExternalScript("https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js","mammoth");return (await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()})).value||"";}
+    if(name.endsWith(".xlsx")||name.endsWith(".xls")){const XLSX=await loadExternalScript("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js","XLSX");const book=XLSX.read(await file.arrayBuffer(),{type:"array"});return book.SheetNames.map(sheet=>"SHEET: "+sheet+"\n"+XLSX.utils.sheet_to_csv(book.Sheets[sheet])).join("\n\n").slice(0,120000);}
+    if(name.endsWith(".pptx")){const JSZip=await loadExternalScript("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js","JSZip");const zip=await JSZip.loadAsync(await file.arrayBuffer());const names=Object.keys(zip.files).filter(n=>/^ppt\/slides\/slide\d+\.xml$/.test(n)).sort((a,b)=>Number(a.match(/slide(\d+)/)[1])-Number(b.match(/slide(\d+)/)[1]));const slides=[];for(let i=0;i<Math.min(names.length,80);i++){const xml=await zip.files[names[i]].async("text");const doc=new DOMParser().parseFromString(xml,"application/xml");slides.push("SLIDE "+(i+1)+": "+Array.from(doc.getElementsByTagName("a:t")).map(n=>n.textContent).join(" "));}return slides.join("\n\n").slice(0,120000);}
+    throw new Error("Unsupported Office document.");
+  };
+  const ocrPdf = async (pdf) => {
+    const Tesseract=await loadExternalScript("https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.1/tesseract.min.js","Tesseract");const worker=await Tesseract.createWorker("eng");const pages=[];
+    try{for(let n=1;n<=Math.min(pdf.numPages,5);n++){setError("OCR reading scanned PDF page "+n+"…");const page=await pdf.getPage(n);const viewport=page.getViewport({scale:1.4});const canvas=document.createElement("canvas");canvas.width=viewport.width;canvas.height=viewport.height;await page.render({canvasContext:canvas.getContext("2d"),viewport}).promise;const result=await worker.recognize(canvas);pages.push(result.data.text||"");canvas.width=0;canvas.height=0;}}finally{await worker.terminate();}
     return pages.join("\n\n");
   };
   const attachFiles=async(files)=>{
@@ -153,6 +172,8 @@ export default function DuKuAI() {
           setAttached(prev=>[...prev,{name:file.name,type,dataUrl,size:file.size}].slice(-5));
         }else if(type==="application/pdf"||file.name.toLowerCase().endsWith(".pdf")){
           const extractedText=await extractPdfText(file);setAttached(prev=>[...prev,{name:file.name,type:"application/pdf",extractedText,size:file.size}].slice(-5));
+        }else if(/\.(docx|xlsx|xls|pptx)$/i.test(file.name)){
+          const extractedText=await extractOfficeText(file);setAttached(prev=>[...prev,{name:file.name,type,extractedText,size:file.size}].slice(-5));
         }else if(type.startsWith("text/")||/\.(txt|md|csv|json|js|jsx|ts|tsx|py|html|css|xml|yaml|yml)$/i.test(file.name)){
           if(file.size>500000){setError(file.name+" exceeds the 500 KB text limit.");continue;}
           const extractedText=await file.text();setAttached(prev=>[...prev,{name:file.name,type,extractedText,size:file.size}].slice(-5));
