@@ -107,7 +107,8 @@ export default function DuKuAI() {
   const [profileOpen,setProfileOpen] = useState(false);
   const [notificationsOpen,setNotificationsOpen] = useState(false);
   const [notificationPrefsOpen,setNotificationPrefsOpen] = useState(false);
-  const [notifications,setNotifications] = useState(() => { try { const saved=JSON.parse(localStorage.getItem("duku-ai-notifications-v1")||"null"); return Array.isArray(saved)?saved:[{id:"welcome",title:"Welcome to DuKu AI",body:"Your notification centre is ready. Important account and product updates will appear here.",type:"system",createdAt:Date.now(),read:false}]; } catch { return []; } });
+  const [notifications,setNotifications] = useState([{id:"welcome",title:"Welcome to DuKu AI",body:"Your notification centre is ready. Important account and product updates will appear here.",type:"system",createdAt:Date.now(),read:false}]);
+  const notificationStorageKey = "duku-ai-notifications-v1:" + (user?.id || "guest");
   const [notificationPrefs,setNotificationPrefs] = useState(() => { try { const saved=JSON.parse(localStorage.getItem("duku-ai-notification-prefs-v1")||"{}"); return {inApp:saved.inApp!==false,account:saved.account!==false,product:saved.product!==false}; } catch { return {inApp:true,account:true,product:true}; } });
   const [notificationPrefsLoadedFor,setNotificationPrefsLoadedFor] = useState("");
   const [announcements,setAnnouncements] = useState([]);
@@ -194,7 +195,8 @@ export default function DuKuAI() {
     return ()=>{cancelled=true;};
   },[activeChat?.id,activeChat?.messages,user?.id]);
 
-  useEffect(() => { try { localStorage.setItem("duku-ai-notifications-v1",JSON.stringify(notifications.slice(0,100))); } catch {} },[notifications]);
+  useEffect(() => { try { const saved=JSON.parse(localStorage.getItem(notificationStorageKey)||"null"); setNotifications(Array.isArray(saved)?saved:[{id:"welcome",title:"Welcome to DuKu AI",body:"Your notification centre is ready. Important account and product updates will appear here.",type:"system",createdAt:Date.now(),read:false}]); } catch { setNotifications([{id:"welcome",title:"Welcome to DuKu AI",body:"Your notification centre is ready. Important account and product updates will appear here.",type:"system",createdAt:Date.now(),read:false}]); } },[notificationStorageKey]);
+  useEffect(() => { try { localStorage.setItem(notificationStorageKey,JSON.stringify(notifications.slice(0,100))); } catch {} },[notifications,notificationStorageKey]);
   useEffect(() => {
     if (!user?.id || !supabase) return;
     let cancelled = false;
