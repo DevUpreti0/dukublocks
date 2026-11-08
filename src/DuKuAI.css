@@ -591,3 +591,13 @@
 @keyframes dai-hint-fade{from{opacity:0;transform:translateY(2px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.dai-thinking-wave i{animation:none!important;height:6px!important}.dai-thinking-hint{animation:none!important}}
 @media(max-width:540px){.dai-thinking-wave{flex-basis:48px}.dai-thinking-hint{font-size:8px}}
+
+
+/* Live state shown only after the first streamed text chunk arrives */
+.dai-stream-live{display:flex;align-items:center;gap:7px;margin:9px 0 2px;color:#7890b4;font-size:9px;font-weight:600;animation:dai-hint-fade .2s ease both}
+.dai-stream-live>i{width:6px;height:6px;border-radius:50%;background:#25a875;box-shadow:0 0 0 3px #25a87520;animation:dai-live-blink 1.1s ease infinite}
+.dai-stream-wave{display:flex;align-items:center;gap:2px;height:13px;margin-left:2px}
+.dai-stream-wave i{width:2px;height:4px;border-radius:3px;background:#7ea6e5;animation:dai-wave 650ms ease-in-out infinite alternate}
+.dai-stream-wave i:nth-child(3n){height:10px}
+.dai-stream-wave i:nth-child(2n){height:7px}
+@media(prefers-reduced-motion:reduce){.dai-stream-live>i,.dai-stream-wave i{animation:none!important}}
