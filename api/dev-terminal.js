@@ -1,10 +1,11 @@
 const { createClient } = require("@supabase/supabase-js");
-const { createHash } = require("node:crypto");
+const { createHash, randomUUID } = require("node:crypto");
 
 const MAX_COMMAND = 4000;
 const MAX_FILES = 400;
 const MAX_FILE_BYTES = 1024 * 1024;
 const MAX_TOTAL_BYTES = 8 * 1024 * 1024;
+const WORKDIR = "/vercel/sandbox/workspace";
 
 function safeFiles(files) {
   if (!files || typeof files !== "object" || Array.isArray(files)) return [];
@@ -19,6 +20,10 @@ function safeFiles(files) {
     if (total > MAX_TOTAL_BYTES) throw new Error("Project exceeds the 8 MB Linux workspace sync limit.");
     return [{ path: "workspace/" + name, content: Buffer.from(value, "utf8") }];
   });
+}
+
+function cleanText(value, max = 4000) {
+  return String(value || "").trim().slice(0, max);
 }
 
 module.exports = async function handler(req, res) {
@@ -40,8 +45,6 @@ module.exports = async function handler(req, res) {
     const projectType = body.projectType === "android" ? "android" : "website";
     const action = String(body.action || "run");
     if (!/^[0-9a-f-]{20,64}$/i.test(projectId)) return res.status(400).json({ error: "Save this project first, then reconnect the terminal." });
-    if (!["run", "sync", "preview", "status"].includes(action)) return res.status(400).json({ error: "Unsupported terminal action." });
-
     const table = projectType === "android" ? "android_projects" : "code_projects";
     const columns = projectType === "android" ? "id,created_by,files,name,framework,package_name" : "id,created_by,files,name,language,framework";
     const { data: project, error: projectError } = await db.from(table).select(columns).eq("id", projectId).eq("created_by", userResult.user.id).single();
@@ -56,7 +59,7 @@ module.exports = async function handler(req, res) {
       resources: { vcpus: 2 },
       timeout: 20 * 60 * 1000,
       persistent: true,
-      keepLastSnapshots: { count: 1 },
+      keepLastSnapshots: { count: 2 },
       networkPolicy: "allow-all",
       ports: [3000, 4173, 8081],
       resume: true,
@@ -64,57 +67,189 @@ module.exports = async function handler(req, res) {
         await box.mkDir("workspace");
         const files = safeFiles(project.files || {});
         if (files.length) await box.writeFiles(files);
-        const marker = await box.runCommand({ cmd: "bash", args: ["-lc", "printf '%s\\n' 'DuKu Linux workspace ready' > .duku-workspace"], cwd: "/vercel/sandbox/workspace" });
-        if (marker.exitCode !== 0) throw new Error("Could not initialise the Linux project folder.");
+        await box.runCommand({ cmd: "bash", args: ["-lc", "printf '%s\\n' 'DuKu Linux workspace ready' > .duku-workspace"], cwd: WORKDIR });
       }
     });
 
-    if (action === "sync") {
+    const owner = userResult.user.id;
+    const getSession = async () => {
+      const { data, error } = await db.from("dev_terminal_sessions").select("*").eq("user_id", owner).eq("project_id", projectId).eq("project_type", projectType).maybeSingle();
+      if (error) throw error;
+      return data;
+    };
+    const upsertSession = async patch => {
+      const { error } = await db.from("dev_terminal_sessions").upsert({
+        user_id: owner, project_id: projectId, project_type: projectType, sandbox_name: sandboxName, updated_at: new Date().toISOString(), ...patch
+      }, { onConflict: "user_id,project_id,project_type" });
+      if (error) throw error;
+    };
+    const syncProject = async () => {
       const files = safeFiles(project.files || {});
-      await sandbox.runCommand({ cmd: "mkdir", args: ["-p", "/vercel/sandbox/workspace"] });
+      await sandbox.runCommand({ cmd: "mkdir", args: ["-p", WORKDIR] });
       if (files.length) await sandbox.writeFiles(files);
+    };
+
+    if (action === "sync") {
+      await syncProject();
       return res.status(200).json({ ok: true, output: "Saved project files synced into the isolated Linux workspace.", exitCode: 0, sandbox: sandboxName });
     }
 
     if (action === "status") {
-      const r = await sandbox.runCommand({
-        cmd: "bash",
-        args: ["-lc", "printf 'Linux: '; uname -sr; printf 'Node: '; node --version 2>/dev/null || true; printf 'Python: '; python3 --version 2>/dev/null || true; printf 'npm: '; npm --version 2>/dev/null || true; printf 'pnpm: '; pnpm --version 2>/dev/null || true; printf 'bun: '; bun --version 2>/dev/null || true; printf '\\nProject files: '; find . -maxdepth 3 -type f | wc -l"],
-        cwd: "/vercel/sandbox/workspace"
-      });
+      const r = await sandbox.runCommand({ cmd: "bash", args: ["-lc", "printf 'Linux: '; uname -sr; printf 'Node: '; node --version 2>/dev/null || true; printf 'Python: '; python3 --version 2>/dev/null || true; printf 'npm: '; npm --version 2>/dev/null || true; printf 'pnpm: '; pnpm --version 2>/dev/null || true; printf 'bun: '; bun --version 2>/dev/null || true; printf '\\nProject files: '; find . -maxdepth 3 -type f | wc -l"], cwd: WORKDIR });
       return res.status(200).json({ ok: r.exitCode === 0, output: await r.stdout(), stderr: await r.stderr(), exitCode: r.exitCode, sandbox: sandboxName });
     }
 
     if (action === "preview") {
-      const install = await sandbox.runCommand({
-        cmd: "bash",
-        args: ["-lc", "if [ -f package.json ] && [ ! -d node_modules ]; then timeout 45s npm install --no-audit --no-fund; fi"],
-        cwd: "/vercel/sandbox/workspace"
-      });
+      const install = await sandbox.runCommand({ cmd: "bash", args: ["-lc", "if [ -f package.json ] && [ ! -d node_modules ]; then npm install --no-audit --no-fund; fi"], cwd: WORKDIR });
       if (install.exitCode !== 0) return res.status(200).json({ ok: false, output: await install.stdout(), stderr: await install.stderr(), exitCode: install.exitCode });
-      const start = await sandbox.runCommand({
-        cmd: "bash",
-        args: ["-lc", "if [ -f package.json ] && node -e \"process.exit(require('./package.json').scripts?.dev ? 0 : 1)\"; then (npm run dev -- --host 0.0.0.0 --port 3000 > /tmp/duku-preview.log 2>&1 &); elif [ -f package.json ] && node -e \"process.exit(require('./package.json').scripts?.start ? 0 : 1)\"; then (HOST=0.0.0.0 PORT=3000 npm start > /tmp/duku-preview.log 2>&1 &); elif [ -f index.html ]; then (python3 -m http.server 3000 --bind 0.0.0.0 > /tmp/duku-preview.log 2>&1 &); else echo 'No supported web start script or index.html found.'; exit 2; fi; for i in $(seq 1 25); do if curl -sSf http://127.0.0.1:3000 >/dev/null; then exit 0; fi; sleep 1; done; cat /tmp/duku-preview.log; exit 1"],
-        cwd: "/vercel/sandbox/workspace"
-      });
+      const start = await sandbox.runCommand({ cmd: "bash", args: ["-lc", "if [ -f package.json ] && node -e \"process.exit(require('./package.json').scripts?.dev ? 0 : 1)\"; then (npm run dev -- --host 0.0.0.0 --port 3000 > /tmp/duku-preview.log 2>&1 &); elif [ -f package.json ] && node -e \"process.exit(require('./package.json').scripts?.start ? 0 : 1)\"; then (HOST=0.0.0.0 PORT=3000 npm start > /tmp/duku-preview.log 2>&1 &); elif [ -f index.html ]; then (python3 -m http.server 3000 --bind 0.0.0.0 > /tmp/duku-preview.log 2>&1 &); else echo 'No supported web start script or index.html found.'; exit 2; fi; for i in $(seq 1 60); do if curl -sSf http://127.0.0.1:3000 >/dev/null; then exit 0; fi; sleep 1; done; cat /tmp/duku-preview.log; exit 1"], cwd: WORKDIR });
       if (start.exitCode !== 0) return res.status(200).json({ ok: false, output: await start.stdout(), stderr: await start.stderr(), exitCode: start.exitCode });
       return res.status(200).json({ ok: true, output: "Preview server started.", previewUrl: sandbox.domain(3000), exitCode: 0 });
     }
 
-    const command = String(body.command || "").trim();
-    if (!command || command.length > MAX_COMMAND) return res.status(400).json({ error: "Enter a command up to 4,000 characters." });
-    const result = await sandbox.runCommand({
-      cmd: "timeout",
-      args: ["50s", "bash", "-lc", command],
-      cwd: "/vercel/sandbox/workspace"
-    });
-    return res.status(200).json({
-      ok: result.exitCode === 0,
-      output: (await result.stdout()).slice(0, 24000),
-      stderr: (await result.stderr()).slice(0, 12000),
-      exitCode: result.exitCode,
-      sandbox: sandboxName
-    });
+    if (action === "shell-start") {
+      const existing = await getSession();
+      if (existing?.shell_command_id) {
+        try {
+          await sandbox.getCommand(existing.shell_command_id);
+          return res.status(200).json({ ok: true, output: "Persistent shell is already connected.", shellReady: true });
+        } catch (_) {}
+      }
+      await sandbox.runCommand({ cmd: "bash", args: ["-lc", ": > /tmp/duku-shell.log"], cwd: WORKDIR });
+      const shellScript = "while IFS= read -r line; do printf '\\n$ %s\\n' \"$line\" >> /tmp/duku-shell.log; eval \"$line\" >> /tmp/duku-shell.log 2>&1; code=$?; printf '\\n[exit %s] %s\\n__DUKU_READY__\\n' \"$code\" \"$PWD\" >> /tmp/duku-shell.log; done";
+      const shell = await sandbox.runCommand({ cmd: "bash", args: ["--noprofile", "--norc", "-c", shellScript], cwd: WORKDIR, stdin: true, detached: true });
+      await upsertSession({ shell_session_id: shell.sessionId || null, shell_command_id: shell.id });
+      return res.status(200).json({ ok: true, output: "Persistent Bash session connected. Commands share the same working directory and installed packages.", shellReady: true });
+    }
+
+    if (action === "shell-input") {
+      const line = cleanText(body.command, MAX_COMMAND);
+      if (!line) return res.status(400).json({ error: "Enter a shell command." });
+      const state = await getSession();
+      if (!state?.shell_command_id) return res.status(409).json({ error: "Start the persistent shell first." });
+      const shell = await sandbox.getCommand(state.shell_command_id);
+      await shell.writeStdin(line + "\n");
+      return res.status(200).json({ ok: true, output: "Command sent to persistent shell." });
+    }
+
+    if (action === "shell-read") {
+      const r = await sandbox.runCommand({ cmd: "bash", args: ["-lc", "if [ -f /tmp/duku-shell.log ]; then cat /tmp/duku-shell.log; : > /tmp/duku-shell.log; fi"], cwd: WORKDIR });
+      return res.status(200).json({ ok: true, output: (await r.stdout()).slice(-24000) });
+    }
+
+    if (action === "job-start" || action === "android-build") {
+      let command = cleanText(body.command, MAX_COMMAND);
+      if (action === "android-build") {
+        const buildType = body.buildType === "release" ? "release" : "debug";
+        const script = [
+          "set -euo pipefail",
+          "cd " + WORKDIR,
+          "export ANDROID_HOME=\"$HOME/android-sdk\" ANDROID_SDK_ROOT=\"$HOME/android-sdk\"",
+          "export PATH=\"$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH\"",
+          "if ! command -v java >/dev/null 2>&1; then sudo apt-get update && sudo apt-get install -y openjdk-17-jdk; fi",
+          "if ! command -v unzip >/dev/null 2>&1; then sudo apt-get update && sudo apt-get install -y unzip curl; fi",
+          "mkdir -p \"$ANDROID_HOME/cmdline-tools\"",
+          "if [ ! -x \"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager\" ]; then",
+          "  tmp=$(mktemp -d)",
+          "  curl -fsSL https://dl.google.com/android/repository/commandlinetools-linux-13114758_latest.zip -o \"$tmp/tools.zip\"",
+          "  mkdir -p \"$tmp/unpack\"",
+          "  unzip -q \"$tmp/tools.zip\" -d \"$tmp/unpack\"",
+          "  rm -rf \"$ANDROID_HOME/cmdline-tools/latest\"",
+          "  mv \"$tmp/unpack/cmdline-tools\" \"$ANDROID_HOME/cmdline-tools/latest\"",
+          "  rm -rf \"$tmp\"",
+          "fi",
+          "yes | sdkmanager --sdk_root=\"$ANDROID_HOME\" --licenses >/dev/null || true",
+          "sdkmanager --sdk_root=\"$ANDROID_HOME\" \"platform-tools\" \"platforms;android-35\" \"build-tools;35.0.0\"",
+          "if [ ! -f package.json ] && [ ! -d android ] && [ ! -f gradlew ] && [ ! -d app ]; then echo 'No Gradle Android project found. Import a native Android/Expo project with package.json or Gradle files first.'; exit 2; fi",
+          "if [ ! -d android ] && [ -f package.json ] && grep -q '\"expo\"' package.json; then npx --yes expo prebuild --platform android --non-interactive; fi",
+          "if [ -x ./gradlew ]; then GRADLEW=./gradlew; elif [ -x ./android/gradlew ]; then cd android; GRADLEW=./gradlew; elif [ -f ./gradlew ]; then chmod +x ./gradlew; GRADLEW=./gradlew; elif [ -f ./android/gradlew ]; then cd android; chmod +x ./gradlew; GRADLEW=./gradlew; else echo 'Gradle wrapper not found. Create/import a valid Android Gradle project.'; exit 2; fi",
+          "if [ '" + buildType + "' = release ]; then",
+          "  mkdir -p .duku-signing",
+          "  if [ ! -f .duku-signing/release.jks ]; then",
+          "    STOREPASS=$(openssl rand -hex 24)",
+          "    keytool -genkeypair -v -keystore .duku-signing/release.jks -storepass \"$STOREPASS\" -keypass \"$STOREPASS\" -alias duku-release -keyalg RSA -keysize 4096 -validity 10000 -dname 'CN=DuKu Project Release,O=DuKu Business,C=IN'",
+          "    printf 'DUKU_STORE_PASSWORD=%s\\nDUKU_KEY_ALIAS=duku-release\\nDUKU_KEY_PASSWORD=%s\\n' \"$STOREPASS\" \"$STOREPASS\" > .duku-signing/signing.env",
+          "    chmod 600 .duku-signing/release.jks .duku-signing/signing.env",
+          "  fi",
+          "  . .duku-signing/signing.env",
+          "  export DUKU_STORE_PASSWORD DUKU_KEY_ALIAS DUKU_KEY_PASSWORD DUKU_KEYSTORE_PATH=\"$PWD/.duku-signing/release.jks\"",
+          "  cat > /tmp/duku-signing.init.gradle <<'GRADLE'",
+          "allprojects { p -> p.afterEvaluate {",
+          "  if (p.plugins.hasPlugin('com.android.application')) {",
+          "    def a = p.extensions.findByName('android')",
+          "    a.signingConfigs.maybeCreate('dukuRelease').with {",
+          "      storeFile = new File(System.getenv('DUKU_KEYSTORE_PATH'))",
+          "      storePassword = System.getenv('DUKU_STORE_PASSWORD')",
+          "      keyAlias = System.getenv('DUKU_KEY_ALIAS')",
+          "      keyPassword = System.getenv('DUKU_KEY_PASSWORD')",
+          "    }",
+          "    a.buildTypes.getByName('release').signingConfig = a.signingConfigs.getByName('dukuRelease')",
+          "  }",
+          "} }",
+          "GRADLE",
+          "  \"$GRADLEW\" -I /tmp/duku-signing.init.gradle bundleRelease",
+          "  \"$GRADLEW\" -I /tmp/duku-signing.init.gradle assembleRelease",
+          "else",
+          "  \"$GRADLEW\" assembleDebug",
+          "fi",
+          "echo '--- APK/AAB OUTPUTS ---'",
+          "find . -type f \\( -name '*.apk' -o -name '*.aab' \\) -printf '%p (%s bytes)\\n' | head -30"
+        ].join("\n");
+        const scriptPath = WORKDIR + "/.duku-android-build.sh";
+        await sandbox.writeFiles([{ path: "workspace/.duku-android-build.sh", content: Buffer.from(script, "utf8") }]);
+        await sandbox.runCommand({ cmd: "chmod", args: ["700", scriptPath], cwd: WORKDIR });
+        command = "bash " + scriptPath;
+      }
+      if (!command) return res.status(400).json({ error: "Enter a command to run." });
+      const jobId = randomUUID();
+      const logPath = "/tmp/duku-job-" + jobId + ".log";
+      const exitPath = "/tmp/duku-job-" + jobId + ".exit";
+      const wrapped = "set +e; " + command + " > " + logPath + " 2>&1; code=$?; printf '%s' \"$code\" > " + exitPath + "; exit \"$code\"";
+      const job = await sandbox.runCommand({ cmd: "bash", args: ["-lc", wrapped], cwd: WORKDIR, detached: true });
+      const { error: saveError } = await db.from("dev_terminal_jobs").insert({
+        id: jobId, user_id: owner, project_id: projectId, project_type: projectType,
+        sandbox_name: sandboxName, sandbox_session_id: job.sessionId || "", command_id: job.id,
+        command: action === "android-build" ? "Android " + (body.buildType === "release" ? "release" : "debug") + " build" : command,
+        status: "running"
+      });
+      if (saveError) {
+        try { await job.kill("SIGTERM"); } catch (_) {}
+        throw saveError;
+      }
+      return res.status(202).json({ ok: true, jobId, commandId: job.id, message: action === "android-build" ? "Android build started in your isolated Linux environment." : "Long-running job started.", sandbox: sandboxName });
+    }
+
+    if (action === "job-poll" || action === "job-cancel") {
+      const jobId = String(body.jobId || "");
+      if (!/^[0-9a-f-]{36}$/i.test(jobId)) return res.status(400).json({ error: "Invalid job identifier." });
+      const { data: job, error: jobError } = await db.from("dev_terminal_jobs").select("*").eq("id", jobId).eq("user_id", owner).eq("project_id", projectId).eq("project_type", projectType).single();
+      if (jobError || !job) return res.status(404).json({ error: "Job not found." });
+      if (action === "job-cancel") {
+        const runningSandbox = await Sandbox.getOrCreate({ name: sandboxName, image: "vercel/sandbox/universal:latest", region: "bom1", resume: true, persistent: true });
+        try { const commandHandle = await runningSandbox.getCommand(job.command_id); await commandHandle.kill("SIGTERM"); } catch (_) {}
+        await db.from("dev_terminal_jobs").update({ status: "cancelled", finished_at: new Date().toISOString(), updated_at: new Date().toISOString() }).eq("id", jobId).eq("user_id", owner);
+        return res.status(200).json({ ok: true, status: "cancelled" });
+      }
+      const readSandbox = await Sandbox.getOrCreate({ name: sandboxName, image: "vercel/sandbox/universal:latest", region: "bom1", resume: true, persistent: true });
+      const logPath = "/tmp/duku-job-" + jobId + ".log";
+      const exitPath = "/tmp/duku-job-" + jobId + ".exit";
+      const check = await readSandbox.runCommand({ cmd: "bash", args: ["-lc", "tail -c 24000 " + logPath + " 2>/dev/null || true; printf '\\n__DUKU_EXIT__='; if [ -f " + exitPath + " ]; then cat " + exitPath + "; else printf 'RUNNING'; fi"], cwd: WORKDIR });
+      const combined = await check.stdout();
+      const marker = combined.lastIndexOf("__DUKU_EXIT__=");
+      const output = (marker >= 0 ? combined.slice(0, marker) : combined).slice(-24000);
+      const exitText = marker >= 0 ? combined.slice(marker + 14).trim() : "RUNNING";
+      const status = exitText === "RUNNING" ? "running" : Number(exitText) === 0 ? "completed" : "failed";
+      const exitCode = exitText === "RUNNING" ? null : Number(exitText);
+      await db.from("dev_terminal_jobs").update({ status, exit_code: exitCode, output_tail: output, updated_at: new Date().toISOString(), finished_at: status === "running" ? null : new Date().toISOString() }).eq("id", jobId).eq("user_id", owner);
+      return res.status(200).json({ ok: true, status, exitCode, output, jobId });
+    }
+
+    if (action === "android-build") return res.status(400).json({ error: "Build request was not initialized." });
+
+    const command = cleanText(body.command, MAX_COMMAND);
+    if (!command) return res.status(400).json({ error: "Enter a command up to 4,000 characters." });
+    const result = await sandbox.runCommand({ cmd: "bash", args: ["-lc", command], cwd: WORKDIR });
+    return res.status(200).json({ ok: result.exitCode === 0, output: (await result.stdout()).slice(0, 24000), stderr: (await result.stderr()).slice(0, 12000), exitCode: result.exitCode, sandbox: sandboxName });
   } catch (error) {
     console.error("DuKu Linux terminal error:", error);
     return res.status(500).json({ error: error?.message || "Linux workspace could not complete the request." });
