@@ -1778,3 +1778,113 @@ html{scroll-behavior:smooth}
   #root:has(.launch-card) .duku-platform-suite{padding-top:58px;padding-bottom:62px}
   #root:has(.launch-card) .duku-suite-card{transition:none}
 }
+
+
+/* BOLD MODERN — approved DuKu visual system */
+:root{
+  --bg:#ffffff;--panel:#ffffff;--panel2:#f5f4fa;--line:#e7e5ef;
+  --muted:#555366;--text:#111018;--purple:#5b21f6;--cyan:#2563eb;
+}
+body{background:#fff!important;color:#111018!important}
+#root:has(.launch-card) .app-shell{background:#fff!important;color:#111018!important}
+#root:has(.launch-card) .corporate-ticker{background:#111018!important;color:#fff!important;border:0!important}
+#root:has(.launch-card) .corporate-ticker span{color:#e6e3ef!important}
+#root:has(.launch-card) .topbar{height:78px;background:rgba(255,255,255,.96)!important;border-bottom:1px solid #e8e6ef!important;box-shadow:0 3px 18px #17102708!important;color:#111018!important}
+#root:has(.launch-card) .brand{color:#111018!important;font-size:22px;font-weight:850;letter-spacing:-.8px}
+#root:has(.launch-card) .brand small{color:#5b21f6!important;font-weight:800}
+#root:has(.launch-card) .brand-mark{background:#5b21f6!important;color:#fff!important;border-radius:9px;box-shadow:none!important}
+#root:has(.launch-card) .top-links a{color:#211f2b!important;font-size:13px;font-weight:700}
+#root:has(.launch-card) .top-links a:hover{color:#5b21f6!important}
+#root:has(.launch-card) .top-actions .text-btn{color:#171520!important;font-weight:750}
+#root:has(.launch-card) .primary-btn{background:#5b21f6!important;color:#fff!important;border:1px solid #5b21f6!important;border-radius:8px!important;box-shadow:0 8px 22px #5b21f62b!important;font-weight:800}
+#root:has(.launch-card) .primary-btn:hover{background:#4715d5!important;box-shadow:0 12px 28px #5b21f64a!important}
+#root:has(.launch-card) .main-content{max-width:1500px;padding:48px clamp(22px,4vw,64px) 0!important}
+#root:has(.launch-card) .welcome-row{margin:0 0 18px!important}
+#root:has(.launch-card) .welcome-row h1{color:#111018!important;font-size:clamp(36px,4.4vw,58px)!important;font-weight:850!important;letter-spacing:-2.8px!important;line-height:1.02!important}
+#root:has(.launch-card) .welcome-row h1 em{color:#5b21f6!important;background:none!important}
+#root:has(.launch-card) .welcome-copy{color:#292633!important;font-size:15px!important;line-height:1.65!important;max-width:650px}
+#root:has(.launch-card) .eyebrow{color:#5420dc!important;font-weight:850!important;letter-spacing:1.45px!important}
+#root:has(.launch-card) .welcome-orb{border-color:#d8ccff!important;box-shadow:0 0 0 12px #f7f4ff!important}
+#root:has(.launch-card) .orb-inner{background:#5b21f6!important;color:#fff!important}
+#root:has(.launch-card) .launch-card{display:grid!important;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr)!important;min-height:470px!important;border:0!important;border-radius:0!important;background:#fff!important;box-shadow:none!important;overflow:visible!important;margin:0 0 24px!important}
+#root:has(.launch-card) .launch-copy{width:auto!important;padding:58px 28px 45px 0!important;display:flex;flex-direction:column;justify-content:center}
+#root:has(.launch-card) .launch-copy .pill{background:#f0eaff!important;border:0!important;color:#29145f!important;font:700 11px 'DM Sans'!important;letter-spacing:0!important;padding:10px 14px!important;width:max-content}
+#root:has(.launch-card) .launch-copy .pill span{background:#5b21f6!important;box-shadow:none!important}
+#root:has(.launch-card) .launch-copy h2{font:850 clamp(43px,5.4vw,76px)/.99 Manrope,sans-serif!important;letter-spacing:-4.2px!important;color:#111018!important;max-width:680px!important;margin:23px 0 18px!important}
+#root:has(.launch-card) .launch-copy h2 span{color:#5b21f6!important}
+#root:has(.launch-card) .launch-copy>p{color:#292633!important;font-size:17px!important;line-height:1.55!important;max-width:520px!important}
+#root:has(.launch-card) .launch-actions{gap:14px!important;margin-top:27px!important;flex-wrap:wrap}
+#root:has(.launch-card) .launch-actions .primary-btn{padding:16px 22px!important;font-size:14px!important}
+#root:has(.launch-card) .launch-actions .ghost-btn{color:#15131c!important;border:1.5px solid #c8c4d2!important;border-radius:8px!important;padding:14px 18px!important;font-weight:800!important}
+#root:has(.launch-card) .launch-actions .ghost-btn span{color:#5b21f6!important}
+#root:has(.launch-card) .trust-line{color:#454151!important;font:600 11px 'DM Sans'!important;margin-top:28px!important}
+#root:has(.launch-card) .trust-line span{color:#5b21f6!important}
+#root:has(.launch-card) .launch-art{min-height:470px!important;align-self:stretch!important;overflow:hidden!important;border-radius:0 0 0 70px!important;background:linear-gradient(135deg,#7437ff 0%,#5019df 48%,#170d48 100%)!important;position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:36px!important}
+#root:has(.launch-card) .launch-art:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 24%,#bca4ff66,transparent 38%),linear-gradient(130deg,transparent 45%,#160a4d55 100%);pointer-events:none}
+#root:has(.launch-card) .browser-mock{position:relative!important;z-index:1;width:95%!important;max-width:680px!important;transform:rotate(-3deg)!important;border:7px solid #11101b!important;border-radius:18px!important;overflow:hidden!important;background:#fff!important;box-shadow:0 30px 75px #10052d88!important}
+#root:has(.launch-card) .browser-bar{background:#f7f6fa!important;color:#282435!important;height:32px!important}
+#root:has(.launch-card) .mock-page{background:#fff!important;color:#111018!important}
+#root:has(.launch-card) .mock-nav{color:#111018!important}
+#root:has(.launch-card) .mock-nav small{color:#302d3a!important}
+#root:has(.launch-card) .mock-hero{color:#fff!important}
+#root:has(.launch-card) .mock-hero strong{color:#fff!important}
+#root:has(.launch-card) .float-card{z-index:3;background:#fff!important;border:1px solid #e8e4f1!important;color:#171520!important;box-shadow:0 14px 35px #170d3b2b!important}
+#root:has(.launch-card) .float-card b{color:#171520!important}
+#root:has(.launch-card) .float-card small{color:#555164!important}
+#root:has(.launch-card) .stats-strip{background:#fff!important;border-top:1px solid #eceaf1!important;border-bottom:1px solid #eceaf1!important;color:#171520!important}
+#root:has(.launch-card) .stats-strip b{color:#5b21f6!important}
+#root:has(.launch-card) .stats-strip span,#root:has(.launch-card) .stats-note{color:#292633!important}
+#root:has(.launch-card) .ecosystem-section,#root:has(.launch-card) .templates-section,#root:has(.launch-card) .feature-section,#root:has(.launch-card) .platform-suite-section,#root:has(.launch-card) .platform-capabilities-section,#root:has(.launch-card) .duku-brain-public-section{background:#fff!important;color:#111018!important}
+#root:has(.launch-card) .ecosystem-heading h2,#root:has(.launch-card) .section-heading h2,#root:has(.launch-card) .duku-suite-heading h2{color:#111018!important;font-size:clamp(34px,4vw,52px)!important;font-weight:850!important;letter-spacing:-2.2px!important}
+#root:has(.launch-card) .ecosystem-heading h2 em,#root:has(.launch-card) .section-heading h2 em,#root:has(.launch-card) .duku-suite-heading h2 em{color:#5b21f6!important;background:none!important}
+#root:has(.launch-card) .ecosystem-heading p,#root:has(.launch-card) .section-heading p,#root:has(.launch-card) .duku-suite-heading p{color:#373342!important;font-size:15px!important;line-height:1.65!important}
+#root:has(.launch-card) .ecosystem-wordmark{color:#282435!important;opacity:1!important}
+#root:has(.launch-card) .duku-platform-suite{max-width:none!important;background:#f7f5fc!important;color:#111018!important;padding:86px clamp(22px,5vw,76px)!important}
+#root:has(.launch-card) .duku-suite-heading>span{color:#5420dc!important}
+#root:has(.launch-card) .duku-suite-heading h2{color:#111018!important}
+#root:has(.launch-card) .duku-suite-heading p{color:#373342!important}
+#root:has(.launch-card) .duku-suite-card{background:#fff!important;border:1px solid #e4e0ed!important;border-radius:16px!important;color:#111018!important;box-shadow:0 8px 26px #21123b08!important}
+#root:has(.launch-card) .duku-suite-card>span{color:#514b60!important}
+#root:has(.launch-card) .duku-suite-card h3{color:#111018!important;font-weight:850!important}
+#root:has(.launch-card) .duku-suite-card p{color:#34303e!important;font-size:13px!important}
+#root:has(.launch-card) .duku-suite-card ul{color:#292633!important}
+#root:has(.launch-card) .duku-suite-card>button{color:#4e19dc!important}
+#root:has(.launch-card) .suite-icon{background:#eee8ff!important;color:#4d1bdb!important}
+#root:has(.launch-card) .suite-app .suite-icon{background:#e6f0ff!important;color:#1459c8!important}
+#root:has(.launch-card) .suite-commerce .suite-icon{background:#e2f8ef!important;color:#087c52!important}
+#root:has(.launch-card) .suite-ai .suite-icon{background:#f3e8ff!important;color:#7a2bd7!important}
+#root:has(.launch-card) .pricing-section{background:#fff!important;color:#111018!important}
+#root:has(.launch-card) .public-plan{background:#fff!important;border:1px solid #e4e0ed!important;color:#111018!important;box-shadow:0 8px 28px #21123b0a!important}
+#root:has(.launch-card) .public-plan small,#root:has(.launch-card) .public-plan li{color:#34303e!important}
+#root:has(.launch-card) .public-plan strong{color:#111018!important}
+#root:has(.launch-card) .public-plan .ghost-btn{background:#fff!important;border:1px solid #c9c4d4!important;color:#171520!important}
+#root:has(.launch-card) .public-plan .primary-btn{background:#5b21f6!important;color:#fff!important}
+#root:has(.launch-card) .bottom-cta{background:#171222!important;border:0!important;border-radius:18px!important;color:#fff!important}
+#root:has(.launch-card) footer{background:#111018!important;border-top:0!important;color:#eeeaf6!important}
+#root:has(.launch-card) footer a{color:#eeeaf6!important}
+#root:has(.launch-card) .modal-backdrop{background:#100b1dcc!important}
+#root:has(.launch-card) .auth-modal{background:#fff!important;border:1px solid #e5e1ed!important;color:#111018!important;box-shadow:0 30px 90px #100b1d44!important}
+#root:has(.launch-card) .auth-modal h2{color:#111018!important;font-size:28px!important;font-weight:850!important}
+#root:has(.launch-card) .auth-modal p,#root:has(.launch-card) .auth-modal label{color:#302c3a!important}
+#root:has(.launch-card) .auth-modal input,#root:has(.launch-card) .auth-modal select{background:#fff!important;border:1px solid #c9c4d4!important;color:#111018!important}
+#root:has(.launch-card) .auth-modal input::placeholder{color:#777183!important}
+@media(max-width:850px){
+ #root:has(.launch-card) .launch-card{grid-template-columns:1fr!important;min-height:0!important}
+ #root:has(.launch-card) .launch-copy{padding:42px 10px 28px!important}
+ #root:has(.launch-card) .launch-art{min-height:360px!important;border-radius:0 0 0 42px!important}
+}
+@media(max-width:560px){
+ #root:has(.launch-card) .main-content{padding:26px 16px 0!important}
+ #root:has(.launch-card) .launch-copy h2{font-size:clamp(42px,13vw,60px)!important;letter-spacing:-2.8px!important}
+ #root:has(.launch-card) .launch-copy>p{font-size:15px!important}
+ #root:has(.launch-card) .launch-art{min-height:270px!important;padding:18px!important}
+ #root:has(.launch-card) .browser-mock{width:100%!important;border-width:5px!important}
+ #root:has(.launch-card) .float-card{transform:scale(.82)!important}
+}
+@media(prefers-reduced-motion:no-preference){
+ #root:has(.launch-card) .launch-card{animation:duku-rise .75s cubic-bezier(.2,.75,.25,1) both}
+ #root:has(.launch-card) .launch-art:after{content:"";position:absolute;inset:-40% auto -40% -35%;width:35%;background:linear-gradient(90deg,transparent,#fff2,transparent);transform:skewX(-18deg);animation:duku-sheen 8s ease-in-out infinite;pointer-events:none}
+ #root:has(.launch-card) .duku-suite-card{transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease}
+ #root:has(.launch-card) .duku-suite-card:hover{transform:translateY(-6px);border-color:#a58af5!important;box-shadow:0 20px 44px #21123b12!important}
+}
+@keyframes duku-sheen{0%,18%{left:-35%}55%,100%{left:120%}}
