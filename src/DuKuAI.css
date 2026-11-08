@@ -36,7 +36,7 @@
 @media(max-width:640px){.dai-library-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.dai-library-preview{height:130px}.dai-library-info{padding:10px}.dai-library-info p{font-size:11px}}
 
 
-/* DuKu AI responsive refinement */
+/* Artemide responsive refinement */
 .dai-app{height:100vh;height:100dvh;min-height:0;overflow:hidden}
 .dai-main{height:100%;min-height:0;min-width:0;overflow:hidden}
 .dai-topbar{min-width:0;gap:10px}
@@ -146,7 +146,7 @@
 }
 
 
-/* DuKu AI — refreshed conversational workspace */
+/* Artemide — refreshed conversational workspace */
 .dai-app{--ink:#25252b;--muted:#777782;--line:#e8e8eb;--surface:#fff;--soft:#f7f7f8;background:#fff;color:var(--ink);font-family:Inter,"DM Sans",system-ui,sans-serif;min-height:100dvh}
 .dai-sidebar{background:#f8f8f9;border-right:1px solid #e9e9ec;width:264px;flex-basis:264px;padding:16px 12px 12px;transition:transform .28s cubic-bezier(.2,.8,.2,1),width .25s}
 .dai-brand{font-size:18px;letter-spacing:-.55px}.dai-mark{background:linear-gradient(145deg,#8065e8,#5940bd);box-shadow:0 5px 16px #6547ca30;border-radius:11px;animation:dai-mark-breathe 4s ease-in-out infinite}
@@ -239,7 +239,7 @@
 
 
 
-/* DuKu AI — Gemini-inspired visual refresh (DuKu branding retained) */
+/* Artemide — Gemini-inspired visual refresh (DuKu branding retained) */
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap');
 .dai-app{--ink:#1f1f1f;--muted:#5f6368;--line:#e3e7ed;--surface:#fff;--soft:#f0f4f9;background:#fff;color:#1f1f1f;font-family:'Google Sans','Roboto',sans-serif}
 .dai-sidebar{background:#f0f4f9;border:0;border-radius:0 22px 22px 0;padding:22px 16px 16px;width:288px;flex-basis:288px}
@@ -431,7 +431,7 @@
 .dai-code-block pre code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 
 
-/* DuKu AI usability pass — clearer code actions and touch-friendly controls */
+/* Artemide usability pass — clearer code actions and touch-friendly controls */
 .dai-code-header{height:auto;min-height:44px;padding:7px 10px 7px 14px;gap:12px}
 .dai-code-header>span{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.02em}
 .dai-code-header>span small{font-size:9px;font-weight:500;color:#8e92a3;text-transform:none;letter-spacing:0}
@@ -652,7 +652,7 @@
 @media(max-width:640px){.dai-command-trigger span{display:none}.dai-command-overlay{padding:10vh 10px 15px}.dai-command-modal{border-radius:13px}.dai-command-foot{gap:12px}}
 
 
-/* DuKu AI settings centre */
+/* Artemide settings centre */
 .dai-settings-trigger{font-size:17px}
 .dai-settings-overlay{position:fixed;inset:0;z-index:1450;display:flex;align-items:center;justify-content:center;padding:18px;background:#111c2b66;backdrop-filter:blur(4px)}
 .dai-settings-modal{width:min(620px,100%);max-height:min(760px,90vh);display:flex;flex-direction:column;overflow:hidden;border:1px solid #e6eaf0;border-radius:17px;background:#fff;box-shadow:0 25px 80px #10213b35}
