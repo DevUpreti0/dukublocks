@@ -207,6 +207,41 @@ function TenantSite() {
   const pageSlug = window.location.pathname.split("/").filter(Boolean)[0] || "";
   const [formValues, setFormValues] = useState({});
   const [formStatus, setFormStatus] = useState({});
+  const [visitorCurrency,setVisitorCurrency]=useState("INR");
+  const [currencyRates,setCurrencyRates]=useState({});
+  const [currencyManual,setCurrencyManual]=useState(false);
+  const currencyNames={INR:"Indian Rupee",USD:"US Dollar",EUR:"Euro",GBP:"British Pound",AED:"UAE Dirham",CAD:"Canadian Dollar",AUD:"Australian Dollar",SGD:"Singapore Dollar",JPY:"Japanese Yen",SAR:"Saudi Riyal",NZD:"New Zealand Dollar",CHF:"Swiss Franc",ZAR:"South African Rand"};
+  useEffect(()=>{
+    let active=true;
+    const detect=()=>{
+      const locale=Intl.DateTimeFormat().resolvedOptions().locale||navigator.language||"en-US";
+      let region="";
+      try{region=new Intl.Locale(locale).region||"";}catch(e){region=(locale.split("-")[1]||"").toUpperCase();}
+      const zone=Intl.DateTimeFormat().resolvedOptions().timeZone||"";
+      if(!region&&zone==="Asia/Kolkata")region="IN";
+      const map={IN:"INR",US:"USD",GB:"GBP",UK:"GBP",DE:"EUR",FR:"EUR",ES:"EUR",IT:"EUR",NL:"EUR",BE:"EUR",IE:"EUR",AT:"EUR",PT:"EUR",FI:"EUR",GR:"EUR",AE:"AED",CA:"CAD",AU:"AUD",SG:"SGD",JP:"JPY",SA:"SAR",NZ:"NZD",CH:"CHF",ZA:"ZAR"};
+      return map[region]||"USD";
+    };
+    if(!currencyManual)setVisitorCurrency(detect());
+    return()=>{active=false;};
+  },[currencyManual]);
+  useEffect(()=>{
+    if(visitorCurrency==="INR"){setCurrencyRates({INR:1});return;}
+    let active=true;
+    fetch("https://open.er-api.com/v6/latest/INR").then(r=>{if(!r.ok)throw new Error("Exchange rates unavailable");return r.json();}).then(data=>{if(active&&data.result==="success")setCurrencyRates({INR:1,...data.rates});}).catch(()=>{if(active)setCurrencyRates({INR:1});});
+    return()=>{active=false;};
+  },[visitorCurrency]);
+  const formatLocalPrice=(raw)=>{
+    const text=String(raw??"");
+    const amount=Number(text.replace(/[^0-9.]/g,""));
+    if(!Number.isFinite(amount)||!text.trim())return text;
+    const explicitCode=(text.match(/\b(USD|EUR|GBP|AED|CAD|AUD|SGD|JPY|INR)\b/)||[])[1];
+    const source=explicitCode||"INR";
+    const rate=source==="INR"?currencyRates[visitorCurrency]:currencyRates[visitorCurrency]&&currencyRates[source]?currencyRates[visitorCurrency]/currencyRates[source]:null;
+    if(visitorCurrency==="INR"||source===visitorCurrency)return new Intl.NumberFormat(undefined,{style:"currency",currency:source,maximumFractionDigits:2}).format(amount);
+    if(!rate)return text;
+    return new Intl.NumberFormat(undefined,{style:"currency",currency:visitorCurrency,maximumFractionDigits:2}).format(amount*rate);
+  };
 
   const submitPublishedForm = async (event, block) => {
     event.preventDefault();
@@ -255,7 +290,7 @@ function TenantSite() {
   const paidPlan=["pro","business","enterprise","scale","studio","growth"].some(t=>String(site.plan||"free").toLowerCase().includes(t));
   const tenantStyle={"--tenant-accent":appearance.brandColor||"#7c5ce0","--tenant-surface":appearance.surfaceColor||"#ffffff",fontFamily:appearance.siteFont||"Inter,Arial,sans-serif","--tenant-heading-size":(appearance.headingSize||48)+"px","--tenant-body-size":(appearance.bodySize||16)+"px","--tenant-line-height":appearance.textLineHeight||1.65};
   return <div className={"tenant-site tenant-published tenant-header-"+(appearance.headerStyle||"standard")+" tenant-button-"+(appearance.buttonStyle||"rounded")} style={tenantStyle}>
-    <div className="tenant-nav"><b>{appearance.logoText||site.name}</b><nav>{pages.map(page => <a key={page.id} href={page.is_homepage ? "/" : "/" + page.slug}>{page.title}</a>)}{(()=>{const rows=String(appearance.customNavText||"").split("\n").map(line=>{const parts=line.replace(/^\s*-\s*/,"").split("|");const rawHref=(parts.slice(1).join("|")||"").trim();return {child:/^\s*-/.test(line),label:(parts[0]||"").trim(),href:rawHref==="#"?"#":safeTenantLink(rawHref)};}).filter(row=>row.label&&row.href);const output=[];for(let i=0;i<rows.length;i++){const row=rows[i];if(!row.child&&rows[i+1]?.child){const children=[];while(rows[i+1]?.child){children.push(rows[++i]);}output.push(<details className="tenant-nav-dropdown" key={"menu-"+i}><summary>{row.label}</summary><div className="tenant-nav-dropdown-menu">{children.map((child,j)=><a key={j} href={child.href} target={/^https:\/\//i.test(child.href)?"_blank":undefined} rel={/^https:\/\//i.test(child.href)?"noopener noreferrer":undefined}>{child.label}</a>)}</div></details>);}else if(!row.child){output.push(<a key={"custom-"+i} href={row.href} target={/^https:\/\//i.test(row.href)?"_blank":undefined} rel={/^https:\/\//i.test(row.href)?"noopener noreferrer":undefined}>{row.label}</a>);}}return output;})()}</nav></div>
+    <div className="tenant-nav"><b>{appearance.logoText||site.name}</b><nav><label className="tenant-currency-switch" title="Prices are automatically localized"><span>Currency</span><select value={visitorCurrency} onChange={e=>{setCurrencyManual(true);setVisitorCurrency(e.target.value);}}>{Object.keys(currencyNames).map(code=><option key={code} value={code}>{code}</option>)}</select></label>{pages.map(page => <a key={page.id} href={page.is_homepage ? "/" : "/" + page.slug}>{page.title}</a>)}{(()=>{const rows=String(appearance.customNavText||"").split("\n").map(line=>{const parts=line.replace(/^\s*-\s*/,"").split("|");const rawHref=(parts.slice(1).join("|")||"").trim();return {child:/^\s*-/.test(line),label:(parts[0]||"").trim(),href:rawHref==="#"?"#":safeTenantLink(rawHref)};}).filter(row=>row.label&&row.href);const output=[];for(let i=0;i<rows.length;i++){const row=rows[i];if(!row.child&&rows[i+1]?.child){const children=[];while(rows[i+1]?.child){children.push(rows[++i]);}output.push(<details className="tenant-nav-dropdown" key={"menu-"+i}><summary>{row.label}</summary><div className="tenant-nav-dropdown-menu">{children.map((child,j)=><a key={j} href={child.href} target={/^https:\/\//i.test(child.href)?"_blank":undefined} rel={/^https:\/\//i.test(child.href)?"noopener noreferrer":undefined}>{child.label}</a>)}</div></details>);}else if(!row.child){output.push(<a key={"custom-"+i} href={row.href} target={/^https:\/\//i.test(row.href)?"_blank":undefined} rel={/^https:\/\//i.test(row.href)?"noopener noreferrer":undefined}>{row.label}</a>);}}return output;})()}</nav></div>
     <main className="tenant-published-main">
       <section className="tenant-published-hero"><div className="eyebrow">POWERED BY DUKU FCA</div><h1>{content.headline || site.name}</h1><p>{content.subline || ""}</p></section>
       {blocks.map((block,index) => {
@@ -279,7 +314,7 @@ function TenantSite() {
           type === "embed code" ? (embed ? <div className="tenant-embed-frame"><iframe src={embed} title={block.title || "Embedded video"} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" /></div> : <div className="tenant-image-placeholder">Add a valid YouTube or Vimeo URL in the editor to display this embed.</div>) :
           type === "gallery" ? <div className="tenant-gallery-grid">{(block.items||[]).map((item,i)=>{const image=(site.assets||[]).find(asset=>asset.id===item.assetId);return image?.public_url?<figure key={i}><img src={image.public_url} alt={item.caption||image.alt_text||"Gallery image"} loading="lazy"/>{item.caption&&<figcaption>{item.caption}</figcaption>}</figure>:null;})}</div> :
           type === "testimonials" ? <div className="tenant-testimonial-grid">{(block.items||[]).map((item,i)=><article key={i}><div className="tenant-stars">★★★★★</div><blockquote>{item.quote}</blockquote><b>{item.name}</b><small>{item.role}</small></article>)}</div> :
-          type === "pricing" ? <div className="tenant-pricing-grid">{(block.items||[]).map((item,i)=><article className={item.featured?"featured":""} key={i}><h3>{item.name}</h3><strong>{item.price}<small>{item.period}</small></strong><ul>{String(item.features||"").split("\\n").filter(Boolean).map((feature,j)=><li key={j}>{feature}</li>)}</ul></article>)}</div> :
+          type === "pricing" ? <div className="tenant-pricing-grid">{(block.items||[]).map((item,i)=><article className={item.featured?"featured":""} key={i}><h3>{item.name}</h3><strong>{formatLocalPrice(item.price)}<small>{item.period}</small></strong><ul>{String(item.features||"").split("\\n").filter(Boolean).map((feature,j)=><li key={j}>{feature}</li>)}</ul></article>)}</div> :
           type === "faq" ? <div className="tenant-faq-list">{(block.items||[]).map((item,i)=><details key={i}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</div> :
           type === "stats" ? <div className="tenant-stats-grid">{(block.items||[]).map((item,i)=><article key={i}><strong>{item.value}</strong><span>{item.label}</span></article>)}</div> :
           type === "team" ? <div className="tenant-team-grid">{(block.items||[]).map((item,i)=><article key={i}><div className="tenant-team-avatar">{String(item.name||"T").trim().charAt(0).toUpperCase()}</div><h3>{item.name}</h3><b>{item.role}</b><p>{item.bio}</p></article>)}</div> :
