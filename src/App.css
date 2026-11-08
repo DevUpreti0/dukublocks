@@ -1341,3 +1341,6 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .dd-notice,.ai-builder-toast,.cloud-save-notice,.publish-toast,.admin-notice,.career-notice,.media-notice{animation:duku-notice-dismiss 7s ease forwards}
 @keyframes duku-notice-dismiss{0%,78%{opacity:1;transform:translateY(0);max-height:180px}100%{opacity:0;transform:translateY(-8px);max-height:0;margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;overflow:hidden;pointer-events:none}}
 @media(max-width:760px){.duku-brain-public-section{grid-template-columns:1fr;gap:8px;border-radius:20px;margin:24px 12px;padding:25px 20px}.duku-brain-visual{min-height:260px}.brain-orbit{transform:scale(.82) rotate(-25deg)}.brain-orbit-a{transform:scale(.82) rotate(34deg)}.brain-orbit-b{transform:scale(.82) rotate(-42deg)}.brain-float-one{left:0}.brain-float-two{right:0}.ref-fullscreen-action{font-size:9px;padding:5px 7px}}
+
+/* Consistent short-lived feedback for action notifications */
+[class*="toast"]:not(.persistent-toast),[class*="notice"]:not(.admin-live-notice):not(.persistent-notice){animation:duku-notice-dismiss 7s ease forwards}
