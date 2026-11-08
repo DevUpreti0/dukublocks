@@ -302,9 +302,10 @@ export default function DuKuAI() {
     try {
       const {data:{session}}=await supabase.auth.getSession();
       if(!session?.access_token)throw new Error("Your sign-in session expired. Please sign in again.");
-      const imageIntent = !options.regenerate && !editId && !outgoingFiles.length && /\b(create|generate|make|draw|design|render|paint|i want|give me)\b[\s\S]{0,110}\b(image|picture|photo|photograph|poster|wallpaper|illustration|portrait|artwork|logo|thumbnail|cover art|banner)\b/i.test(text) && !/\b(how to|code|html|svg|react|python)\b/i.test(text);
+      const imageIntent = !options.regenerate && !editId && (!outgoingFiles.length || outgoingFiles.some(file=>file.dataUrl)) && /\b(create|generate|make|draw|design|render|paint|i want|give me)\b[\s\S]{0,110}\b(image|picture|photo|photograph|poster|wallpaper|illustration|portrait|artwork|logo|thumbnail|cover art|banner)\b/i.test(text) && !/\b(how to|code|html|svg|react|python)\b/i.test(text);
       if(imageIntent){
-        const result=await mediaRequest({action:"generate_image",model:imageModel,prompt:text});
+        const referenceImage=outgoingFiles.find(file=>file.dataUrl);
+        const result=await mediaRequest(referenceImage?{action:"edit_image",model:imageModel,prompt:text,image:referenceImage.dataUrl}:{action:"generate_image",model:imageModel,prompt:text});
         if(!Array.isArray(result.images)||!result.images.length)throw new Error("The image provider returned no image. Please try again.");
         const temporary=!!chats.find(chat=>chat.id===chatId)?.temporary;
         const asset=temporary?null:await saveMediaAsset({source:result.images[0],type:"image",name:"DuKu AI image "+new Date().toLocaleString(),prompt:text,model:imageModel});
