@@ -834,7 +834,7 @@ function MainApp() {
         siteId = data.id;
       }
       setCloudSiteId(siteId);
-      const { data: existingPages, error: pageLoadError } = await supabase.from("site_pages").select("id,slug").eq("site_id", siteId);
+      const { data: existingPages, error: pageLoadError } = await supabase.from("site_pages").select("id,slug,title,content,seo,is_homepage,is_published,sort_order,updated_at").eq("site_id", siteId);
       if (pageLoadError) throw pageLoadError;
       for (let index = 0; index < pages.length; index += 1) {
         const page = pages[index];
@@ -842,7 +842,7 @@ function MainApp() {
         const slug = (current.slug || current.name || "page").toLowerCase().replace(/[^a-z0-9-]+/g,"-").replace(/^-|-$/g,"") || "page";
         const payload = { site_id: siteId, title: current.name, slug, is_homepage: index === 0, is_published: keepPublished, sort_order: index, content: { headline: current.headline || headline, subline: current.subline || subline, sections: current.blocks || [] }, seo: { title: current.seoTitle || "", description: current.seoDescription || "" } };
         const existing = existingPages.find(item => item.slug === slug);
-        const result = existing ? await supabase.from("site_pages").update(payload).eq("id", existing.id) : await supabase.from("site_pages").insert(payload);
+        if(existing){const {data:lastRevision,error:revisionReadError}=await supabase.from("site_page_revisions").select("revision_number").eq("page_id",existing.id).order("revision_number",{ascending:false}).limit(1).maybeSingle();if(revisionReadError)throw revisionReadError;const {error:revisionError}=await supabase.from("site_page_revisions").insert({workspace_id:workspace.id,site_id:siteId,page_id:existing.id,revision_number:(lastRevision?.revision_number||0)+1,snapshot:{title:existing.title,slug:existing.slug,content:existing.content,seo:existing.seo,is_homepage:existing.is_homepage,is_published:existing.is_published,sort_order:existing.sort_order},created_by:authUser.id});if(revisionError)throw revisionError;}const result = existing ? await supabase.from("site_pages").update(payload).eq("id", existing.id) : await supabase.from("site_pages").insert(payload);
         if (result.error) throw result.error;
       }
       const desiredSlugs = pages.map(page => (page.id === activePageId ? siteSlug : page.slug || page.name || "page").toLowerCase().replace(/[^a-z0-9-]+/g,"-").replace(/^-|-$/g,"") || "page");
