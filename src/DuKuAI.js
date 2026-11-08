@@ -109,6 +109,7 @@ export default function DuKuAI() {
   const [thinkingStage,setThinkingStage] = useState(0);
   const [thinkingElapsed,setThinkingElapsed] = useState(0);
   const [thinkingReceiving,setThinkingReceiving] = useState(false);
+  const thinkingStageTimerRef = useRef(null);
   const [thinkingDetailsOpen,setThinkingDetailsOpen] = useState(false);
   const [error,setError] = useState("");
   const [search,setSearch] = useState("");
@@ -244,10 +245,11 @@ export default function DuKuAI() {
     setThinkingStage(0);
     setThinkingElapsed(0);
     setThinkingReceiving(false);
-    const stageTimer = setInterval(() => { if (!thinkingReceiving) setThinkingStage(value => (value + 1) % thinkingStages.length); }, 1850);
+    const stageTimer = setInterval(() => setThinkingStage(value => (value + 1) % thinkingStages.length), 1850);
+    thinkingStageTimerRef.current = stageTimer;
     const elapsedTimer = setInterval(() => setThinkingElapsed(value => value + 1), 1000);
-    return () => { clearInterval(stageTimer); clearInterval(elapsedTimer); };
-  }, [busy,thinkingReceiving]);
+    return () => { clearInterval(stageTimer); clearInterval(elapsedTimer); thinkingStageTimerRef.current = null; };
+  }, [busy]);
   useEffect(()=>{bottomRef.current?.scrollIntoView({behavior:"smooth",block:"end"});},[activeChat?.messages?.length,latestMessageContent]);
   const newChat = useCallback(()=>{const id=makeId();setChats(prev=>[{id,title:"New chat",model,updatedAt:Date.now(),messages:[]},...prev]);setActiveId(id);setInput("");setError("");setAttached([]);setSidebarOpen(false);},[model]);
   const newTemporaryChat = useCallback(()=>{const id=makeId();setChats(prev=>[{id,title:"Temporary chat",model,temporary:true,updatedAt:Date.now(),messages:[]},...prev]);setActiveId(id);setInput("");setError("");setAttached([]);setSidebarOpen(false);setInstructionsOpen(false);},[model]);
@@ -361,7 +363,7 @@ export default function DuKuAI() {
         try{packet=JSON.parse(data);}catch{return;}
         if(packet.error)throw new Error(packet.error.message||"AI provider error");
         const delta=packet.choices?.[0]?.delta?.content;
-        if(typeof delta==="string"&&delta){if(!answer)setThinkingReceiving(true);answer+=delta;updateAssistantMessage(answer);}
+        if(typeof delta==="string"&&delta){if(!answer){setThinkingReceiving(true);if(thinkingStageTimerRef.current)clearInterval(thinkingStageTimerRef.current);setThinkingStage(5);}answer+=delta;updateAssistantMessage(answer);}
       };
       while(true){
         const {value,done}=await reader.read();
