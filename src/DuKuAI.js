@@ -7,7 +7,7 @@ const MODELS = [
   { id: "google/gemini-3.6-flash", label: "DuKu Version 1", family: "DuKu", note: "Fast everyday assistant" },
   { id: "google/gemini-3.1-pro-preview", label: "DuKu Version 2", family: "DuKu", note: "Deep reasoning and analysis" },
   { id: "openai/gpt-5", label: "DuKu Version 3", family: "DuKu", note: "Balanced work and creativity" },
-  { id: "deepseek/deepseek-v3.2", label: "DuKu Version 4", family: "DuKu", note: "Technical and problem-solving mode" }
+  { id: "alibaba/qwen3.5-flash", label: "DuKu Version 4", family: "DuKu", note: "Multimodal and visual work" }
 ];
 const starterPrompts = [
   ["✦", "Write something", "Write a clear, engaging introduction for my new project."],
