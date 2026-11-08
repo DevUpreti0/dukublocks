@@ -407,3 +407,16 @@
 .dai-message-content a{color:#1a73e8;text-decoration:underline;text-decoration-color:#a8c7fa;text-underline-offset:2px;overflow-wrap:anywhere}
 .dai-message-content a:hover{color:#174ea6}
 @media(max-width:540px){.dai-web-search-btn span{display:inline!important}.dai-web-search-btn{padding:7px 8px!important;font-size:10px!important}}
+
+.dai-markdown{white-space:normal;overflow-wrap:anywhere}.dai-markdown>p{margin:0 0 13px}.dai-markdown>p:last-child{margin-bottom:0}
+.dai-markdown .dai-md-heading{font-family:'Manrope',sans-serif;font-weight:750;line-height:1.35;color:#292833;margin:22px 0 10px}
+.dai-markdown h1.dai-md-heading{font-size:23px}.dai-markdown h2.dai-md-heading{font-size:19px}.dai-markdown h3.dai-md-heading{font-size:16px}.dai-markdown h4.dai-md-heading,.dai-markdown h5.dai-md-heading,.dai-markdown h6.dai-md-heading{font-size:14px}
+.dai-markdown .dai-md-list{padding-left:24px;margin:8px 0 15px}.dai-markdown .dai-md-list li{padding-left:4px;margin:5px 0}
+.dai-markdown .dai-md-quote{border-left:3px solid #9a82e5;background:#f8f6fc;color:#656171;padding:10px 14px;margin:12px 0;border-radius:0 9px 9px 0}
+.dai-markdown .dai-md-rule{border:0;border-top:1px solid #e9e7ef;margin:18px 0}.dai-markdown a{color:#6750c5;text-decoration:underline;text-underline-offset:3px}
+.dai-inline-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;background:#f1eff6;color:#6a4dc4;padding:2px 5px;border-radius:5px}
+.dai-code-block{margin:14px 0 17px;border:1px solid #30313b;border-radius:11px;overflow:hidden;background:#171923;color:#e7e8ef}
+.dai-code-header{height:36px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;background:#222430;border-bottom:1px solid #353744;color:#b8bac7;font:10px 'DM Sans',sans-serif}
+.dai-code-header button{border:1px solid #454858;border-radius:6px;background:#303342;color:#e7e8ef;padding:5px 9px;font:10px 'DM Sans',sans-serif;cursor:pointer}
+.dai-code-block pre{margin:0;padding:15px;overflow:auto;max-width:100%;font:12px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;tab-size:2;white-space:pre}.dai-code-block code{font:inherit;color:inherit}
+@media(max-width:640px){.dai-markdown h1.dai-md-heading{font-size:20px}.dai-markdown h2.dai-md-heading{font-size:17px}.dai-code-block pre{font-size:11px;padding:12px}}
