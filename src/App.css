@@ -569,3 +569,17 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .public-blog>footer{padding:25px;text-align:center;border-top:1px solid #e1e8ed;background:#fff;font-size:10px;color:#71808b}
 @media(max-width:950px){.cms-grid,.blog-admin-layout{grid-template-columns:1fr}.android-options{grid-template-columns:repeat(2,minmax(0,1fr))}.blog-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.cms-editor{padding:13px}.cms-heading{align-items:flex-start;flex-direction:column}.dev-workspace,.blog-listing{padding:15px}.dev-code-grid{grid-template-columns:1fr}.dev-preview iframe{height:320px}.android-options{grid-template-columns:1fr 1fr}.blog-card-grid{grid-template-columns:1fr}.public-blog>main{padding:35px 17px}.public-blog>main>h1{font-size:30px}.public-blog-article h1{font-size:32px}.public-blog>header nav{gap:10px}}
+
+
+.admin-data-panel{margin-top:20px;padding:18px;background:#fff;border:1px solid #dfe7ec;border-radius:8px}
+.admin-data-panel>p{font-size:11px;color:#74828c;margin-bottom:15px}
+.admin-data-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid #e8edf0}
+.admin-data-row:last-child{border-bottom:0}
+.admin-data-row>div{min-width:0}.admin-data-row b,.admin-data-row small{display:block}
+.admin-data-row b{font-size:11px;color:#233a4a}.admin-data-row small{font-size:9px;color:#81909a;margin-top:4px;overflow-wrap:anywhere}
+.admin-data-row select{min-width:130px;padding:8px;border:1px solid #d8e1e7;border-radius:5px;background:#fff;color:#344a59;font-size:10px}
+.platform-popup-backdrop{position:fixed;inset:0;z-index:100;background:rgba(14,30,42,.55);display:grid;place-items:center;padding:18px}
+.platform-popup{position:relative;width:min(430px,100%);background:#fff;border-radius:10px;padding:28px;box-shadow:0 25px 80px #10283a44}
+.platform-popup>button:first-child{position:absolute;right:14px;top:10px;border:0;background:transparent;font-size:25px;color:#647783}
+.platform-popup h2{font-size:24px;color:#183448;margin:12px 0}.platform-popup p{font-size:12px;line-height:1.7;color:#687985}
+.platform-custom-html{position:relative;z-index:1}
