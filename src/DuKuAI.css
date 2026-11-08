@@ -232,3 +232,7 @@
  .dai-message-content{font-size:13px}.dai-message-actions{display:flex;flex-wrap:wrap}
 }
 @media(prefers-reduced-motion:reduce){.dai-app *,.dai-app *::before,.dai-app *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+
+.dai-disclaimer.has-error{width:min(850px,calc(100% - 36px));margin:2px auto 10px;padding:10px 13px;border:1px solid #f0d7d5;border-radius:12px;background:#fff8f7;color:#9b3f39;font-size:11px;line-height:1.55;text-align:left;box-shadow:0 3px 12px #8f2c2008}
+.dai-disclaimer.has-error::before{content:"AI connection notice";display:block;font-size:9px;letter-spacing:.5px;text-transform:uppercase;font-weight:800;color:#9b3f39;margin-bottom:3px}
