@@ -454,3 +454,70 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .admin-session{display:flex;align-items:center;gap:18px;color:#667482;font-size:12px}
 .cloud-websites-panel,.analytics-panel,.form-inbox-panel,.domain-card,.payments-panel{background:#fff;border:1px solid #e0e6eb;border-radius:8px}
 @media(max-width:700px){.signup-fields,.profile-setup-grid{grid-template-columns:1fr}.profile-setup-grid .profile-wide{grid-column:auto}.launch-card{background:#fff}.launch-art{background:#f1f5f7}.main-content{padding:28px 18px 0}}
+
+
+/* DuKu FCA growth launch: editorial business styling, motion previews and conversion sections */
+.corporate-ticker{min-height:34px;background:#17364b;color:#fff;display:flex;align-items:center;justify-content:center;gap:13px;padding:7px 18px;font-size:10px;letter-spacing:.02em;flex-wrap:wrap}
+.corporate-ticker b{font-size:9px;letter-spacing:.12em;color:#d9e5ec}
+.ticker-live{width:7px;height:7px;border-radius:50%;background:#80c9a5;box-shadow:0 0 0 4px #80c9a522;animation:duku-pulse 2s infinite}
+@keyframes duku-pulse{50%{box-shadow:0 0 0 7px #80c9a500}}
+.template-preview{isolation:isolate}
+.preview-shape{animation:duku-float 5s ease-in-out infinite;transform-origin:center}
+.template-card:nth-child(3n) .preview-shape{animation-delay:-1.8s}
+.template-card:nth-child(4n) .preview-shape{animation-delay:-3s}
+.template-card:hover .preview-shape{animation-duration:1.8s}
+@keyframes duku-float{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -7px;rotate:3deg}}
+.template-card{transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease}
+.template-tag{background:#203c53;color:#fff;border:0;border-radius:3px}
+.pricing-section,.careers-section{padding:52px 0;border-top:1px solid #e0e6eb}
+.pricing-category{margin-top:28px}
+.pricing-category>.eyebrow{margin-bottom:13px}
+.public-pricing-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.public-plan{position:relative;min-width:0;padding:20px 17px 17px;border:1px solid #dfe6eb;border-radius:8px;background:#fff;box-shadow:0 4px 16px rgba(25,43,58,.035);display:flex;flex-direction:column}
+.public-plan.featured{border-color:#6f8da1;box-shadow:0 9px 28px rgba(32,60,83,.09)}
+.public-plan>small{font-size:11px;font-weight:700;color:#526678}
+.public-plan>strong{font-size:27px;letter-spacing:-1.1px;color:#172b3a;margin:12px 0}
+.public-plan>strong i{font-size:10px;font-style:normal;font-weight:400;letter-spacing:0;color:#75828c;margin-left:4px}
+.public-plan ul{list-style:none;padding:0;margin:4px 0 20px;display:grid;gap:10px;flex:1}
+.public-plan li{font-size:10px;color:#52616d;line-height:1.45}
+.public-plan li:first-letter{color:#48755f}
+.public-plan .primary-btn,.public-plan .ghost-btn{width:100%;justify-content:center}
+.plan-ribbon{position:absolute;right:12px;top:12px;font-size:8px;letter-spacing:.08em;color:#31566f;background:#edf3f6;padding:5px 7px;border-radius:3px}
+.pricing-disclaimer{font-size:10px;color:#74818c;margin-top:17px;line-height:1.6}
+.business-pricing{margin-top:36px}
+.careers-section{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:42px;align-items:start}
+.careers-intro h2{font:700 32px/1.14 Manrope;letter-spacing:-1px;color:#17212b;margin:13px 0}
+.careers-intro p{font-size:12px;line-height:1.8;color:#687482;max-width:430px}
+.career-roles{display:flex;gap:7px;flex-wrap:wrap;margin-top:22px}
+.career-roles span{font-size:9px;color:#415c70;background:#edf2f5;border:1px solid #e0e7ec;padding:7px 9px;border-radius:4px}
+.career-form{padding:24px;background:#fff;border:1px solid #dfe6eb;border-radius:9px;box-shadow:0 8px 28px rgba(25,43,58,.045)}
+.career-form h3{font:700 19px Manrope;color:#172b3a;margin:0 0 17px}
+.career-fields{display:grid;grid-template-columns:1fr 1fr;gap:0 13px}
+.career-form label{display:block;font-size:10px;font-weight:600;color:#52616d;margin:0 0 12px}
+.career-form label span{font-size:9px;color:#87939d;font-weight:400}
+.career-form input,.career-form select,.career-form textarea{display:block;width:100%;margin-top:6px;padding:10px 11px;background:#fff;border:1px solid #d8e1e7;border-radius:5px;color:#17212b;font:11px Inter,Arial,sans-serif;outline:none}
+.career-form input:focus,.career-form select:focus,.career-form textarea:focus{border-color:#66869b;box-shadow:0 0 0 3px rgba(84,117,142,.1)}
+.career-form textarea{resize:vertical}
+.career-form>small{display:block;font-size:9px;line-height:1.5;color:#87939d;margin-top:12px}
+.career-notice{padding:10px;background:#edf4f0;border:1px solid #d7e8de;border-radius:5px;color:#3f6b55;font-size:10px}
+.duku-ai-widget{position:fixed;right:22px;bottom:22px;z-index:80;display:flex;align-items:flex-end;flex-direction:column;gap:10px}
+.duku-ai-launcher{display:flex;align-items:center;gap:9px;background:#17364b;color:#fff;border:1px solid #244d67;border-radius:28px;padding:12px 17px;font-size:11px;font-weight:650;box-shadow:0 8px 25px rgba(18,40,56,.2);cursor:pointer}
+.duku-ai-launcher span{font-size:17px;color:#c9dce7}
+.duku-ai-panel{width:min(360px,calc(100vw - 30px));height:440px;background:#fff;border:1px solid #d8e1e7;border-radius:10px;box-shadow:0 18px 55px rgba(15,34,48,.2);display:flex;flex-direction:column;overflow:hidden}
+.duku-ai-panel>header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#17364b;color:#fff}
+.duku-ai-panel>header b,.duku-ai-panel>header small{display:block}
+.duku-ai-panel>header b{font-size:13px}
+.duku-ai-panel>header small{font-size:9px;color:#c2d1db;margin-top:3px}
+.duku-ai-panel>header button{background:transparent;border:0;color:#fff;font-size:22px}
+.duku-ai-messages{padding:14px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;flex:1;background:#f7f9fa}
+.duku-ai-message{max-width:88%;padding:10px 12px;border-radius:8px;font-size:10px;line-height:1.65;white-space:pre-wrap}
+.duku-ai-message.model{align-self:flex-start;background:#fff;border:1px solid #e0e6eb;color:#344957}
+.duku-ai-message.user{align-self:flex-end;background:#e8eff3;color:#203c53}
+.duku-ai-panel form{display:flex;gap:7px;padding:11px;border-top:1px solid #e3e9ed}
+.duku-ai-panel form input{min-width:0;flex:1;border:1px solid #d8e1e7;border-radius:5px;padding:10px;font-size:10px;color:#17212b}
+.duku-ai-panel form button{background:#17364b;color:#fff;border:0;border-radius:5px;padding:0 13px;font-size:10px}
+.duku-ai-panel form button:disabled{opacity:.45}
+.duku-ai-panel>small{padding:0 12px 10px;color:#89949c;font-size:8px;background:#fff}
+@media(max-width:1050px){.public-pricing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.careers-section{gap:25px}}
+@media(max-width:760px){.corporate-ticker{justify-content:flex-start;gap:8px;font-size:9px}.corporate-ticker span:last-child{display:none}.pricing-section,.careers-section{padding:36px 0}.public-pricing-grid{grid-template-columns:1fr 1fr;gap:8px}.public-plan{padding:15px 12px}.public-plan>strong{font-size:22px}.public-plan li{font-size:9px}.careers-section{grid-template-columns:1fr;gap:20px}.career-form{padding:17px}.career-fields{grid-template-columns:1fr 1fr}.duku-ai-widget{right:12px;bottom:12px}.duku-ai-panel{height:min(440px,70vh)}}
+@media(max-width:420px){.public-pricing-grid{grid-template-columns:1fr}.career-fields{grid-template-columns:1fr}.corporate-ticker b{display:none}}
