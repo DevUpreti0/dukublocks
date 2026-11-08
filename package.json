@@ -12,7 +12,8 @@
     "react-frame-component": "^4.1.1",
     "react-scripts": "5.0.1",
     "react-syntax-highlighter": "^12.2.1",
-    "@supabase/supabase-js": "2.119.0"
+    "@supabase/supabase-js": "2.119.0",
+    "@vercel/sandbox": "3.9.1"
   },
   "scripts": {
     "start": "react-scripts start",
