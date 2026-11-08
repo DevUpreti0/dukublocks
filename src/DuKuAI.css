@@ -144,3 +144,91 @@
   .dai-folder-list>button{min-width:0;font-size:11px;padding:8px}
   .dai-chat-folder-select{max-width:58px;font-size:9px}
 }
+
+
+/* DuKu AI — refreshed conversational workspace */
+.dai-app{--ink:#25252b;--muted:#777782;--line:#e8e8eb;--surface:#fff;--soft:#f7f7f8;background:#fff;color:var(--ink);font-family:Inter,"DM Sans",system-ui,sans-serif;min-height:100dvh}
+.dai-sidebar{background:#f8f8f9;border-right:1px solid #e9e9ec;width:264px;flex-basis:264px;padding:16px 12px 12px;transition:transform .28s cubic-bezier(.2,.8,.2,1),width .25s}
+.dai-brand{font-size:18px;letter-spacing:-.55px}.dai-mark{background:linear-gradient(145deg,#8065e8,#5940bd);box-shadow:0 5px 16px #6547ca30;border-radius:11px;animation:dai-mark-breathe 4s ease-in-out infinite}
+.dai-new-chat{height:44px;border:1px solid #e3e3e8;border-radius:12px;background:#fff;box-shadow:0 1px 2px #16161608;transition:transform .18s,border-color .18s,box-shadow .18s}
+.dai-new-chat:hover{transform:translateY(-1px);border-color:#c9c1e8;box-shadow:0 5px 16px #27203d0c}
+.dai-search{background:#efeff1;border-radius:11px;margin:14px 0 18px;padding:10px 11px}
+.dai-history-item{border-radius:10px;transition:background .16s}.dai-history-item.active,.dai-history-item:hover{background:#ececf0}
+.dai-history-item>button:first-child{color:#464650;font-size:12px;padding:10px}
+.dai-topbar{height:62px;padding:0 clamp(14px,2.5vw,30px);border-bottom:1px solid #ededf0;background:rgba(255,255,255,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);position:sticky;top:0}
+.dai-model-select{font-size:13px;letter-spacing:-.15px;border:1px solid transparent}.dai-model-select:hover{background:#f7f7f9;border-color:#ececf0}
+.dai-model-menu{border-color:#e6e6eb;border-radius:15px;box-shadow:0 18px 55px #1919271a;padding:7px;animation:dai-pop-in .16s ease-out}
+.dai-model-menu button{border-radius:10px;padding:11px}.dai-model-menu button:hover,.dai-model-menu button.selected{background:#f4f2fb}
+.dai-studio-tabs{background:#f4f4f6;border:1px solid #e9e9ed;border-radius:12px;padding:3px;gap:2px}
+.dai-studio-tabs button{padding:8px 12px;border-radius:9px;font-size:11px;transition:background .18s,color .18s,box-shadow .18s}
+.dai-studio-tabs button.active{color:#5d45bd;box-shadow:0 1px 4px #18182012}
+.dai-conversation{scroll-behavior:smooth}
+.dai-welcome{width:min(760px,100%);padding:clamp(42px,9vh,100px) 28px 38px;animation:dai-rise-in .55s cubic-bezier(.2,.7,.2,1) both}
+.dai-welcome-orb{width:62px;height:62px;border-radius:21px;background:linear-gradient(145deg,#f1edff,#f7f7ff 55%,#e9f5ff);box-shadow:0 12px 34px #7659d51c,inset 0 0 0 1px #fff;animation:dai-float 5s ease-in-out infinite}
+.dai-welcome-orb span{background:linear-gradient(120deg,#7557d8,#4c8bc9);background-clip:text;-webkit-background-clip:text;color:transparent}
+.dai-welcome h1{font-size:clamp(30px,4.4vw,46px);letter-spacing:-2px;line-height:1.12;margin:16px 0 12px}
+.dai-welcome h1 em{background:linear-gradient(100deg,#7054cf,#4e83bd);background-clip:text;-webkit-background-clip:text;color:transparent}
+.dai-welcome-copy{font-size:14px;line-height:1.7;color:#777783;max-width:520px;margin:0 auto 30px}
+.dai-prompt-grid{gap:10px}.dai-prompt-grid button{border:1px solid #e8e8ed;border-radius:15px;background:linear-gradient(145deg,#fff,#fcfcfd);padding:16px 17px;min-height:105px;box-shadow:0 2px 7px #14141c05;transition:transform .2s,border-color .2s,box-shadow .2s}
+.dai-prompt-grid button:hover{transform:translateY(-3px);border-color:#d5ccef;box-shadow:0 12px 28px #2620390d}
+.dai-prompt-grid button>span{background:#f1edfc;color:#7257cb;border-radius:8px;width:28px;height:28px;display:grid;place-items:center}
+.dai-prompt-grid button b{font-size:12px}.dai-prompt-grid button small{font-size:10px;line-height:1.5;color:#858590}
+.dai-messages{width:min(850px,100%);padding:38px clamp(18px,4vw,34px) 55px;animation:dai-rise-in .3s ease-out both}
+.dai-message{gap:14px;margin-bottom:30px;animation:dai-message-in .24s ease-out both}
+.dai-message-avatar{width:31px;height:31px;flex-basis:31px;border-radius:11px;background:linear-gradient(145deg,#eeeaff,#e9e8fa);color:#644bc2}
+.dai-message.user .dai-message-avatar{background:#ececf0;color:#62626c}
+.dai-message-name{font-size:12px;color:#303039;margin:3px 0 9px}
+.dai-message-content{font-size:14px;line-height:1.78;color:#38383f}
+.dai-message-actions{opacity:.72;transition:opacity .18s}.dai-message:hover .dai-message-actions{opacity:1}
+.dai-message-actions button{border-radius:8px;padding:6px 9px;transition:background .15s,color .15s}.dai-message-actions button:hover{background:#f1f0f5;color:#5d46b4}
+.dai-composer-wrap{width:min(850px,calc(100% - 36px));padding:8px 0 10px;position:relative;z-index:2}
+.dai-composer{border:1px solid #dedee4;border-radius:23px;background:#fff;padding:14px 16px 11px;box-shadow:0 7px 28px #22222a0b,0 1px 3px #22222a08;transition:border-color .2s,box-shadow .2s}
+.dai-composer:focus-within{border-color:#c7bce9;box-shadow:0 8px 32px #6850c516,0 0 0 3px #8066d10a}
+.dai-composer textarea{font-size:14px;min-height:42px;line-height:1.6;padding:4px 2px 9px}
+.dai-composer textarea::placeholder{color:#9999a2}
+.dai-composer-tools{gap:10px}.dai-composer-tools>div{gap:9px}
+.dai-attach-btn,.dai-voice-btn{border-radius:10px;transition:background .15s,color .15s}.dai-attach-btn:hover,.dai-voice-btn:hover{background:#f1eff8;color:#6549c2}
+.dai-send-btn{width:36px;height:36px;border-radius:50%;background:#24242b;color:white;box-shadow:0 2px 7px #1112;transition:transform .16s,background .16s}
+.dai-send-btn:hover:not(:disabled){transform:scale(1.06);background:#5e48b8}
+.dai-disclaimer{font-size:10px;color:#92929a;text-align:center;margin:0 auto 10px;max-width:min(850px,calc(100% - 36px));line-height:1.5}
+.dai-thinking{display:inline-flex;align-items:center;gap:5px;color:#777783;font-size:13px}
+.dai-thinking i{width:5px;height:5px;border-radius:50%;background:#8b79d0;animation:dai-dot 1.1s ease-in-out infinite}.dai-thinking i:nth-child(2){animation-delay:.15s}.dai-thinking i:nth-child(3){animation-delay:.3s}
+.dai-prompt-modal{border-radius:20px;box-shadow:0 25px 90px #16131e30;animation:dai-pop-in .2s ease-out}
+.dai-folder-list>button.active{background:#ececf3;color:#3d365a}
+@keyframes dai-rise-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes dai-message-in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@keyframes dai-pop-in{from{opacity:0;transform:translateY(7px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes dai-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes dai-mark-breathe{0%,100%{box-shadow:0 5px 16px #6547ca30}50%{box-shadow:0 6px 22px #6547ca50}}
+@keyframes dai-dot{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-4px);opacity:1}}
+@media(max-width:800px){
+ .dai-sidebar{width:280px;flex-basis:280px}
+ .dai-topbar{height:58px;padding:0 12px;gap:6px}
+ .dai-top-right{gap:5px}.dai-studio-tabs{margin-right:2px}.dai-studio-tabs button{padding:7px 9px;font-size:10px}
+ .dai-welcome{padding:48px 20px 28px}.dai-prompt-grid{grid-template-columns:1fr 1fr}
+ .dai-composer-wrap{width:calc(100% - 24px);padding-bottom:8px}
+ .dai-composer{border-radius:20px;padding:12px 13px 9px}
+ .dai-messages{padding:28px 17px 44px}
+}
+@media(max-width:540px){
+ .dai-sidebar{position:fixed;inset:0 auto 0 0;height:100dvh;transform:translateX(-105%);box-shadow:none}
+ .dai-sidebar.open{transform:translateX(0);box-shadow:20px 0 60px #17172022}
+ .dai-mobile-scrim{display:block;position:fixed;inset:0;background:#17172055;border:0;z-index:4;backdrop-filter:blur(2px)}
+ .dai-main{min-height:100dvh;height:100dvh}
+ .dai-topbar{height:55px;padding:0 9px}.dai-top-left{display:flex;align-items:center;min-width:0}.dai-model-select{font-size:11px;padding:7px 5px;gap:5px}
+ .dai-top-right>span:not(.dai-secure-dot){display:none}.dai-top-right .dai-prompt-library-btn span{display:none}
+ .dai-top-right .dai-icon-btn{width:30px;height:32px;font-size:12px}
+ .dai-studio-tabs{gap:0;padding:2px}.dai-studio-tabs button{padding:7px 6px;font-size:9px}
+ .dai-welcome{padding:40px 17px 20px}.dai-welcome-orb{width:54px;height:54px;border-radius:18px;margin-bottom:17px}
+ .dai-welcome h1{font-size:31px;letter-spacing:-1.35px}.dai-welcome-copy{font-size:12px;margin-bottom:22px}
+ .dai-prompt-grid{gap:8px}.dai-prompt-grid button{padding:12px;min-height:100px}.dai-prompt-grid button small{font-size:9px}
+ .dai-composer-wrap{width:calc(100% - 16px);padding:6px 0 5px}
+ .dai-composer{border-radius:18px;padding:10px 11px 8px}
+ .dai-composer textarea{font-size:13px;min-height:38px}
+ .dai-composer-tools>div{gap:5px}.dai-voice-btn span,.dai-model-hint{display:none}
+ .dai-send-btn{width:33px;height:33px}
+ .dai-disclaimer{font-size:9px;margin-bottom:5px}
+ .dai-message{gap:10px;margin-bottom:25px}.dai-message-avatar{width:28px;height:28px;flex-basis:28px}
+ .dai-message-content{font-size:13px}.dai-message-actions{display:flex;flex-wrap:wrap}
+}
+@media(prefers-reduced-motion:reduce){.dai-app *,.dai-app *::before,.dai-app *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
