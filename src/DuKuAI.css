@@ -639,3 +639,14 @@
 .dai-message.dai-search-match{outline:2px solid #8bb7ef;outline-offset:8px;border-radius:9px;animation:dai-search-pulse 1.8s ease both}
 @keyframes dai-search-pulse{0%,100%{outline-color:#8bb7ef;box-shadow:0 0 0 0 #8bb7ef00}35%{outline-color:#4b91e7;box-shadow:0 0 0 7px #8bb7ef25}}
 @media(prefers-reduced-motion:reduce){.dai-message.dai-search-match{animation:none!important}}
+
+/* DuKu quick action command palette */
+.dai-command-trigger{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}.dai-command-trigger span{font-size:11px}
+.dai-command-overlay{position:fixed;inset:0;z-index:1500;display:flex;align-items:flex-start;justify-content:center;padding:min(16vh,130px) 16px 24px;background:rgba(13,23,39,.42);backdrop-filter:blur(5px)}
+.dai-command-modal{width:min(560px,100%);max-height:min(620px,75vh);overflow:hidden;border:1px solid #e4e9f1;border-radius:16px;background:#fff;box-shadow:0 24px 80px #0c1b3238;display:flex;flex-direction:column}
+.dai-command-search{display:flex;align-items:center;gap:11px;padding:15px 17px;border-bottom:1px solid #edf0f5;color:#7f8da2}.dai-command-search>span{font-size:21px}.dai-command-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#26364c;font-size:14px}
+.dai-command-search kbd,.dai-command-item kbd{padding:3px 6px;border:1px solid #e4e9f0;border-radius:5px;background:#f8f9fb;color:#8491a3;font-size:9px}
+.dai-command-list{overflow:auto;padding:7px}.dai-command-item{display:flex;width:100%;align-items:center;gap:12px;padding:10px;border:0;border-radius:9px;background:transparent;text-align:left;cursor:pointer}.dai-command-item:hover,.dai-command-item:focus{outline:0;background:#f2f6fc}
+.dai-command-icon{display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border:1px solid #e9edf3;border-radius:9px;color:#5376a6;font-size:15px}.dai-command-item>span:nth-child(2){display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}.dai-command-item b{color:#2c3d54;font-size:11px;font-weight:650}.dai-command-item small{color:#8a96a8;font-size:9px}
+.dai-command-empty{padding:24px;text-align:center;color:#8995a7;font-size:12px}.dai-command-foot{display:flex;justify-content:center;gap:20px;padding:10px;border-top:1px solid #edf0f5;color:#8b97a8;font-size:9px}
+@media(max-width:640px){.dai-command-trigger span{display:none}.dai-command-overlay{padding:10vh 10px 15px}.dai-command-modal{border-radius:13px}.dai-command-foot{gap:12px}}
