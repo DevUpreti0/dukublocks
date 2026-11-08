@@ -172,7 +172,7 @@ module.exports = async function handler(req, res) {
           "  rm -rf \"$tmp\"",
           "fi",
           "yes | sdkmanager --sdk_root=\"$ANDROID_HOME\" --licenses >/dev/null || true",
-          "sdkmanager --sdk_root=\"$ANDROID_HOME\" \"platform-tools\" \"platforms;android-35\" \"build-tools;35.0.0\"",
+          "sdkmanager --sdk_root=\"$ANDROID_HOME\" \"platform-tools\" \"platforms;android-36\" \"build-tools;36.0.0\"",
           "if [ ! -f package.json ] && [ ! -d android ] && [ ! -f gradlew ] && [ ! -d app ]; then echo 'No Gradle Android project found. Import a native Android/Expo project with package.json or Gradle files first.'; exit 2; fi",
           "if [ ! -d android ] && [ -f package.json ] && grep -q '\"expo\"' package.json; then npx --yes expo prebuild --platform android --non-interactive; fi",
           "if [ -x ./gradlew ]; then GRADLEW=./gradlew; elif [ -x ./android/gradlew ]; then cd android; GRADLEW=./gradlew; elif [ -f ./gradlew ]; then chmod +x ./gradlew; GRADLEW=./gradlew; elif [ -f ./android/gradlew ]; then cd android; chmod +x ./gradlew; GRADLEW=./gradlew; else echo 'Gradle wrapper not found. Create/import a valid Android Gradle project.'; exit 2; fi",
