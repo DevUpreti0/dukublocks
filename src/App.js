@@ -303,10 +303,11 @@ function TenantSite() {
     return()=>{active=false;};
   },[site?.id]);
   const addStoreCartItem=(product)=>{
-    setStoreCart(rows=>{const found=rows.find(row=>row.product_id===product.id);if(found)return rows.map(row=>row.product_id===product.id?{...row,quantity:Math.min(99,Number(row.quantity||0)+1)}:row);return [...rows,{product_id:product.id,title:product.title,price_paise:Number(product.price_paise||0),image_url:product.image_url||"",quantity:1}];});
+    if(product.track_inventory&&Number(product.inventory_quantity)<=0)return;
+    setStoreCart(rows=>{const found=rows.find(row=>row.product_id===product.id);const limit=product.track_inventory?Math.max(1,Number(product.inventory_quantity)||1):99;if(found)return rows.map(row=>row.product_id===product.id?{...row,quantity:Math.min(limit,Number(row.quantity||0)+1)}:row);return [...rows,{product_id:product.id,title:product.title,price_paise:Number(product.price_paise||0),image_url:product.image_url||"",inventory_quantity:Number(product.inventory_quantity||0),track_inventory:product.track_inventory!==false,quantity:1}];});
     setCartOpen(true);
   };
-  const updateStoreCartQuantity=(productId,quantity)=>setStoreCart(rows=>quantity<=0?rows.filter(row=>row.product_id!==productId):rows.map(row=>row.product_id===productId?{...row,quantity:Math.min(99,Math.max(1,Number(quantity)||1))}:row));
+  const updateStoreCartQuantity=(productId,quantity)=>setStoreCart(rows=>quantity<=0?rows.filter(row=>row.product_id!==productId):rows.map(row=>{if(row.product_id!==productId)return row;const limit=row.track_inventory?Math.max(1,Number(row.inventory_quantity)||1):99;return {...row,quantity:Math.min(limit,Math.max(1,Number(quantity)||1))};}));
   const lookupCustomerOrder=async(event)=>{event.preventDefault();setTrackingBusy(true);setTrackingError("");setTrackingResult(null);try{const id=trackingOrderId.trim();const email=trackingEmail.trim();if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id))throw new Error("Enter the order ID from your confirmation email.");if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error("Enter the email address used for the order.");const {data,error}=await supabase.rpc("lookup_store_order_tracking",{p_order_id:id,p_buyer_email:email});if(error)throw error;if(!data?.length)throw new Error("We couldn't find an order matching those details.");setTrackingResult(data[0]);}catch(error){setTrackingError(error.message||"Could not look up this order.");}finally{setTrackingBusy(false);}};
   const storeCartTotal=storeCart.reduce((sum,row)=>sum+Number(row.price_paise||0)*Number(row.quantity||0),0);
   const pages = site && Array.isArray(site.pages) ? site.pages : [];
