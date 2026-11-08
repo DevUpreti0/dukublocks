@@ -474,8 +474,8 @@ function MainApp() {
   const exportStoreProducts = () => {
     const columns=["Title","SKU","Type","Price INR","Compare at INR","Inventory","Track inventory","Status","Website","Description"];
     const rows=visibleStoreProducts.map(p=>[p.title,p.sku||"",p.product_type,(Number(p.price_paise||0)/100).toFixed(2),p.compare_at_price_paise==null?"":(Number(p.compare_at_price_paise)/100).toFixed(2),p.inventory_quantity??0,p.track_inventory?"Yes":"No",p.status,p.site_id?(cloudSites.find(x=>x.id===p.site_id)?.name||"Assigned website"):"Workspace catalogue",p.description||""]);
-    const csv=[columns,...rows].map(row=>row.map(value=>'"'+String(value??"").replace(/"/g,'""')+'"').join(",")).join("\\r\\n");
-    const blob=new Blob(["\\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});const url=URL.createObjectURL(blob);const link=document.createElement("a");link.href=url;link.download="duku-products-"+new Date().toISOString().slice(0,10)+".csv";document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);
+    const csv=[columns,...rows].map(row=>row.map(value=>'"'+String(value??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
+    const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});const url=URL.createObjectURL(blob);const link=document.createElement("a");link.href=url;link.download="duku-products-"+new Date().toISOString().slice(0,10)+".csv";document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);
   };
   const toggleProductSelection = (id) => setSelectedProductIds(ids=>ids.includes(id)?ids.filter(x=>x!==id):[...ids,id]);
   const bulkUpdateProducts = async (status) => {
