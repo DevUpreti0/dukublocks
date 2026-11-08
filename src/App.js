@@ -982,6 +982,40 @@ function MainApp() {
     } catch (error) { setCloudNotice("Could not open this website: " + (error.message || "Please try again.")); }
   };
   useEffect(()=>{const requestedSite=new URLSearchParams(window.location.search).get("openSite");if(!requestedSite||!authUser||!cloudSites.length)return;const site=cloudSites.find(item=>item.id===requestedSite);if(site){window.history.replaceState({},"",window.location.pathname);openCloudSite(site);}},[authUser,cloudSites]);
+  useEffect(() => {
+    if (!isSupabaseConfigured) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("auth_verify") !== "1") return;
+    const tokenHash = params.get("token_hash");
+    const verificationType = params.get("type") || "email";
+    let active = true;
+    if (!tokenHash || verificationType !== "email") {
+      setAuthNotice("This confirmation link is incomplete or invalid. Please request a new signup email.");
+      setShowAuth(true);
+      window.history.replaceState({}, "", window.location.pathname);
+      return;
+    }
+    setAuthBusy(true);
+    setAuthNotice("Verifying your email address…");
+    supabase.auth.verifyOtp({ token_hash: tokenHash, type: "email" }).then(({ data, error }) => {
+      if (!active) return;
+      window.history.replaceState({}, "", window.location.pathname);
+      if (error || !data?.session) {
+        setAuthNotice(error?.message || "This confirmation link is invalid or has expired. Please contact support.");
+        setShowAuth(true);
+        setAuthBusy(false);
+        return;
+      }
+      setAuthNotice("Email verified successfully. Opening your developer dashboard…");
+      window.location.assign("https://dashboard.dukubusiness.online");
+    }).catch((error) => {
+      if (!active) return;
+      setAuthNotice(error?.message || "Email verification failed. Please try again.");
+      setShowAuth(true);
+      setAuthBusy(false);
+    });
+    return () => { active = false; };
+  }, []);
   const submitAuth = async () => {
     if (!isSupabaseConfigured) { setAuthNotice("Account services are not configured yet. Please try again shortly."); return; }
     if (!authEmail.trim() || !authPassword) { setAuthNotice("Enter your email and password to continue."); return; }
@@ -995,11 +1029,12 @@ function MainApp() {
         return;
       } else {
         const metadata = {display_name:authFullName.trim(),phone:authPhone.trim(),company_name:authCompany.trim(),job_title:authJobTitle.trim(),country:authCountry,account_type:authAccountType,website_url:authWebsite.trim()};
-        const { data, error } = await supabase.auth.signUp({ email: authEmail.trim(), password: authPassword, options: { data: metadata, emailRedirectTo: "https://dashboard.dukubusiness.online" } });
+        const { data, error } = await supabase.functions.invoke("duku-auth-signup", { body: { email: authEmail.trim(), password: authPassword, metadata } });
         if (error) throw error;
+        if (data?.error) throw new Error(data.error);
+        if (!data?.success) throw new Error("Signup could not be completed. Please try again.");
         setProfileForm({...metadata,onboarding_completed:false});
-        if (data.session) { if(pendingPlanId){window.location.href="https://dukubusiness.online/?checkout="+encodeURIComponent(pendingPlanId);return;} window.location.href = "https://dashboard.dukubusiness.online"; return; }
-        else setAuthNotice("Account created. Check your email to verify your address. You can complete your profile after signing in.");
+        setAuthNotice(data.message || "A DuKu confirmation email has been sent. Please check your inbox and spam folder.");
       }
     } catch (error) { setAuthNotice(error.message || "Authentication failed. Please try again."); }
     finally { setAuthBusy(false); }
