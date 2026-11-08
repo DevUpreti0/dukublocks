@@ -1161,3 +1161,19 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .duku-quick-tools>span{font-size:9px;color:#9aa9c1;margin-right:3px}
 .duku-quick-tools button{font-size:9px;border:1px solid #394760;background:#202b3e;color:#d0dbee;border-radius:5px;padding:6px 8px}
 .duku-quick-tools a{font-size:9px;color:#b4aaff;text-decoration:none;margin-left:auto}
+
+
+.github-import-panel{margin:12px 0 18px;padding:14px 16px;border:1px solid #d9d5f0;border-radius:10px;background:linear-gradient(135deg,#f8f7ff,#fff);display:grid;gap:9px;color:#241b48}
+.github-import-panel>div:first-child{display:grid;gap:3px}
+.github-import-panel b{font-size:11px;letter-spacing:.08em;color:#34246f}
+.github-import-panel small{font-size:10px;color:#655e80}
+.github-import-fields{display:grid;grid-template-columns:minmax(180px,1.4fr) minmax(160px,1fr) auto;gap:8px}
+.github-import-fields input{min-width:0;border:1px solid #d8d3e9;border-radius:7px;padding:10px 11px;background:#fff;color:#251b4b;font-size:12px}
+.github-import-fields input::placeholder{color:#928ba8}
+.github-import-fields button{white-space:nowrap;font-size:11px;padding:9px 13px}
+.github-import-panel-app{margin:10px 12px 0;background:#101827;border-color:#303c53;color:#edf2ff}
+.github-import-panel-app b{color:#c7bfff}
+.github-import-panel-app small{color:#aab6cb}
+.github-import-panel-app .github-import-fields input{background:#0b1220;border-color:#35435d;color:#eef3ff}
+.github-import-panel-app .github-import-fields input::placeholder{color:#8795ac}
+@media(max-width:760px){.github-import-fields{grid-template-columns:1fr}.github-import-fields button{width:100%}}
