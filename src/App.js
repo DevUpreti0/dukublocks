@@ -110,7 +110,7 @@ function buildAdminHomepagePreview(pageDraft) {
   <div class="preview-cards"><article class="preview-card"><b>Design and publish</b><p>Build a polished web presence with flexible sections.</p></article><article class="preview-card"><b>Grow your business</b><p>Manage your content, customers and online presence.</p></article><article class="preview-card"><b>One connected workspace</b><p>Keep your digital tools together in one place.</p></article></div>
   ${html}
   </main><footer>${escapeAdminPreview(c.footer_text||"© DuKu Business. All rights reserved.")}</footer>
-  <script>${js}<\/script></body></html>`;
+  <script>${js}</script></body></html>`;
 }
 const PLATFORM_CONTROL_GROUPS = [
   {title:"Platform access",items:[["new_signups_enabled","New customer registrations","Allow new accounts to register"],["maintenance_mode","Maintenance mode","Show maintenance experience to visitors"],["customer_website_publishing","Customer website publishing","Allow customer websites to be published"],["custom_domains_enabled","Custom domains","Allow domain connection workflows"],["media_uploads_enabled","Media uploads","Allow users to upload website media"]]},
