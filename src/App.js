@@ -322,7 +322,7 @@ function TenantSite() {
       setLoading(false);
     });
     return () => { active = false; };
-  }, [tenant]);
+  }, [tenant,currentHost,isDuKuPlatformHost]);
   useEffect(()=>{try{localStorage.setItem("duku-store-cart-"+window.location.hostname,JSON.stringify(storeCart));}catch(error){}},[storeCart]);
   useEffect(()=>{
     if(!site?.id||!isSupabaseConfigured)return;
