@@ -2260,3 +2260,7 @@ a:hover{ text-decoration-thickness:2px }
 .dd-hosting-state small{color:#696b7e;font-size:10px;line-height:1.5}
 .dd-hosting-state code{display:block;padding:8px 10px;border:1px solid #e5e6ef;border-radius:8px;background:#fff;color:#292b46;font-size:11px;overflow-wrap:anywhere}
 @media(max-width:700px){.dd-transfer-contact{grid-template-columns:1fr}.dd-transfer-panel{padding:14px}.dd-domain-actions{width:100%}.dd-domain-actions button{width:100%}}
+.dd-hosting-state>div{grid-template-columns:minmax(110px,.45fr) minmax(0,1fr) auto;align-items:center;gap:10px}
+.dd-hosting-state>div button{border:1px solid #d9dbea;border-radius:8px;background:#fff;color:#373950;padding:7px 9px;font-size:10px;font-weight:800;cursor:pointer}
+.dd-transfer-history{scroll-margin-top:90px}
+@media(max-width:600px){.dd-hosting-state>div{grid-template-columns:1fr;align-items:start}.dd-hosting-state>div button{width:100%}}
