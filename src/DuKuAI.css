@@ -690,3 +690,29 @@
 .dai-appearance-dim .dai-prompt-grid button,.dai-appearance-dim .dai-code-block,.dai-appearance-dim .dai-message pre{background:#202d3e!important;border-color:#3a4a60!important}
 .dai-appearance-dim .dai-disclaimer,.dai-appearance-dim .dai-footer,.dai-appearance-dim .dai-secure-dot+span{color:#9baabe}
 @media(max-width:600px){.dai-settings-overlay{padding:8px}.dai-settings-modal{max-height:94vh;border-radius:13px}.dai-settings-head,.dai-settings-content{padding-left:17px;padding-right:17px}.dai-settings-footer{padding-left:17px;padding-right:17px}.dai-appearance-options{gap:7px}}
+
+
+/* DuKu account and profile centre */
+.dai-profile-overlay{position:fixed;inset:0;z-index:1460;display:flex;align-items:center;justify-content:center;padding:18px;background:#111c2b66;backdrop-filter:blur(4px)}
+.dai-profile-modal{width:min(560px,100%);max-height:min(740px,90vh);display:flex;flex-direction:column;overflow:hidden;border:1px solid #e5eaf1;border-radius:17px;background:#fff;box-shadow:0 25px 80px #10213b35}
+.dai-profile-head{display:flex;align-items:flex-start;justify-content:space-between;padding:22px 24px 17px;border-bottom:1px solid #edf0f4}
+.dai-profile-head>div>span{color:#8873c9;font-size:9px;font-weight:800;letter-spacing:1.2px}.dai-profile-head h2{margin:6px 0 3px;color:#27374e;font-size:21px}.dai-profile-head p{margin:0;color:#8793a4;font-size:10px}
+.dai-profile-head>button{width:31px;height:31px;border:0;border-radius:8px;background:#f3f5f8;color:#637187;font-size:20px;cursor:pointer}
+.dai-profile-content{overflow:auto;padding:20px 24px}
+.dai-profile-identity{display:flex;align-items:center;gap:12px;padding:13px;border:1px solid #edf0f4;border-radius:12px;background:#fafbfc;margin-bottom:18px}
+.dai-profile-avatar{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#a88bff,#7158d9);color:#fff;font-size:18px;font-weight:800}
+.dai-profile-identity b{display:block;color:#34445b;font-size:12px}.dai-profile-identity small{display:block;margin-top:4px;color:#8995a5;font-size:10px}
+.dai-profile-form label{display:block;margin:12px 0;color:#526177;font-size:10px;font-weight:700}
+.dai-profile-form input,.dai-profile-security input{display:block;width:100%;box-sizing:border-box;margin-top:6px;padding:10px 11px;border:1px solid #e1e7ef;border-radius:8px;background:#fff;color:#33445a;font-size:11px;outline:none}
+.dai-profile-form input:focus,.dai-profile-security input:focus{border-color:#8b76d4;box-shadow:0 0 0 3px #8b76d41a}
+.dai-profile-form input:disabled{background:#f5f6f8;color:#8a96a7}
+.dai-profile-form label small{display:block;margin-top:5px;color:#9aa4b2;font-size:9px;font-weight:400}
+.dai-profile-form>button,.dai-profile-security form button{padding:9px 14px;border:0;border-radius:8px;background:#755bd0;color:#fff;font-size:10px;font-weight:700;cursor:pointer}
+.dai-profile-form>button:disabled,.dai-profile-security form button:disabled{opacity:.5;cursor:not-allowed}
+.dai-profile-security{margin-top:22px;padding-top:17px;border-top:1px solid #edf0f4}
+.dai-profile-security h3{margin:0 0 4px;color:#35465c;font-size:12px}.dai-profile-security p{margin:0 0 10px;color:#8a96a7;font-size:9px}
+.dai-profile-security form{display:flex;gap:8px;align-items:flex-start}.dai-profile-security form input{flex:1;min-width:0;margin-top:0}.dai-profile-security form button{white-space:nowrap}
+.dai-profile-notice{margin-top:14px;padding:10px;border-radius:8px;background:#fff3e9;color:#a05b2a;font-size:10px;line-height:1.5}.dai-profile-notice.success{background:#edf8f1;color:#34764c}
+.dai-profile-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-top:1px solid #edf0f4;color:#9aa4b2;font-size:9px}
+.dai-profile-footer button{padding:8px 17px;border:0;border-radius:8px;background:#755bd0;color:#fff;font-size:10px;font-weight:700;cursor:pointer}
+@media(max-width:560px){.dai-profile-overlay{padding:8px}.dai-profile-modal{max-height:94vh;border-radius:13px}.dai-profile-head,.dai-profile-content{padding-left:16px;padding-right:16px}.dai-profile-security form{flex-direction:column}.dai-profile-security form button{width:100%}.dai-profile-footer{padding-left:16px;padding-right:16px}}
