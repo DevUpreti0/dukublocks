@@ -2108,3 +2108,35 @@ body{background:#fff!important;color:#111018!important}
 #root :is(.dd-hope,.admin-dashboard,.admin-screen,.editor-overlay,.editor-workspace,.main-content,.ai-builder-modal,.auth-modal,.profile-setup-modal) :is(.dd-side-active,.side-link.selected,.filter-pills button.active){
   color:#3f16a8!important;
 }
+
+
+/* PRODUCT-WIDE ACTION HIERARCHY — consistent labels and contrast */
+#root :is(button.primary-btn,button.ai-builder-submit,button.duku-brain-cta,button.bottom-cta,button.tenant-action-button,.tenant-checkout-button,.dd-pro-button){
+  background:#5420d8!important;
+  color:#fff!important;
+  border:1px solid #5420d8!important;
+  font-weight:750!important;
+  text-shadow:none!important;
+}
+#root :is(button.primary-btn,button.ai-builder-submit,button.duku-brain-cta,button.bottom-cta,button.tenant-action-button,.tenant-checkout-button,.dd-pro-button):hover:not(:disabled){
+  background:#4315b8!important;color:#fff!important;border-color:#4315b8!important;
+  box-shadow:0 7px 20px #5420d82b!important;
+}
+#root :is(button.primary-btn,button.ai-builder-submit,button.duku-brain-cta,button.bottom-cta,button.tenant-action-button,.tenant-checkout-button,.dd-pro-button):active:not(:disabled){
+  background:#35108f!important;color:#fff!important;border-color:#35108f!important;
+}
+#root :is(button.ghost-btn,button.text-btn,button.add-page-btn,button.clear-selection-btn,.dd-icon-button){
+  background:#fff!important;color:#292334!important;border:1px solid #c9c3d2!important;
+}
+#root :is(button.ghost-btn,button.text-btn,button.add-page-btn,button.clear-selection-btn,.dd-icon-button):hover:not(:disabled){
+  background:#f2edff!important;color:#3f16a8!important;border-color:#a98cf5!important;
+}
+#root button:disabled{opacity:1!important;cursor:not-allowed!important}
+#root .uil-subsidiary-ribbon{min-height:30px;height:auto;padding:7px 12px;background:#171222;color:#fff}
+#root .uil-ribbon-track{gap:64px;animation-duration:34s}
+#root .uil-ribbon-track span{font-size:9px;line-height:1.35;letter-spacing:1.1px;font-weight:850}
+@media(max-width:600px){
+ #root .uil-subsidiary-ribbon{min-height:28px;padding:6px 8px}
+ #root .uil-ribbon-track{gap:38px;animation-duration:27s}
+ #root .uil-ribbon-track span{font-size:8px;letter-spacing:.65px}
+}
