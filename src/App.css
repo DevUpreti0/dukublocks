@@ -583,3 +583,7 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .platform-popup>button:first-child{position:absolute;right:14px;top:10px;border:0;background:transparent;font-size:25px;color:#647783}
 .platform-popup h2{font-size:24px;color:#183448;margin:12px 0}.platform-popup p{font-size:12px;line-height:1.7;color:#687985}
 .platform-custom-html{position:relative;z-index:1}
+
+
+/* Homepage CMS ordering is applied through each section's inline order value. */
+.main-content{display:flex;flex-direction:column}
