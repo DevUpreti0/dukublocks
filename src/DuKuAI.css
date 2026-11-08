@@ -611,3 +611,13 @@
 .dai-stop-btn:hover{background:#ffeded!important;border-color:#e9a9a9!important;transform:translateY(-1px)}
 .dai-stop-icon{font-size:9px}
 @media(prefers-reduced-motion:reduce){.dai-response-complete{animation:none!important}.dai-stop-btn{transition:none!important}}
+
+
+/* Expanded response actions and local feedback state */
+.dai-message-actions{flex-wrap:wrap;align-items:center;gap:5px}
+.dai-message-actions button{display:inline-flex;align-items:center;gap:4px;min-height:27px;padding:5px 8px;border:1px solid transparent;border-radius:8px;transition:background .16s ease,color .16s ease,border-color .16s ease}
+.dai-message-actions button:hover{background:#f2f6fc;border-color:#e4eaf3;color:#315f9f}
+.dai-message-actions .dai-feedback-btn{font-size:12px;padding:4px 7px;opacity:.72}
+.dai-message-actions .dai-feedback-btn.selected{opacity:1;background:#edf5ff;border-color:#cfe0f8;color:#285d9e}
+@media(max-width:540px){.dai-message-actions{gap:3px}.dai-message-actions button{font-size:9px;padding:5px 6px}}
+@media(prefers-reduced-motion:reduce){.dai-message-actions button{transition:none!important}}
