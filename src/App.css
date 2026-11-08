@@ -1344,3 +1344,31 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 
 /* Consistent short-lived feedback for action notifications */
 [class*="toast"]:not(.persistent-toast),[class*="notice"]:not(.admin-live-notice):not(.persistent-notice){animation:duku-notice-dismiss 7s ease forwards}
+
+
+/* DuKu FCA unified workspace navigation + app launchpad */
+.dd-hope .dd-sidebar>button{appearance:none;width:100%;display:flex;align-items:center;gap:14px;text-align:left;border:0;background:transparent;color:#657187;font:500 13px Inter,"Segoe UI",sans-serif;padding:12px 13px;border-radius:7px;cursor:pointer;transition:background .18s,color .18s}
+.dd-hope .dd-sidebar>button span{width:17px;text-align:center;font-size:16px;color:#8c97aa}
+.dd-hope .dd-sidebar>button:hover{background:#f2f5ff;color:#405cda}
+.dd-hope .dd-sidebar>button.dd-side-active{background:#405ddd;color:#fff;box-shadow:0 5px 13px #405ddd35}
+.dd-hope .dd-sidebar>button.dd-side-active span{color:#fff}
+.dd-hope .dd-sidebar>button i{margin-left:auto;font-size:10px;font-style:normal;border-radius:12px;padding:2px 7px;background:#edf1ff;color:#4662d7}
+.dd-hope .dd-sidebar>button em{margin-left:auto;font-style:normal;font-size:8px;color:#85631a;background:#fff4d7;padding:3px 6px;border-radius:10px}
+.dd-top-search{position:relative}
+.dd-top-search>button{border:0!important;background:transparent!important;padding:3px 7px!important;font-size:20px;color:#7c8799!important}
+.dd-app-hub{padding:23px;background:#fff;border:1px solid #e9edf4;border-radius:11px;box-shadow:0 7px 22px #1c2b4d06}
+.dd-app-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.dd-app-tile{min-width:0;min-height:158px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:17px;border:1px solid #e9edf4;border-radius:9px;background:#fff;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s}
+.dd-app-tile:hover:not(:disabled){transform:translateY(-3px);border-color:#c9d5f5;box-shadow:0 10px 24px #334b8a12}
+.dd-app-tile b{font-size:13px;color:#29364e}
+.dd-app-tile small{font-size:10px;line-height:1.5;color:#79859a;min-height:30px}
+.dd-app-tile em{font-style:normal;font-size:9px;font-weight:700;color:#4663d2;margin-top:auto}
+.dd-app-icon{width:35px;height:35px;border-radius:9px;display:grid;place-items:center;font-size:17px;font-weight:700}
+.app-blue{background:#edf2ff;color:#4663d2}.app-violet{background:#f2edff;color:#785ac5}.app-orange{background:#fff1e7;color:#d17a37}.app-green{background:#e8f7f1;color:#369b7b}.app-rose{background:#fff0f2;color:#ca657c}.app-cyan{background:#e9f8fb;color:#3296a8}.app-amber{background:#fff6df;color:#ba8a27}.app-slate{background:#eef1f5;color:#778397}
+.dd-app-tile:disabled{cursor:default;background:#fafbfc;border-style:dashed;opacity:.78}
+.dd-app-tile:disabled em{color:#8993a5}
+.dd-app-footnote{font-size:10px;color:#8a95a7;line-height:1.6;margin:16px 0 0}
+.dd-hope .dd-top-search input{min-width:0}
+@media(max-width:1100px){.dd-app-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:800px){.dd-hope .dd-sidebar>button{width:100%}}
+@media(max-width:600px){.dd-app-hub{padding:15px}.dd-app-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.dd-app-tile{padding:12px;min-height:150px}.dd-app-tile b{font-size:11px}.dd-app-tile small{font-size:9px}}
