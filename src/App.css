@@ -1190,3 +1190,14 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .duku-growth-panel .form-inbox-site{display:block;color:#4e3a88;margin-top:5px}
 .duku-growth-panel .form-inbox-preview{display:block;color:#7d778c;font-size:12px;margin-top:5px}
 @media(max-width:680px){.duku-growth-form{grid-template-columns:1fr}}
+
+
+.duku-job-panel{margin:10px 12px;padding:12px;border:1px solid rgba(139,125,255,.28);border-radius:10px;background:#0b1020;color:#dce2f4;max-height:220px;overflow:auto}
+.duku-job-panel>div{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.duku-job-panel b{font-size:12px;flex:1;min-width:120px}
+.duku-job-panel button,.duku-job-panel a{border:1px solid rgba(160,150,255,.35);background:#211c48;color:#e9e5ff;border-radius:6px;padding:6px 9px;font-size:11px;text-decoration:none}
+.duku-job-panel pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:130px;overflow:auto;font-size:11px;color:#c3cce0;margin:10px 0 0}
+.duku-job-status{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#b8adff}
+.duku-job-status.completed{color:#76ddb2}.duku-job-status.failed,.duku-job-status.cancelled{color:#ff9a9a}
+.duku-terminal-head>div{flex-wrap:wrap}
+.duku-terminal-head button:disabled{opacity:.45;cursor:not-allowed}
