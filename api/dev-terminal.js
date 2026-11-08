@@ -34,12 +34,14 @@ module.exports = async function handler(req, res) {
     const db = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false }, global: { headers: { Authorization: "Bearer " + token } } });
     const { data: userResult, error: authError } = await db.auth.getUser(token);
     if (authError || !userResult?.user) return res.status(401).json({ error: "Your session expired. Sign in again." });
+
     const body = req.body || {};
     const projectId = String(body.projectId || "");
     const projectType = body.projectType === "android" ? "android" : "website";
     const action = String(body.action || "run");
     if (!/^[0-9a-f-]{20,64}$/i.test(projectId)) return res.status(400).json({ error: "Save this project first, then reconnect the terminal." });
     if (!["run", "sync", "preview", "status"].includes(action)) return res.status(400).json({ error: "Unsupported terminal action." });
+
     const table = projectType === "android" ? "android_projects" : "code_projects";
     const columns = projectType === "android" ? "id,created_by,files,name,framework,package_name" : "id,created_by,files,name,language,framework";
     const { data: project, error: projectError } = await db.from(table).select(columns).eq("id", projectId).eq("created_by", userResult.user.id).single();
@@ -62,30 +64,57 @@ module.exports = async function handler(req, res) {
         await box.mkDir("workspace");
         const files = safeFiles(project.files || {});
         if (files.length) await box.writeFiles(files);
-        await box.runCommand({ cmd: "bash", args: ["-lc", "printf '%s\\n' 'DuKu Linux workspace ready' > .duku-workspace"], cwd: "/vercel/sandbox/workspace" });
+        const marker = await box.runCommand({ cmd: "bash", args: ["-lc", "printf '%s\\n' 'DuKu Linux workspace ready' > .duku-workspace"], cwd: "/vercel/sandbox/workspace" });
+        if (marker.exitCode !== 0) throw new Error("Could not initialise the Linux project folder.");
       }
     });
+
     if (action === "sync") {
       const files = safeFiles(project.files || {});
-      await sandbox.runCommand("bash", ["-lc", "mkdir -p /vercel/sandbox/workspace"]);
+      await sandbox.runCommand({ cmd: "mkdir", args: ["-p", "/vercel/sandbox/workspace"] });
       if (files.length) await sandbox.writeFiles(files);
       return res.status(200).json({ ok: true, output: "Saved project files synced into the isolated Linux workspace.", exitCode: 0, sandbox: sandboxName });
     }
+
     if (action === "status") {
-      const r = await sandbox.runCommand({ cmd: "bash", args: ["-lc", "printf 'Linux: '; uname -sr; printf 'Node: '; node --version 2>/dev/null || true; printf 'Python: '; python3 --version 2>/dev/null || true; printf 'Package managers: '; command -v npm; command -v pnpm || true; command -v bun || true; printf '\\nWorkspace files: '; find . -maxdepth 2 -type f | wc -l"], cwd: "/vercel/sandbox/workspace" }); uname -sr; printf 'Node: '; node --version 2>/dev/null || true; printf 'Python: '; python3 --version 2>/dev/null || true; printf 'Package managers: '; command -v npm; command -v pnpm || true; command -v bun || true; printf '\\nWorkspace files: '; find . -maxdepth 2 -type f | wc -l"], { cwd: "/vercel/sandbox/workspace" });
+      const r = await sandbox.runCommand({
+        cmd: "bash",
+        args: ["-lc", "printf 'Linux: '; uname -sr; printf 'Node: '; node --version 2>/dev/null || true; printf 'Python: '; python3 --version 2>/dev/null || true; printf 'npm: '; npm --version 2>/dev/null || true; printf 'pnpm: '; pnpm --version 2>/dev/null || true; printf 'bun: '; bun --version 2>/dev/null || true; printf '\\nProject files: '; find . -maxdepth 3 -type f | wc -l"],
+        cwd: "/vercel/sandbox/workspace"
+      });
       return res.status(200).json({ ok: r.exitCode === 0, output: await r.stdout(), stderr: await r.stderr(), exitCode: r.exitCode, sandbox: sandboxName });
     }
+
     if (action === "preview") {
-      const start = await sandbox.runCommand({ cmd: "bash", args: ["-lc", "if [ -f package.json ]; then (npm run dev -- --host 0.0.0.0 --port 3000 > /tmp/duku-preview.log 2>&1 &); elif [ -f index.html ]; then (python3 -m http.server 3000 --bind 0.0.0.0 > /tmp/duku-preview.log 2>&1 &); else echo 'No package.json or index.html found. Create a web app first.'; exit 2; fi; sleep 2; curl -sSf http://127.0.0.1:3000 >/dev/null"], cwd: "/vercel/sandbox/workspace" });
+      const install = await sandbox.runCommand({
+        cmd: "bash",
+        args: ["-lc", "if [ -f package.json ] && [ ! -d node_modules ]; then npm install --no-audit --no-fund; fi"],
+        cwd: "/vercel/sandbox/workspace"
+      });
+      if (install.exitCode !== 0) return res.status(200).json({ ok: false, output: await install.stdout(), stderr: await install.stderr(), exitCode: install.exitCode });
+      const start = await sandbox.runCommand({
+        cmd: "bash",
+        args: ["-lc", "if [ -f package.json ] && node -e \"process.exit(require('./package.json').scripts?.dev ? 0 : 1)\"; then (npm run dev -- --host 0.0.0.0 --port 3000 > /tmp/duku-preview.log 2>&1 &); elif [ -f package.json ] && node -e \"process.exit(require('./package.json').scripts?.start ? 0 : 1)\"; then (HOST=0.0.0.0 PORT=3000 npm start > /tmp/duku-preview.log 2>&1 &); elif [ -f index.html ]; then (python3 -m http.server 3000 --bind 0.0.0.0 > /tmp/duku-preview.log 2>&1 &); else echo 'No supported web start script or index.html found.'; exit 2; fi; for i in $(seq 1 25); do if curl -sSf http://127.0.0.1:3000 >/dev/null; then exit 0; fi; sleep 1; done; cat /tmp/duku-preview.log; exit 1"],
+        cwd: "/vercel/sandbox/workspace"
+      });
       if (start.exitCode !== 0) return res.status(200).json({ ok: false, output: await start.stdout(), stderr: await start.stderr(), exitCode: start.exitCode });
       return res.status(200).json({ ok: true, output: "Preview server started.", previewUrl: sandbox.domain(3000), exitCode: 0 });
     }
+
     const command = String(body.command || "").trim();
     if (!command || command.length > MAX_COMMAND) return res.status(400).json({ error: "Enter a command up to 4,000 characters." });
-    const result = await sandbox.runCommand({ cmd: "bash", args: ["-lc", command], cwd: "/vercel/sandbox/workspace" });
-    const stdout = (await result.stdout()).slice(0, 24000);
-    const stderr = (await result.stderr()).slice(0, 12000);
-    return res.status(200).json({ ok: result.exitCode === 0, output: stdout, stderr, exitCode: result.exitCode, sandbox: sandboxName });
+    const result = await sandbox.runCommand({
+      cmd: "timeout",
+      args: ["50s", "bash", "-lc", command],
+      cwd: "/vercel/sandbox/workspace"
+    });
+    return res.status(200).json({
+      ok: result.exitCode === 0,
+      output: (await result.stdout()).slice(0, 24000),
+      stderr: (await result.stderr()).slice(0, 12000),
+      exitCode: result.exitCode,
+      sandbox: sandboxName
+    });
   } catch (error) {
     console.error("DuKu Linux terminal error:", error);
     return res.status(500).json({ error: error?.message || "Linux workspace could not complete the request." });
