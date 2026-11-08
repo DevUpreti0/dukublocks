@@ -163,6 +163,8 @@ function AdminPortal() {
       if(error)setNotice("Could not load announcements: "+error.message);
       else setAnnouncementRows(data||[]);
     });
+    supabase.from("duku_ai_announcement_reads").select("announcement_id,user_id,read_at").then(({data,error})=>{if(active&&!error)setAnnouncementReadRows(data||[]);});
+    supabase.from("duku_ai_announcement_history").select("id,announcement_id,title,change_type,changed_at,changed_by").order("changed_at",{ascending:false}).limit(500).then(({data,error})=>{if(active&&!error)setAnnouncementHistoryRows(data||[]);});
     return()=>{active=false;};
   },[sessionUser,tab]);
   const resetAnnouncementDraft=()=>{setAnnouncementDraft({title:"",body:"",category:"product",status:"draft",audience:"all",scheduleAt:""});setEditingAnnouncement(null);};
