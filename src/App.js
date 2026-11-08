@@ -1160,9 +1160,19 @@ function BlogPage() {
  return <div className="public-blog"><header><a className="brand" href="/"><span className="brand-mark">D</span><span>DuKu <b>FCA</b></span></a><nav><a href="/">Home</a><a href="/#templates">Templates</a><a href="/#pricing">Plans</a></nav></header><main>{post?<article className="public-blog-article"><a href="/blog">← Back to newsroom</a><div className="eyebrow">{post.category} · {post.published_at?new Date(post.published_at).toLocaleDateString():""}</div><h1>{post.title}</h1><p className="blog-excerpt">{post.excerpt}</p>{post.cover_image_url&&<img className="blog-cover" src={post.cover_image_url} alt=""/>}<div className="blog-body">{post.body.split("\n\n").map((paragraph,i)=><p key={i}>{paragraph}</p>)}</div><small>By {post.author_name||"DuKu Editorial"}</small></article>:<><div className="eyebrow">DUKU BUSINESS · NEWSROOM</div><h1>News, ideas & <em>updates.</em></h1><p>Explore announcements, product releases and engineering stories.</p>{loading?<p>Loading articles…</p>:error?<p>{error}</p>:<div className="blog-card-grid">{posts.map(p=><article key={p.id}>{p.cover_image_url&&<img src={p.cover_image_url} alt=""/>}<small>{p.category} · {p.published_at?new Date(p.published_at).toLocaleDateString():""}</small><h2>{p.title}</h2><p>{p.excerpt}</p><a href={"/blog/"+p.slug}>Read article ↗</a></article>)}</div>}{!loading&&!posts.length&&!error&&<p>No articles published yet. Please check back soon.</p>}</>}</main><footer>DuKu Business is an official subsidiary of Upreti Industries Limited (UIL). · © DuKu Business. All rights reserved.</footer></div>;
 }
 
+class AdminErrorBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { hasError: false, message: "" }; }
+  static getDerivedStateFromError(error) { return { hasError: true, message: error?.message || "An unexpected admin error occurred." }; }
+  componentDidCatch(error, info) { console.error("DuKu admin panel error:", error, info); }
+  render() {
+    if (this.state.hasError) return <main className="admin-screen"><section className="admin-data-panel" role="alert"><div className="eyebrow">DUKU CONTROL CENTRE · RECOVERY</div><h1>We hit an unexpected error.</h1><p>The admin workspace was protected from a blank screen. Reload the panel to try again.</p><small>{this.state.message}</small><div><button className="primary-btn" onClick={() => window.location.reload()}>Reload admin panel</button><button className="ghost-btn" onClick={() => this.setState({hasError:false,message:""})}>Try again</button></div></section></main>;
+    return this.props.children;
+  }
+}
+
 function App() {
   const host = window.location.hostname;
-  if (host.startsWith("admin.")) return <AdminPortal />;
+  if (host.startsWith("admin.")) return <AdminErrorBoundary><AdminPortal /></AdminErrorBoundary>;
   if (window.location.pathname==="/blog" || window.location.pathname.startsWith("/blog/")) return <BlogPage />;
   if (host !== "dukubusiness.online" && host !== "www.dukubusiness.online" && host.endsWith(".dukubusiness.online")) return <TenantSite />;
   return <MainApp />;
