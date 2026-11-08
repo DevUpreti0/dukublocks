@@ -1695,13 +1695,23 @@ function DeveloperDashboard() {
   </main>;
 }
 
+function UILSubsidiaryTagline() {
+  return <div className="uil-subsidiary-ribbon" role="note" aria-label="Upreti Industries Limited subsidiary partner">
+    <span className="uil-ribbon-star" aria-hidden="true">✦</span>
+    <span className="uil-ribbon-track"><span>UPRETI INDUSTRIES LIMITED <b>(UIL)</b> · SUBSIDIARY PARTNER</span><span aria-hidden="true">UPRETI INDUSTRIES LIMITED <b>(UIL)</b> · SUBSIDIARY PARTNER</span></span>
+    <span className="uil-ribbon-star" aria-hidden="true">✦</span>
+  </div>;
+}
+
 function App() {
   const host = window.location.hostname;
-  if (host.startsWith("admin.")) return <AdminErrorBoundary><AdminPortal /></AdminErrorBoundary>;
-  if (host.startsWith("dashboard.")) return new URLSearchParams(window.location.search).has("openSite") ? <MainApp /> : <DeveloperDashboard />;
-  if (window.location.pathname==="/blog" || window.location.pathname.startsWith("/blog/")) return <BlogPage />;
-  if (host !== "dukubusiness.online" && host !== "www.dukubusiness.online" && host.endsWith(".dukubusiness.online")) return <TenantSite />;
-  return <MainApp />;
+  let page;
+  if (host.startsWith("admin.")) page = <AdminErrorBoundary><AdminPortal /></AdminErrorBoundary>;
+  else if (host.startsWith("dashboard.")) page = new URLSearchParams(window.location.search).has("openSite") ? <MainApp /> : <DeveloperDashboard />;
+  else if (window.location.pathname==="/blog" || window.location.pathname.startsWith("/blog/")) page = <BlogPage />;
+  else if (host !== "dukubusiness.online" && host !== "www.dukubusiness.online" && host.endsWith(".dukubusiness.online")) page = <TenantSite />;
+  else page = <MainApp />;
+  return <><UILSubsidiaryTagline />{page}</>;
 }
 
 export default App;
