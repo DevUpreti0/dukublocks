@@ -1486,3 +1486,82 @@ footer .brand{color:#fff}footer a{color:#c6cde0}
 .duku-ai-launcher{background:#17223b;border-radius:999px;box-shadow:0 10px 30px #111a2d35}
 @media(max-width:900px){.topbar{padding:0 20px}.top-links{gap:12px}.launch-card{grid-template-columns:1fr;gap:10px;padding-top:25px}.launch-copy{max-width:700px}.launch-art{min-height:330px}.stats-strip{margin:0 20px 45px;grid-template-columns:repeat(2,1fr)}.careers-section{grid-template-columns:1fr;gap:28px}.duku-brain-public-section{margin:35px 20px;padding:35px}}
 @media(max-width:650px){.topbar{height:68px}.topbar .brand small{display:none}.top-links{display:none}.top-actions{margin-left:auto}.welcome-row{padding:48px 22px 8px}.welcome-row h1{font-size:43px}.launch-card{padding:25px 22px 35px;min-height:0}.launch-copy h2{font-size:39px}.launch-art{min-height:260px}.browser-mock{transform:none}.browser-bar span{padding:5px 12px}.mock-page{padding:14px;min-height:220px}.mock-hero{padding:24px 3px 10px}.mock-image{height:145px}.mock-hero strong{font-size:25px}.float-card{padding:9px}.float-card b{font-size:10px}.float-card small{font-size:9px}.card-a{left:0;top:2%}.card-b{right:0;bottom:0}.stats-strip{padding:16px;gap:15px}.stats-strip .stats-note{justify-content:flex-start}.ecosystem-track{gap:30px}.ecosystem-wordmark{font-size:15px}.templates-section,.feature-section,.platform-suite-section,.platform-capabilities-section,.pricing-section,.careers-section{padding:58px 22px}.template-grid{grid-template-columns:1fr}.public-pricing-grid{grid-template-columns:1fr}.duku-brain-public-section{margin:20px 14px;padding:27px 22px}.bottom-cta{margin:25px 14px 45px;padding:35px 25px;display:grid;gap:22px}footer{align-items:flex-start;flex-direction:column}.career-form{padding:19px}}
+
+
+/* DuKu Studio professional product-system refinement */
+.dd-hope{background:#f5f7fa!important;color:#172033!important;font-family:Inter,"DM Sans",Arial,sans-serif}
+.dd-hope .dd-top{background:#fff!important;border-bottom:1px solid #e7ebf1!important;box-shadow:0 2px 8px #17203308!important}
+.dd-hope .dd-brand{color:#172033!important;letter-spacing:-.035em}
+.dd-hope .dd-brand b{color:#7b8494!important;font-weight:650}
+.dd-hope .dd-brand-mark{background:#172b4d!important;color:#fff!important;border-radius:8px!important}
+.dd-hope .dd-top-search input{background:#f7f8fa!important;border:1px solid #e6eaf0!important;border-radius:7px!important}
+.dd-hope .dd-shell{grid-template-columns:244px minmax(0,1fr)!important;max-width:1600px;margin:0 auto}
+.dd-hope .dd-sidebar{background:#fff!important;border-right:1px solid #e7ebf1!important;padding:22px 14px!important}
+.dd-hope .dd-side-home{color:#929bab!important;font-size:10px!important;letter-spacing:.12em!important;font-weight:750!important;margin:22px 10px 9px!important}
+.dd-hope .dd-sidebar>button{width:100%;min-height:40px;text-align:left;border:0!important;border-radius:7px!important;background:transparent!important;color:#596579!important;padding:9px 11px!important;font-size:13px!important;font-weight:550!important;display:flex;align-items:center;gap:11px}
+.dd-hope .dd-sidebar>button span{width:19px;color:#77849a!important;font-size:15px}
+.dd-hope .dd-sidebar>button:hover{background:#f4f6f9!important;color:#1e2c42!important}
+.dd-hope .dd-sidebar>button.dd-side-active{background:#edf2fa!important;color:#23436f!important;font-weight:700!important}
+.dd-hope .dd-sidebar>button.dd-side-active span{color:#315b91!important}
+.dd-hope .dd-side-bottom{border-top:1px solid #edf0f4!important;margin-top:24px!important;padding:18px 10px!important}
+.dd-hope .dd-main{background:#f5f7fa!important;padding:30px clamp(20px,3vw,46px)!important}
+.dd-hope .dd-hero{background:#203650!important;border-radius:10px!important;box-shadow:none!important;min-height:210px!important}
+.dd-hope .dd-hero h1{font-size:34px!important;letter-spacing:-.045em!important;font-weight:650!important}
+.dd-hope .dd-hero-content>p,.dd-hope .dd-kicker{letter-spacing:.12em!important;font-size:10px!important;font-weight:750!important}
+.dd-hope .dd-hero-content>a{background:#fff!important;color:#203650!important;border-radius:6px!important;font-weight:700!important}
+.dd-hope .dd-hero-announcement{border-radius:6px!important;background:#ffffff16!important}
+.dd-hope .dd-stat-card,.dd-hope .dd-chart-panel,.dd-hope .dd-app-tile,.dd-hope .dd-project,.dd-hope .dd-theme{border-radius:9px!important;border:1px solid #e6eaf0!important;box-shadow:0 2px 7px #17203306!important}
+.dd-hope .dd-stat-card{background:#fff!important}
+.dd-hope .dd-stat-icon{border-radius:8px!important;box-shadow:none!important}
+.dd-hope .dd-app-tile{background:#fff!important;text-align:left!important;padding:18px!important;transition:border-color .15s,transform .15s!important}
+.dd-hope .dd-app-tile:hover{border-color:#b8c7dc!important;transform:translateY(-2px)}
+.dd-hope .dd-app-icon{border-radius:8px!important}
+.dd-hope .dd-section h2,.dd-hope .dd-panel-head h2{font-size:21px!important;letter-spacing:-.025em!important;font-weight:650!important}
+.dd-hope .dd-project-actions button,.dd-hope .dd-theme button{border-radius:6px!important}
+.dd-hope .dd-filters button{border-radius:6px!important}
+.dd-hope .dd-filters button.active{background:#24476f!important;border-color:#24476f!important}
+.dd-hope .dd-primary,.dd-hope button.dd-primary{background:#24476f!important;border-radius:6px!important}
+.dd-hope .dd-brain-workspace{scroll-margin-top:85px}
+.dd-brain-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(250px,.8fr);gap:16px;align-items:start}
+.dd-brain-chat,.dd-brain-side{background:#fff;border:1px solid #e5eaf0;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px #17203306}
+.dd-brain-chat-head{display:flex;align-items:center;gap:11px;padding:16px 18px;border-bottom:1px solid #edf0f4}
+.dd-brain-mark{width:34px;height:34px;border-radius:8px;background:#203b5c;color:#fff;display:grid;place-items:center;font-size:18px}
+.dd-brain-chat-head>div{display:flex;flex-direction:column;gap:3px}
+.dd-brain-chat-head b{font-size:13px;color:#1d2b40}
+.dd-brain-chat-head small{font-size:11px;color:#8792a3}
+.dd-brain-status{margin-left:auto;color:#357b5a;background:#edf7f0;border-radius:4px;padding:5px 8px;font-size:10px;font-weight:700}
+.dd-brain-chat-feed{padding:17px;display:flex;flex-direction:column;gap:12px;min-height:230px;max-height:410px;overflow:auto;background:#fafbfd}
+.dd-brain-message{max-width:88%;padding:11px 13px;border:1px solid #e7ebf1;border-radius:8px;background:#fff}
+.dd-brain-message.user{align-self:flex-end;background:#edf2f8;border-color:#dfe7f1}
+.dd-brain-message small{font-size:9px;letter-spacing:.1em;color:#8290a3;font-weight:750}
+.dd-brain-message p{margin:5px 0 0;color:#354256;font-size:13px;line-height:1.6;white-space:pre-wrap}
+.dd-brain-composer{padding:13px;border-top:1px solid #edf0f4;background:#fff}
+.dd-brain-composer textarea{width:100%;resize:vertical;border:1px solid #dfe5ed;border-radius:7px;padding:12px;font:inherit;font-size:13px;color:#253247;outline:none}
+.dd-brain-composer textarea:focus{border-color:#7892b1;box-shadow:0 0 0 3px #315b9112}
+.dd-brain-composer>div{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:9px}
+.dd-brain-composer small,.dd-brain-side p{font-size:11px;color:#8490a1;line-height:1.55}
+.dd-brain-composer button,.dd-brain-plan button{border:0;border-radius:6px;background:#24476f;color:#fff;padding:10px 14px;font-weight:650;font-size:12px;cursor:pointer}
+.dd-brain-composer button:disabled,.dd-brain-plan button:disabled{opacity:.5;cursor:not-allowed}
+.dd-brain-side{padding:19px}
+.dd-brain-side>b{font-size:13px;color:#25344a}
+.dd-brain-side>ul,.dd-brain-plan ul{padding-left:18px;color:#566478;font-size:12px;line-height:2}
+.dd-brain-plan{border-top:1px solid #edf0f4;margin-top:16px;padding-top:15px}
+.dd-brain-plan>small{font-size:9px;color:#39745c;font-weight:800;letter-spacing:.12em}
+.dd-brain-plan h3{font-size:16px;margin:7px 0;color:#203149}
+.dd-brain-plan p{margin:0;color:#738096;font-size:11px}
+.dd-brain-plan button{width:100%;margin-top:8px}
+@media(max-width:800px){.dd-hope .dd-shell{grid-template-columns:1fr!important}.dd-brain-layout{grid-template-columns:1fr}.dd-hope .dd-sidebar{background:#fff!important}}
+@media(max-width:600px){.dd-hope .dd-main{padding:18px 13px 30px!important}.dd-hope .dd-hero{border-radius:8px!important}.dd-hope .dd-hero h1{font-size:29px!important}.dd-brain-chat-feed{min-height:190px;padding:12px}.dd-brain-message{max-width:96%}.dd-brain-composer>div{align-items:flex-start;flex-direction:column}.dd-brain-composer button{width:100%}}
+
+/* Login and signup: restrained, high-clarity product styling */
+.auth-modal{background:#fff!important;color:#1c293b!important;border:1px solid #e6eaf0!important;border-radius:12px!important;box-shadow:0 28px 90px #101a2b35!important}
+.auth-modal h2{color:#18263a!important;font-weight:650!important;letter-spacing:-.035em!important}
+.auth-modal p{color:#69778b!important;line-height:1.65!important}
+.auth-modal .eyebrow{color:#65758b!important;letter-spacing:.13em!important;font-weight:750!important}
+.auth-modal .modal-mark{background:#203b5c!important;color:#fff!important;border-radius:8px!important}
+.auth-modal label{color:#35445a!important;font-weight:650!important;font-size:12px!important}
+.auth-modal input,.auth-modal select,.auth-modal textarea{background:#fff!important;border:1px solid #dce3ec!important;border-radius:7px!important;color:#1c293b!important;box-shadow:none!important}
+.auth-modal input:focus,.auth-modal select:focus,.auth-modal textarea:focus{border-color:#7892b1!important;outline:0!important;box-shadow:0 0 0 3px #315b9112!important}
+.auth-modal .primary-btn,.auth-modal button.primary-btn{background:#24476f!important;border-radius:7px!important;box-shadow:none!important;font-weight:650!important}
+.auth-modal .text-btn,.auth-modal a{color:#315b91!important}
+.auth-modal .close-modal{border-radius:6px!important;color:#6b7789!important}
