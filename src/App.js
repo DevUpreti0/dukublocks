@@ -400,6 +400,8 @@ function MainApp() {
   const [mediaAssets, setMediaAssets] = useState(() => readLocalDraft().mediaAssets || []);
   const [, setMediaNotice] = useState("");
   const [authUser, setAuthUser] = useState(null);
+  const [pendingPlanId,setPendingPlanId]=useState("");
+  const [checkoutOpen,setCheckoutOpen]=useState(false),[checkoutCountry,setCheckoutCountry]=useState("IN"),[checkoutCurrency,setCheckoutCurrency]=useState("USD"),[checkoutBusy,setCheckoutBusy]=useState(false),[checkoutNotice,setCheckoutNotice]=useState("");
   const [authEmail, setAuthEmail] = useState("");
   const [authPassword, setAuthPassword] = useState("");
   const [authFullName, setAuthFullName] = useState("");
@@ -442,6 +444,10 @@ function MainApp() {
   const [adsensePublisherId,setAdsensePublisherId]=useState(""),[adsenseWebsiteId,setAdsenseWebsiteId]=useState(""),[adsenseNotice,setAdsenseNotice]=useState(""),[adsenseConnections,setAdsenseConnections]=useState([]);const [adsenseConsent,setAdsenseConsent]=useState(false);
   const [popupDismissed,setPopupDismissed]=useState(false);
   useEffect(()=>{const params=new URLSearchParams(window.location.search);if(params.get("auth")==="login"){setAuthMode("Welcome back");setShowAuth(true);}},[]);
+  useEffect(()=>{const params=new URLSearchParams(window.location.search);const plan=params.get("checkout");if(plan){setPendingPlanId(plan);setCheckoutCountry((navigator.language||"en-IN").toUpperCase().includes("IN")?"IN":"US");setCheckoutCurrency((navigator.language||"en-US").toUpperCase().includes("GB")?"GBP":(navigator.language||"en-US").toUpperCase().includes("DE")?"EUR":"USD");}},[]);
+  useEffect(()=>{if(authUser&&pendingPlanId){setCheckoutOpen(true);setShowAuth(false);setCheckoutNotice("");}},[authUser,pendingPlanId]);
+  const startPlanCheckout=(planId)=>{setPendingPlanId(planId);if(authUser){setCheckoutOpen(true);setCheckoutNotice("");}else{setAuthMode("Create your free account");setShowAuth(true);}};
+  const submitPlanCheckout=async()=>{if(!authUser){setAuthMode("Welcome back");setShowAuth(true);return;}setCheckoutBusy(true);setCheckoutNotice("");try{const {data,error}=await supabase.functions.invoke("duku-payment-gateway",{body:{plan:pendingPlanId,billing_country:checkoutCountry,currency:checkoutCurrency,email:authUser.email,name:authUser.user_metadata?.full_name||authUser.email?.split("@")[0]}});if(error)throw error;if(!data?.success)throw new Error(data?.error||"Could not start secure checkout.");if(data.provider==="stripe"){window.location.assign(data.checkout_url);return;}if(data.provider==="payu"){const form=document.createElement("form");form.method="POST";form.action=data.checkout_url;form.style.display="none";Object.entries(data.fields||{}).forEach(([key,value])=>{const input=document.createElement("input");input.type="hidden";input.name=key;input.value=String(value);form.appendChild(input);});document.body.appendChild(form);form.submit();return;}throw new Error("Unsupported payment provider response.");}catch(e){setCheckoutNotice(e.message||"Checkout could not be started.");setCheckoutBusy(false);}};
 
 
   const [authBusy, setAuthBusy] = useState(false);
@@ -860,7 +866,7 @@ function MainApp() {
         const { data, error } = await supabase.auth.signUp({ email: authEmail.trim(), password: authPassword, options: { data: metadata, emailRedirectTo: "https://dashboard.dukubusiness.online" } });
         if (error) throw error;
         setProfileForm({...metadata,onboarding_completed:false});
-        if (data.session) { window.location.href = "https://dashboard.dukubusiness.online"; return; }
+        if (data.session) { if(pendingPlanId){window.location.href="https://dukubusiness.online/?checkout="+encodeURIComponent(pendingPlanId);return;} window.location.href = "https://dashboard.dukubusiness.online"; return; }
         else setAuthNotice("Account created. Check your email to verify your address. You can complete your profile after signing in.");
       }
     } catch (error) { setAuthNotice(error.message || "Authentication failed. Please try again."); }
