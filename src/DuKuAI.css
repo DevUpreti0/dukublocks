@@ -399,3 +399,11 @@
 @keyframes dai-dot-width{0%{width:0}100%{width:13px}}
 @keyframes dai-cursor-blink{to{opacity:0}}
 @media(prefers-reduced-motion:reduce){.dai-thinking-orb,.dai-thinking-orb i,.dai-thinking-dots,.dai-stream-cursor{animation:none!important}.dai-thinking-dots{width:13px}}
+
+/* DuKu Web Search mode */
+.dai-web-search-btn{border:1px solid transparent!important}
+.dai-web-search-btn.active{background:#d3e3fd!important;color:#174ea6!important;border-color:#b8d1f5!important}
+.dai-message-content{white-space:pre-wrap}
+.dai-message-content a{color:#1a73e8;text-decoration:underline;text-decoration-color:#a8c7fa;text-underline-offset:2px;overflow-wrap:anywhere}
+.dai-message-content a:hover{color:#174ea6}
+@media(max-width:540px){.dai-web-search-btn span{display:inline!important}.dai-web-search-btn{padding:7px 8px!important;font-size:10px!important}}
