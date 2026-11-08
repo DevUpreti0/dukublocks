@@ -869,7 +869,7 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .dd-stat-card small{font-size:11px;color:#8993a5;font-weight:500;letter-spacing:0}
 .dd-stat-card b{font-size:25px;color:#29354b;line-height:1.2;text-transform:capitalize}
 .dd-stat-card span{font-size:10px;color:#a0a8b7}
-.dd-dashboard-grid{display:grid;grid-template-columns:minmax(0,2.1fr) minmax(235px,.9fr);gap:18px;margin:18px 0 34px}
+.dd-hope-grid{display:grid;grid-template-columns:minmax(0,2.1fr) minmax(235px,.9fr);gap:18px;margin:18px 0 34px}
 .dd-chart-panel{background:#fff;border:1px solid #edf0f5;border-radius:9px;padding:24px 24px 18px;box-shadow:0 7px 22px #1c2b4d06;min-width:0}
 .dd-panel-head{display:flex;align-items:center;justify-content:space-between}.dd-panel-head>div>small{font-size:9px;letter-spacing:.15em;color:#8a95a9;font-weight:800}
 .dd-panel-head h2{font-size:19px;color:#29364e;margin:5px 0}
@@ -913,9 +913,9 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .dd-hope .dd-filters button{border-color:#e1e6f0;color:#657187;background:#fff}
 .dd-hope .dd-filters button.active{background:#405ddd;border-color:#405ddd;color:#fff}
 .dd-hope .dd-sharing{background:#fff}
-@media(max-width:1100px){.dd-hope .dd-shell{grid-template-columns:230px minmax(0,1fr)}.dd-hope .dd-main{padding-left:24px;padding-right:24px}.dd-hero{margin-left:-24px;margin-right:-24px}.dd-dashboard-grid{grid-template-columns:minmax(0,1.6fr) minmax(210px,.8fr)}.dd-hope .dd-top{gap:14px}.dd-hope .dd-brand{min-width:180px}}
-@media(max-width:800px){.dd-hope .dd-shell{grid-template-columns:1fr}.dd-hope .dd-sidebar{display:none;position:fixed;z-index:30;left:0;top:76px;bottom:0;width:275px;overflow:auto;box-shadow:12px 0 35px #1d2d4d20}.dd-hope .dd-sidebar.dd-sidebar-open{display:flex}.dd-menu-toggle{display:block;border:0;background:#f0f3ff;color:#405ddd;border-radius:7px;padding:9px 12px}.dd-top-search{max-width:none}.dd-top-actions{gap:8px}.dd-top-actions .dd-user-meta,.dd-top-actions .dd-icon-button{display:none}.dd-dashboard-grid{grid-template-columns:1fr 250px}.dd-hope .dd-stats{gap:10px}.dd-stat-card{padding:14px;gap:10px}.dd-stat-icon{width:44px;height:44px;font-size:19px}}
-@media(max-width:600px){.dd-hope .dd-top{height:65px;padding:0 12px;gap:9px}.dd-hope .dd-brand{min-width:0;font-size:18px}.dd-brand-mark{font-size:23px}.dd-hope .dd-brand b,.dd-top-search,.dd-pro-button,.dd-signout{display:none}.dd-hope .dd-shell{min-height:calc(100vh - 65px)}.dd-hope .dd-sidebar{top:65px}.dd-hope .dd-main{padding:0 13px 35px}.dd-hero{height:205px;margin:0 -13px;padding:27px 22px;align-items:flex-start}.dd-hero h1{font-size:31px}.dd-hero-content>span{display:block;max-width:280px;font-size:11px;line-height:1.5}.dd-hero-announcement{position:absolute;right:14px;bottom:14px;padding:8px 10px;font-size:9px}.dd-hope .dd-stats{grid-template-columns:1fr;gap:9px;margin-top:0}.dd-stat-card{min-height:82px}.dd-dashboard-grid{grid-template-columns:1fr}.dd-side-widgets{display:grid;grid-template-columns:1fr 1fr}.dd-creative-card{grid-column:1/-1;height:180px}.dd-mini-widget{padding:10px 8px;gap:8px}.dd-mini-widget small{font-size:8px}.dd-chart-panel{padding:17px 12px}.dd-chart{height:175px}.dd-chart-summary{flex-wrap:wrap}.dd-chart-legend{padding-left:34px}.dd-hope .dd-project-grid,.dd-hope .dd-theme-grid{grid-template-columns:1fr}}
+@media(max-width:1100px){.dd-hope .dd-shell{grid-template-columns:230px minmax(0,1fr)}.dd-hope .dd-main{padding-left:24px;padding-right:24px}.dd-hero{margin-left:-24px;margin-right:-24px}.dd-hope-grid{grid-template-columns:minmax(0,1.6fr) minmax(210px,.8fr)}.dd-hope .dd-top{gap:14px}.dd-hope .dd-brand{min-width:180px}}
+@media(max-width:800px){.dd-hope .dd-shell{grid-template-columns:1fr}.dd-hope .dd-sidebar{display:none;position:fixed;z-index:30;left:0;top:76px;bottom:0;width:275px;overflow:auto;box-shadow:12px 0 35px #1d2d4d20}.dd-hope .dd-sidebar.dd-sidebar-open{display:flex}.dd-menu-toggle{display:block;border:0;background:#f0f3ff;color:#405ddd;border-radius:7px;padding:9px 12px}.dd-top-search{max-width:none}.dd-top-actions{gap:8px}.dd-top-actions .dd-user-meta,.dd-top-actions .dd-icon-button{display:none}.dd-hope-grid{grid-template-columns:1fr 250px}.dd-hope .dd-stats{gap:10px}.dd-stat-card{padding:14px;gap:10px}.dd-stat-icon{width:44px;height:44px;font-size:19px}}
+@media(max-width:600px){.dd-hope .dd-top{height:65px;padding:0 12px;gap:9px}.dd-hope .dd-brand{min-width:0;font-size:18px}.dd-brand-mark{font-size:23px}.dd-hope .dd-brand b,.dd-top-search,.dd-pro-button,.dd-signout{display:none}.dd-hope .dd-shell{min-height:calc(100vh - 65px)}.dd-hope .dd-sidebar{top:65px}.dd-hope .dd-main{padding:0 13px 35px}.dd-hero{height:205px;margin:0 -13px;padding:27px 22px;align-items:flex-start}.dd-hero h1{font-size:31px}.dd-hero-content>span{display:block;max-width:280px;font-size:11px;line-height:1.5}.dd-hero-announcement{position:absolute;right:14px;bottom:14px;padding:8px 10px;font-size:9px}.dd-hope .dd-stats{grid-template-columns:1fr;gap:9px;margin-top:0}.dd-stat-card{min-height:82px}.dd-hope-grid{grid-template-columns:1fr}.dd-side-widgets{display:grid;grid-template-columns:1fr 1fr}.dd-creative-card{grid-column:1/-1;height:180px}.dd-mini-widget{padding:10px 8px;gap:8px}.dd-mini-widget small{font-size:8px}.dd-chart-panel{padding:17px 12px}.dd-chart{height:175px}.dd-chart-summary{flex-wrap:wrap}.dd-chart-legend{padding-left:34px}.dd-hope .dd-project-grid,.dd-hope .dd-theme-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.dd-hope .dd-hero-orb,.dd-hope .dd-stat-card,.dd-hope .dd-creative-card,.dd-hope .dd-chart-line-blue,.dd-hope .dd-chart-line-mint{animation:none}}
 
 
@@ -1764,8 +1764,8 @@ html{scroll-behavior:smooth}
   #root:has(.launch-card) .float-card:nth-child(2){animation-delay:-2.5s}
   #root:has(.launch-card) .pricing-section .public-plan{transition:transform .3s ease,border-color .3s,box-shadow .3s}
   #root:has(.launch-card) .pricing-section .public-plan:hover{transform:translateY(-5px);border-color:#6575ad!important;box-shadow:0 20px 55px #0004}
-  #root:has(.dd-dashboard),#root:has(.dd-sidebar){scroll-behavior:smooth}
-  #root:has(.dd-dashboard) .dd-section{animation:duku-rise .65s ease-out both}
+  #root:has(.dd-hope),#root:has(.dd-sidebar){scroll-behavior:smooth}
+  #root:has(.dd-hope) .dd-section{animation:duku-rise .65s ease-out both}
 }
 @keyframes duku-rise{from{opacity:0;transform:translate3d(0,18px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
 @keyframes duku-fade{from{opacity:0}to{opacity:1}}
@@ -2000,24 +2000,24 @@ body{background:#fff!important;color:#111018!important}
 
 /* BOLD MODERN global system — public, dashboard, editor and admin */
 :root{--duku-ink:#111018;--duku-purple:#5b21f6;--duku-muted:#514d5d;--duku-border:#e5e1ed;--duku-soft:#f7f5fc}
-#root:has(.dd-dashboard),#root:has(.admin-dashboard),#root:has(.editor-studio-toolbar){color:var(--duku-ink)}
-#root:has(.dd-dashboard) .dd-dashboard{background:#f7f6fa!important;color:var(--duku-ink)!important}
-#root:has(.dd-dashboard) .dd-sidebar{background:#fff!important;border-right:1px solid var(--duku-border)!important}
-#root:has(.dd-dashboard) .dd-brand,#root:has(.dd-dashboard) .dd-section h2,#root:has(.dd-dashboard) .dd-section h3,#root:has(.dd-dashboard) .dd-panel-head h2,#root:has(.dd-dashboard) .dd-app-tile b,#root:has(.dd-dashboard) .dd-settings-card b{color:#111018!important}
-#root:has(.dd-dashboard) .dd-sidebar>button{color:#292633!important;font-weight:700!important}
-#root:has(.dd-dashboard) .dd-sidebar>button.dd-side-active{background:#eee8ff!important;color:#4c1bd6!important}
-#root:has(.dd-dashboard) .dd-main{background:#f7f6fa!important;color:#111018!important}
-#root:has(.dd-dashboard) .dd-hero{background:#fff!important;border:1px solid #e5e1ed!important;color:#111018!important;box-shadow:0 14px 36px #21123b0a!important}
-#root:has(.dd-dashboard) .dd-hero h1,#root:has(.dd-dashboard) .dd-hero h2{color:#111018!important;font-weight:850!important;letter-spacing:-1.8px!important}
-#root:has(.dd-dashboard) .dd-hero p,#root:has(.dd-dashboard) .dd-section p,#root:has(.dd-dashboard) .dd-section small{color:#403b4b!important}
-#root:has(.dd-dashboard) .dd-section,.dd-dashboard .dd-settings-card,.dd-dashboard .dd-app-tile,.dd-dashboard .dd-extension-card,.dd-dashboard .dd-panel,.dd-dashboard .dd-project-card{background:#fff!important;border-color:#e5e1ed!important;color:#111018!important}
-#root:has(.dd-dashboard) .dd-section button,#root:has(.dd-dashboard) .dd-app-tile em{color:#4e1cdb}
-#root:has(.dd-dashboard) .dd-section button.primary-btn,#root:has(.dd-dashboard) .dd-section .primary-btn{background:#5b21f6!important;color:#fff!important;border-color:#5b21f6!important}
-#root:has(.dd-dashboard) .dd-top-search input,#root:has(.dd-dashboard) .dd-brain-composer textarea,#root:has(.dd-dashboard) .dd-dev-inline input,#root:has(.dd-dashboard) .dd-dev-form input{background:#fff!important;color:#111018!important;border:1px solid #c9c4d4!important}
-#root:has(.dd-dashboard) .dd-brain-layout{background:#fff!important;border:1px solid #e5e1ed!important}
-#root:has(.dd-dashboard) .dd-brain-message p{color:#211e2a!important}
-#root:has(.dd-dashboard) .dd-brain-message.assistant{background:#f3efff!important;color:#111018!important}
-#root:has(.dd-dashboard) .dd-brain-message.user{background:#5b21f6!important;color:#fff!important}
+#root:has(.dd-hope),#root:has(.admin-dashboard),#root:has(.editor-studio-toolbar){color:var(--duku-ink)}
+#root:has(.dd-hope) .dd-hope{background:#f7f6fa!important;color:var(--duku-ink)!important}
+#root:has(.dd-hope) .dd-sidebar{background:#fff!important;border-right:1px solid var(--duku-border)!important}
+#root:has(.dd-hope) .dd-brand,#root:has(.dd-hope) .dd-section h2,#root:has(.dd-hope) .dd-section h3,#root:has(.dd-hope) .dd-panel-head h2,#root:has(.dd-hope) .dd-app-tile b,#root:has(.dd-hope) .dd-settings-card b{color:#111018!important}
+#root:has(.dd-hope) .dd-sidebar>button{color:#292633!important;font-weight:700!important}
+#root:has(.dd-hope) .dd-sidebar>button.dd-side-active{background:#eee8ff!important;color:#4c1bd6!important}
+#root:has(.dd-hope) .dd-main{background:#f7f6fa!important;color:#111018!important}
+#root:has(.dd-hope) .dd-hero{background:#fff!important;border:1px solid #e5e1ed!important;color:#111018!important;box-shadow:0 14px 36px #21123b0a!important}
+#root:has(.dd-hope) .dd-hero h1,#root:has(.dd-hope) .dd-hero h2{color:#111018!important;font-weight:850!important;letter-spacing:-1.8px!important}
+#root:has(.dd-hope) .dd-hero p,#root:has(.dd-hope) .dd-section p,#root:has(.dd-hope) .dd-section small{color:#403b4b!important}
+#root:has(.dd-hope) .dd-section,.dd-hope .dd-settings-card,.dd-hope .dd-app-tile,.dd-hope .dd-extension-card,.dd-hope .dd-panel,.dd-hope .dd-project-card{background:#fff!important;border-color:#e5e1ed!important;color:#111018!important}
+#root:has(.dd-hope) .dd-section button,#root:has(.dd-hope) .dd-app-tile em{color:#4e1cdb}
+#root:has(.dd-hope) .dd-section button.primary-btn,#root:has(.dd-hope) .dd-section .primary-btn{background:#5b21f6!important;color:#fff!important;border-color:#5b21f6!important}
+#root:has(.dd-hope) .dd-top-search input,#root:has(.dd-hope) .dd-brain-composer textarea,#root:has(.dd-hope) .dd-dev-inline input,#root:has(.dd-hope) .dd-dev-form input{background:#fff!important;color:#111018!important;border:1px solid #c9c4d4!important}
+#root:has(.dd-hope) .dd-brain-layout{background:#fff!important;border:1px solid #e5e1ed!important}
+#root:has(.dd-hope) .dd-brain-message p{color:#211e2a!important}
+#root:has(.dd-hope) .dd-brain-message.assistant{background:#f3efff!important;color:#111018!important}
+#root:has(.dd-hope) .dd-brain-message.user{background:#5b21f6!important;color:#fff!important}
 #root:has(.admin-dashboard) .admin-dashboard,#root:has(.admin-screen) .admin-screen{background:#f7f6fa!important;color:#111018!important}
 #root:has(.admin-dashboard) .admin-dashboard>header,#root:has(.admin-dashboard) .admin-layout>aside,#root:has(.admin-screen) .admin-login{background:#fff!important;border-color:#e5e1ed!important;color:#111018!important}
 #root:has(.admin-dashboard) .admin-layout>aside button{color:#292633!important;font-weight:700!important}
