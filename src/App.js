@@ -1060,21 +1060,29 @@ function MainApp() {
   });
   const selectedBlock = blocks.find(block => String(block.id) === String(selectedBlockId)) || null;
 
-  const uploadMedia = (event) => {
-    const files = Array.from(event.target.files || []);
-    files.forEach(file => {
-      if (!file.type.startsWith("image/")) { setMediaNotice("Please choose an image file."); return; }
-      if (file.size > 2 * 1024 * 1024) { setMediaNotice(file.name + " is larger than 2 MB. Choose a smaller image."); return; }
-      const reader = new FileReader();
-      reader.onload = () => {
-        const asset = { id: "asset-" + Date.now() + "-" + Math.random().toString(36).slice(2,8), name: file.name, type: file.type, size: file.size, dataUrl: reader.result };
-        setMediaAssets(current => [asset, ...current]);
-        setMediaNotice(file.name + " added to this device's media library.");
-      };
-      reader.onerror = () => setMediaNotice("Could not read " + file.name + ". Please try again.");
-      reader.readAsDataURL(file);
-    });
-    event.target.value = "";
+  const uploadMedia = async (event) => {
+    event.preventDefault?.();
+    const files = Array.from(event.dataTransfer?.files || event.target?.files || []).filter(file => file && file.type.startsWith("image/"));
+    if (!files.length) { setMediaNotice("Drop image files here or choose them from your device."); return; }
+    const readFile = async (file) => {
+      if (file.size > 15 * 1024 * 1024) throw new Error(file.name + " is larger than 15 MB.");
+      let source = file;
+      if (file.size > 1.2 * 1024 * 1024 && typeof createImageBitmap === "function") {
+        try {
+          const bitmap = await createImageBitmap(file);
+          const scale = Math.min(1, 1800 / Math.max(bitmap.width, bitmap.height));
+          const canvas = document.createElement("canvas"); canvas.width = Math.max(1, Math.round(bitmap.width * scale)); canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+          canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height); bitmap.close?.();
+          source = await new Promise(resolve => canvas.toBlob(blob => resolve(blob || file), "image/jpeg", 0.82));
+        } catch (error) { source = file; }
+      }
+      return await new Promise((resolve,reject) => { const reader = new FileReader(); reader.onload=()=>resolve({id:"asset-"+Date.now()+"-"+Math.random().toString(36).slice(2,8),name:file.name,type:source.type||file.type,size:source.size||file.size,dataUrl:reader.result}); reader.onerror=()=>reject(new Error("Could not read "+file.name+".")); reader.readAsDataURL(source); });
+    };
+    const results = await Promise.allSettled(files.map(readFile));
+    const added = results.filter(x=>x.status==="fulfilled").map(x=>x.value);
+    if (added.length) { setMediaAssets(current=>[...added,...current]); setMediaNotice(added.length+" image"+(added.length===1?"":"s")+" added to your media library."); }
+    const failed = results.filter(x=>x.status==="rejected"); if (failed.length) setMediaNotice(failed.map(x=>x.reason.message).join(" "));
+    if (event.target) event.target.value = "";
   };
   const insertMedia = (asset) => {
     setBlocks(current => current.concat([{ id: Date.now()+Math.random(), type: "Image", title: asset.name, content: "Image added from your media library.", assetId: asset.id }]));
