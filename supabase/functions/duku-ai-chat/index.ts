@@ -1,6 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 const cors = {"Access-Control-Allow-Origin":"https://ai.dukubusiness.online","Access-Control-Allow-Headers":"authorization, x-client-info, apikey, content-type","Access-Control-Allow-Methods":"POST, OPTIONS","Content-Type":"application/json"};
-const allowedModels = new Set(["openai/gpt-5.6-luna","openai/gpt-5.6-sol","google/gemini-3.8-flash","google/gemini-3.1-pro-preview"]);
+const allowedModels = new Set(["google/gemini-3.6-flash","google/gemini-3.1-pro-preview","openai/gpt-5","deepseek/deepseek-v3.2"]);
+const fallbackModels = ["google/gemini-3.6-flash","google/gemini-3.1-pro-preview","openai/gpt-5","deepseek/deepseek-v3.2"];
 Deno.serve(async (req: Request) => {
   if(req.method==="OPTIONS") return new Response("ok",{headers:cors});
   if(req.method!=="POST") return new Response(JSON.stringify({error:"Method not allowed."}),{status:405,headers:cors});
@@ -26,8 +27,13 @@ Deno.serve(async (req: Request) => {
       return {role,content};
     });
     if(safeMessages.reduce((sum:number,item:any)=>sum+(typeof item.content==="string"?item.content.length:JSON.stringify(item.content).length),0)>12000000)return new Response(JSON.stringify({error:"This conversation is too long. Start a new chat or shorten the messages."}),{status:413,headers:cors});
-    const upstream=await fetch("https://ai-gateway.vercel.sh/v1/chat/completions",{method:"POST",headers:{"Authorization":"Bearer "+gatewayKey,"Content-Type":"application/json"},body:JSON.stringify({model,messages:safeMessages,stream:true,temperature:0.7})});
-    if(!upstream.ok){const detail=await upstream.text();return new Response(JSON.stringify({error:upstream.status===401?"The AI Gateway key is invalid.":upstream.status===402?"AI Gateway credits or budget are unavailable.":upstream.status===429?"The AI service is busy. Please wait a moment and try again.":"The AI provider could not complete this request.",providerStatus:upstream.status,detail:detail.slice(0,500)}),{status:upstream.status,headers:cors});}
+    const upstream=await fetch("https://ai-gateway.vercel.sh/v1/chat/completions",{method:"POST",headers:{"Authorization":"Bearer "+gatewayKey,"Content-Type":"application/json"},body:JSON.stringify({model,models:fallbackModels.filter(id=>id!==model),messages:safeMessages,stream:true})});
+    if(!upstream.ok){
+      const detail=await upstream.text();
+      console.error("DuKu AI Gateway request failed",{status:upstream.status,model,detail:detail.slice(0,350)});
+      const message=upstream.status===401?"The AI Gateway key is invalid.":upstream.status===402?"AI Gateway credits or budget are unavailable.":upstream.status===403?"AI Gateway denied this model for the current account or region. The request will need an eligible DuKu Version or updated Gateway access.":upstream.status===429?"The AI service is busy. Please wait a moment and try again.":"The AI provider could not complete this request.";
+      return new Response(JSON.stringify({error:message,providerStatus:upstream.status,detail:detail.slice(0,350)}),{status:upstream.status,headers:cors});
+    }
     const headers=new Headers(cors);headers.set("Content-Type","text/event-stream; charset=utf-8");headers.set("Cache-Control","no-cache, no-transform");headers.set("Connection","keep-alive");
     return new Response(upstream.body,{status:200,headers});
   } catch(error){return new Response(JSON.stringify({error:error instanceof Error?error.message:"Unexpected DuKu AI error."}),{status:400,headers:cors});}
