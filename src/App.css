@@ -1652,3 +1652,88 @@ footer .brand{color:#fff}footer a{color:#c6cde0}
 .studio-search-preview span{font-size:10px;color:#32835d}
 .studio-search-preview p{font-size:11px;line-height:1.5;color:#66758a;margin:0}
 @media(max-width:760px){.editor-top{flex-wrap:wrap;gap:8px}.editor-actions{overflow-x:auto;max-width:100%;padding-bottom:5px}.editor-studio-toolbar{overflow-x:auto}.studio-toolbar-left,.studio-toolbar-centre,.studio-toolbar-right{flex-shrink:0}.editor-tools{max-height:48vh;overflow:auto}.studio-settings-panel{display:grid;grid-template-columns:1fr}}
+
+/* DuKu international public homepage redesign — scoped to marketing page only */
+#root:has(.launch-card){background:#070b14;color:#f4f6fb}
+#root:has(.launch-card) .welcome-row{max-width:1280px;margin:0 auto;padding:78px 6vw 28px!important;display:block!important}
+#root:has(.launch-card) .welcome-row .eyebrow{color:#aab7d1;letter-spacing:.16em;font-size:10px}
+#root:has(.launch-card) .welcome-row h1{max-width:900px;font-size:clamp(42px,6.3vw,78px);line-height:1.02;letter-spacing:-.065em;color:#f7f8fc;font-weight:760}
+#root:has(.launch-card) .welcome-copy{max-width:690px;color:#aab5c8;font-size:17px;line-height:1.7}
+#root:has(.launch-card) .launch-card{max-width:1280px;margin:12px auto 65px!important;padding:38px 6vw!important;min-height:510px;border:1px solid #28344b!important;border-radius:22px!important;background:radial-gradient(ellipse at 78% 45%,#17264a 0%,#10182a 35%,#0b111e 74%)!important;box-shadow:0 28px 90px #0008!important;overflow:hidden;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:38px;align-items:center}
+#root:has(.launch-card) .launch-copy .pill{background:#151f34;border:1px solid #334462;color:#cbd5e8;border-radius:99px;padding:8px 12px;font-size:10px;letter-spacing:.12em}
+#root:has(.launch-card) .launch-copy h2{color:#f7f8fc;font-size:clamp(36px,4.5vw,58px);line-height:1.06;letter-spacing:-.055em;font-weight:730;max-width:570px}
+#root:has(.launch-card) .launch-copy p{color:#aebbd0;font-size:15px;line-height:1.75;max-width:510px}
+#root:has(.launch-card) .launch-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
+#root:has(.launch-card) .launch-actions .primary-btn{background:linear-gradient(110deg,#743cff,#2578ff)!important;color:#fff!important;border:0!important;border-radius:7px!important;padding:14px 20px!important;box-shadow:0 8px 26px #553cff45!important}
+#root:has(.launch-card) .launch-actions .ghost-btn{background:#101a2b!important;border:1px solid #465875!important;color:#e8edf7!important;border-radius:7px!important;padding:13px 18px!important}
+#root:has(.launch-card) .trust-line{color:#8796ad!important;font-size:11px;margin-top:22px}
+#root:has(.launch-card) .launch-art{min-height:400px;position:relative}
+#root:has(.launch-card) .browser-mock{background:#f7f9fd!important;border:1px solid #64769a!important;border-radius:14px!important;box-shadow:0 28px 70px #0009!important;transform:perspective(1200px) rotateY(-7deg) rotateX(2deg)}
+#root:has(.launch-card) .browser-bar{background:#e9edf5!important;border-bottom:1px solid #d6ddea!important}
+#root:has(.launch-card) .mock-page{background:#f8faff!important}
+#root:has(.launch-card) .mock-nav{color:#17233a!important}
+#root:has(.launch-card) .mock-hero{background:linear-gradient(130deg,#e9edfa,#d9e6f7)!important;color:#1d2a44!important}
+#root:has(.launch-card) .mock-hero strong{color:#1a2a46!important}
+#root:has(.launch-card) .mock-image{background:linear-gradient(145deg,#182c50,#536c9a)!important}
+#root:has(.launch-card) .float-card{background:#17233a!important;border:1px solid #344763!important;color:#e9eef8!important;box-shadow:0 14px 36px #0006!important}
+#root:has(.launch-card) .float-card small{color:#a6b5cb!important}
+#root:has(.launch-card) .ecosystem-section,#root:has(.launch-card) .templates-section,#root:has(.launch-card) .feature-section,#root:has(.launch-card) .platform-suite-section,#root:has(.launch-card) .platform-capabilities-section,#root:has(.launch-card) .duku-brain-public-section,#root:has(.launch-card) .pricing-section,#root:has(.launch-card) .careers-section,#root:has(.launch-card) .bottom-cta{max-width:1280px;margin-left:auto!important;margin-right:auto!important;padding-left:6vw!important;padding-right:6vw!important}
+#root:has(.launch-card) .ecosystem-section,#root:has(.launch-card) .templates-section,#root:has(.launch-card) .feature-section,#root:has(.launch-card) .platform-suite-section,#root:has(.launch-card) .platform-capabilities-section,#root:has(.launch-card) .duku-brain-public-section{background:transparent!important;color:#f1f4fb!important}
+#root:has(.launch-card) .ecosystem-heading h2,#root:has(.launch-card) .section-heading h2,#root:has(.launch-card) .duku-suite-heading h2{color:#f3f6fc!important;font-size:clamp(28px,3.7vw,43px)!important;letter-spacing:-.045em!important}
+#root:has(.launch-card) .ecosystem-heading p,#root:has(.launch-card) .section-heading p,#root:has(.launch-card) .duku-suite-heading p{color:#9eacc1!important}
+#root:has(.launch-card) .ecosystem-wordmark{color:#aab7cc!important;opacity:.9}
+#root:has(.launch-card) .duku-platform-suite{max-width:1280px;margin:0 auto;padding:82px 6vw 90px;background:linear-gradient(180deg,#080d17,#0d1422)!important;color:#f3f6fb!important}
+#root:has(.launch-card) .duku-suite-heading{max-width:740px;margin-bottom:35px}
+#root:has(.launch-card) .duku-suite-heading>span{font-size:10px;letter-spacing:.16em;color:#9b83ff;font-weight:750}
+#root:has(.launch-card) .duku-suite-heading h2{font-size:clamp(32px,4vw,48px);letter-spacing:-.05em;line-height:1.08;color:#f6f8fc;margin:13px 0}
+#root:has(.launch-card) .duku-suite-heading h2 em{font-style:normal;background:linear-gradient(100deg,#9d6aff,#38b8ff);background-clip:text;-webkit-background-clip:text;color:transparent}
+#root:has(.launch-card) .duku-suite-heading p{color:#9eacc1;line-height:1.7;font-size:14px}
+#root:has(.launch-card) .duku-suite-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+#root:has(.launch-card) .duku-suite-card{position:relative;min-height:390px;overflow:hidden;border:1px solid #26354d;border-radius:13px;padding:25px;background:linear-gradient(145deg,#121d30,#0c1422);color:#f1f4fb}
+#root:has(.launch-card) .duku-suite-card>span{display:block;margin-top:17px;color:#8496b2;font-size:9px;letter-spacing:.15em;font-weight:750}
+#root:has(.launch-card) .duku-suite-card h3{font-size:25px;letter-spacing:-.035em;margin:10px 0;color:#f6f8fc;max-width:380px}
+#root:has(.launch-card) .duku-suite-card p{font-size:12px;line-height:1.7;color:#a2b0c4;max-width:400px}
+#root:has(.launch-card) .duku-suite-card ul{padding-left:17px;color:#b8c4d6;font-size:11px;line-height:1.9}
+#root:has(.launch-card) .duku-suite-card>button{position:relative;z-index:2;margin-top:7px;border:0;background:transparent;color:#b49aff;font-size:12px;font-weight:700;cursor:pointer;padding:7px 0}
+#root:has(.launch-card) .duku-suite-card>button b{margin-left:7px}
+#root:has(.launch-card) .suite-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:9px;background:#252044;color:#b99cff;font-size:20px}
+#root:has(.launch-card) .suite-app .suite-icon{background:#102d42;color:#4ecbff}
+#root:has(.launch-card) .suite-commerce .suite-icon{background:#10362e;color:#5ee0b1}
+#root:has(.launch-card) .suite-ai .suite-icon{background:#30243f;color:#d0a0ff}
+#root:has(.launch-card) .suite-browser{position:absolute;right:24px;bottom:0;width:47%;height:160px;border:1px solid #52637c;border-radius:9px 9px 0 0;background:#f4f7fc;box-shadow:0 0 50px #3d74c52a}
+#root:has(.launch-card) .suite-browser-top{height:24px;background:#e4eaf3;display:flex;align-items:center;gap:5px;padding:0 8px}
+#root:has(.launch-card) .suite-browser-top i{width:5px;height:5px;border-radius:50%;background:#9caec6}
+#root:has(.launch-card) .suite-browser-top small{font-size:7px;color:#607089;margin-left:7px}
+#root:has(.launch-card) .suite-browser-body{display:flex;height:136px}
+#root:has(.launch-card) .suite-browser-side{width:24px;background:#e9edf5;display:flex;flex-direction:column;gap:10px;padding:12px 7px}
+#root:has(.launch-card) .suite-browser-side i{height:5px;background:#aebbd0;border-radius:3px}
+#root:has(.launch-card) .suite-browser-page{padding:15px;flex:1;color:#21314a}
+#root:has(.launch-card) .suite-browser-page b{font-size:13px;display:block}
+#root:has(.launch-card) .suite-browser-page span{display:inline-block;width:36%;height:4px;margin:7px 5px 0 0;background:#c3cedd;border-radius:4px}
+#root:has(.launch-card) .suite-browser-page div{height:42px;margin-top:9px;background:linear-gradient(110deg,#8ba6c7,#e5eaf2);border-radius:4px}
+#root:has(.launch-card) .suite-phone{position:absolute;right:54px;bottom:-45px;width:115px;height:220px;border:4px solid #8190a7;border-radius:21px;background:#f5f7fb;color:#26344a;padding:20px 9px;box-shadow:0 0 50px #1686c42b;transform:rotate(7deg)}
+#root:has(.launch-card) .suite-phone-camera{width:32px;height:5px;background:#8997ac;border-radius:8px;margin:-13px auto 16px}
+#root:has(.launch-card) .suite-phone b{font-size:9px}
+#root:has(.launch-card) .suite-phone-banner{height:45px;margin:9px 0;background:linear-gradient(120deg,#3a5f8d,#a8c3e3);border-radius:5px}
+#root:has(.launch-card) .suite-phone-row{height:20px;margin:7px 0;background:#e2e8f0;border-radius:4px}
+#root:has(.launch-card) .suite-commerce-art{position:absolute;right:20px;bottom:20px;width:44%;height:115px;background:#172b39;border-radius:8px;padding:15px;display:flex;gap:12px;align-items:center}
+#root:has(.launch-card) .commerce-product{width:75px;height:82px;background:linear-gradient(145deg,#dae5f2,#8299b7);border-radius:5px}
+#root:has(.launch-card) .commerce-lines{flex:1;display:flex;flex-direction:column;gap:9px}
+#root:has(.launch-card) .commerce-lines i{height:6px;background:#4a657d;border-radius:5px}
+#root:has(.launch-card) .suite-ai-chat{position:absolute;right:20px;bottom:20px;width:46%;border:1px solid #3c3a5d;background:#171a31;border-radius:9px;padding:13px}
+#root:has(.launch-card) .suite-ai-chat small{color:#b69aff;font-size:8px;letter-spacing:.12em}
+#root:has(.launch-card) .suite-ai-chat p{font-size:10px;color:#dce2f1}
+#root:has(.launch-card) .suite-ai-chat div{padding:8px;background:#252b43;border-radius:5px;font-size:9px;color:#a8b8d0}
+#root:has(.launch-card) .suite-ai-chat div span{float:right;color:#9e83ff}
+#root:has(.launch-card) .pricing-section{background:#0b111d!important;color:#f4f6fb!important;padding-top:70px!important;padding-bottom:80px!important}
+#root:has(.launch-card) .public-plan{background:#111b2b!important;border:1px solid #2b3a52!important;color:#eef3fb!important;border-radius:12px!important}
+#root:has(.launch-card) .public-plan small,#root:has(.launch-card) .public-plan li{color:#aab7cb!important}
+#root:has(.launch-card) .public-plan strong{color:#fff!important}
+#root:has(.launch-card) .public-plan .ghost-btn{background:#17243a!important;border:1px solid #425573!important;color:#e6edf8!important}
+#root:has(.launch-card) .public-plan .primary-btn{background:linear-gradient(100deg,#773eff,#287dff)!important;border:0!important}
+#root:has(.launch-card) .bottom-cta{background:linear-gradient(110deg,#211c4b,#102e4e)!important;border:1px solid #3b4273!important;border-radius:16px!important;color:#fff!important}
+#root:has(.launch-card) footer{background:#070b14!important;border-top:1px solid #26344a!important;color:#8795aa!important}
+#root:has(.launch-card) .auth-modal{background:#101a2a!important;color:#edf2fa!important;border-color:#2e3d55!important}
+#root:has(.launch-card) .auth-modal h2{color:#fff!important}
+@media(max-width:850px){#root:has(.launch-card) .launch-card{grid-template-columns:1fr;padding:30px 22px!important;margin:0 14px 45px!important}#root:has(.launch-card) .launch-art{min-height:320px}#root:has(.launch-card) .duku-suite-grid{grid-template-columns:1fr}}
+@media(max-width:560px){#root:has(.launch-card) .welcome-row{padding:45px 22px 20px!important}#root:has(.launch-card) .launch-art{min-height:250px}#root:has(.launch-card) .duku-suite-card{min-height:420px;padding:19px}#root:has(.launch-card) .suite-browser{width:62%;right:10px}#root:has(.launch-card) .suite-phone{right:30px}#root:has(.launch-card) .suite-commerce-art,#root:has(.launch-card) .suite-ai-chat{width:48%;right:12px}}
