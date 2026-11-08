@@ -370,6 +370,7 @@ function MainApp() {
   const [blogArticles,setBlogArticles]=useState([]);
   const [adsensePublisherId,setAdsensePublisherId]=useState(""),[adsenseWebsiteId,setAdsenseWebsiteId]=useState(""),[adsenseNotice,setAdsenseNotice]=useState(""),[adsenseConnections,setAdsenseConnections]=useState([]);const [adsenseConsent,setAdsenseConsent]=useState(false);
   const [popupDismissed,setPopupDismissed]=useState(false);
+  useEffect(()=>{const params=new URLSearchParams(window.location.search);if(params.get("auth")==="login"){setAuthMode("Welcome back");setShowAuth(true);}},[]);
 
 
   const [authBusy, setAuthBusy] = useState(false);
@@ -768,13 +769,14 @@ function MainApp() {
       if (authMode === "Welcome back") {
         const { error } = await supabase.auth.signInWithPassword({ email: authEmail.trim(), password: authPassword });
         if (error) throw error;
-        setShowAuth(false);
+        window.location.href = "https://dashboard.dukubusiness.online";
+        return;
       } else {
         const metadata = {display_name:authFullName.trim(),phone:authPhone.trim(),company_name:authCompany.trim(),job_title:authJobTitle.trim(),country:authCountry,account_type:authAccountType,website_url:authWebsite.trim()};
-        const { data, error } = await supabase.auth.signUp({ email: authEmail.trim(), password: authPassword, options: { data: metadata, emailRedirectTo: window.location.origin } });
+        const { data, error } = await supabase.auth.signUp({ email: authEmail.trim(), password: authPassword, options: { data: metadata, emailRedirectTo: "https://dashboard.dukubusiness.online" } });
         if (error) throw error;
         setProfileForm({...metadata,onboarding_completed:false});
-        if (data.session) { setAuthUser(data.user); setShowAuth(false); setShowProfileSetup(true); setAuthNotice("Your account has been created. Complete your profile to get started."); }
+        if (data.session) { window.location.href = "https://dashboard.dukubusiness.online"; return; }
         else setAuthNotice("Account created. Check your email to verify your address. You can complete your profile after signing in.");
       }
     } catch (error) { setAuthNotice(error.message || "Authentication failed. Please try again."); }
