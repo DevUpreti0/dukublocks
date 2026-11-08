@@ -1565,3 +1565,45 @@ footer .brand{color:#fff}footer a{color:#c6cde0}
 .auth-modal .primary-btn,.auth-modal button.primary-btn{background:#24476f!important;border-radius:7px!important;box-shadow:none!important;font-weight:650!important}
 .auth-modal .text-btn,.auth-modal a{color:#315b91!important}
 .auth-modal .close-modal{border-radius:6px!important;color:#6b7789!important}
+
+
+/* User-controlled workspace settings */
+.dd-workspace-settings{scroll-margin-top:82px}
+.dd-settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.dd-settings-card{background:#fff;border:1px solid #e5eaf0;border-radius:9px;padding:18px;display:flex;flex-direction:column;gap:16px;min-height:135px}
+.dd-settings-card>div:first-child b{font-size:13px;color:#24344a}
+.dd-settings-card>div:first-child p{font-size:11px;line-height:1.55;color:#7b8798;margin:6px 0 0}
+.dd-settings-options{display:flex;gap:8px;flex-wrap:wrap}
+.dd-settings-options button,.dd-settings-secondary{border:1px solid #dfe5ed;background:#fff;color:#44536a;border-radius:6px;padding:8px 12px;font-size:11px;font-weight:650;display:flex;align-items:center;gap:7px;cursor:pointer}
+.dd-settings-options button.selected{border-color:#315b91;background:#f0f4fa;color:#24476f}
+.dd-theme-preview{width:19px;height:19px;border-radius:4px;border:1px solid #dce2ea;display:inline-block}
+.dd-theme-preview.light{background:linear-gradient(90deg,#fff 50%,#eef2f6 50%)}
+.dd-theme-preview.dark{background:linear-gradient(90deg,#172333 50%,#26364b 50%);border-color:#46566c}
+.dd-settings-switch{display:flex;align-items:center;gap:9px;font-size:12px;color:#4d5b70}
+.dd-settings-switch input{accent-color:#315b91;width:16px;height:16px}
+.dd-settings-note{font-size:11px;color:#8a95a5;margin-top:12px}
+.dd-density-compact .dd-main{padding-top:20px!important}
+.dd-density-compact .dd-stat-card{padding:12px!important}
+.dd-density-compact .dd-app-tile{padding:13px!important}
+.dd-density-compact .dd-section{margin-top:23px!important}
+.dd-density-compact .dd-sidebar>button{min-height:34px!important;padding-top:6px!important;padding-bottom:6px!important}
+.dd-reduced-motion *, .dd-reduced-motion *::before,.dd-reduced-motion *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+.dd-theme-dark{background:#111a27!important;color:#e5ebf3!important;color-scheme:dark}
+.dd-theme-dark .dd-top,.dd-theme-dark .dd-sidebar,.dd-theme-dark .dd-stat-card,.dd-theme-dark .dd-chart-panel,.dd-theme-dark .dd-app-tile,.dd-theme-dark .dd-project,.dd-theme-dark .dd-theme,.dd-theme-dark .dd-brain-chat,.dd-theme-dark .dd-brain-side,.dd-theme-dark .dd-settings-card,.dd-theme-dark .dd-installed-panel,.dd-theme-dark .dd-extension-card,.dd-theme-dark .dd-dev-create,.dd-theme-dark .dd-dev-list,.dd-theme-dark .dd-api-doc{background:#192536!important;border-color:#2a394d!important;color:#e4eaf2!important}
+.dd-theme-dark .dd-main{background:#111a27!important}
+.dd-theme-dark .dd-sidebar{border-right-color:#2a394d!important}
+.dd-theme-dark .dd-sidebar>button{color:#aebbd0!important}
+.dd-theme-dark .dd-sidebar>button:hover{background:#243349!important}
+.dd-theme-dark .dd-sidebar>button.dd-side-active{background:#263b56!important;color:#dce9fb!important}
+.dd-theme-dark .dd-side-home,.dd-theme-dark .dd-settings-card p,.dd-theme-dark .dd-settings-note,.dd-theme-dark .dd-app-tile small,.dd-theme-dark .dd-theme p,.dd-theme-dark .dd-extension-card p{color:#91a0b5!important}
+.dd-theme-dark .dd-brand,.dd-theme-dark .dd-section h2,.dd-theme-dark .dd-section h3,.dd-theme-dark .dd-settings-card b,.dd-theme-dark .dd-panel-head h2,.dd-theme-dark .dd-app-tile b,.dd-theme-dark .dd-theme h3{color:#edf2f8!important}
+.dd-theme-dark .dd-top-search input,.dd-theme-dark .dd-brain-composer textarea,.dd-theme-dark .dd-dev-inline input,.dd-theme-dark .dd-dev-form input{background:#111a27!important;border-color:#34445b!important;color:#edf2f8!important}
+.dd-theme-dark .dd-brain-chat-feed{background:#121d2b!important}
+.dd-theme-dark .dd-brain-message{background:#1d2a3d!important;border-color:#34445b!important}
+.dd-theme-dark .dd-brain-message p{color:#d9e2ee!important}
+.dd-theme-dark .dd-settings-options button,.dd-theme-dark .dd-settings-secondary{background:#1d2a3d!important;border-color:#3a4b62!important;color:#d9e2ee!important}
+.dd-theme-dark .dd-settings-options button.selected{background:#294363!important;border-color:#6b8db8!important}
+.dd-theme-dark .dd-side-bottom{border-top-color:#2a394d!important}
+.dd-theme-dark .dd-stat-card small,.dd-theme-dark .dd-stat-card span{color:#9cabc0!important}
+.dd-theme-dark .dd-dev-row{border-color:#2c3b50!important}
+@media(max-width:700px){.dd-settings-grid{grid-template-columns:1fr}.dd-settings-card{min-height:unset}}
