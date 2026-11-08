@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { supabase, isSupabaseConfigured } from "./lib/supabase";
+import { supabase } from "./lib/supabase";
 import "./DuKuAI.css";
 
 const STORE_KEY = "duku-ai-conversations-v1";
@@ -48,7 +48,8 @@ export default function DuKuAI() {
     return ()=>subscription.unsubscribe();
   },[]);
   useEffect(()=>{localStorage.setItem(STORE_KEY,JSON.stringify(chats));},[chats]);
-  useEffect(()=>{bottomRef.current?.scrollIntoView({behavior:"smooth",block:"end"});},[activeChat?.messages?.length,activeChat?.messages?.[activeChat?.messages?.length-1]?.content]);
+  const latestMessageContent = activeChat?.messages?.[activeChat.messages.length - 1]?.content;
+  useEffect(()=>{bottomRef.current?.scrollIntoView({behavior:"smooth",block:"end"});},[activeChat?.messages?.length,latestMessageContent]);
   const newChat = useCallback(()=>{const id=makeId();setChats(prev=>[{id,title:"New chat",model,updatedAt:Date.now(),messages:[]},...prev]);setActiveId(id);setInput("");setError("");setAttached([]);setSidebarOpen(false);},[model]);
   const ensureChat = () => {
     if(activeChat) return activeChat.id;
@@ -80,7 +81,8 @@ export default function DuKuAI() {
       if(!response.ok){let detail="AI service request failed ("+response.status+").";try{const payload=await response.json();detail=payload.error||detail;}catch{}throw new Error(detail);}
       if(!response.body)throw new Error("Streaming is not supported by this browser.");
       const reader=response.body.getReader();const decoder=new TextDecoder();let buffer="";let answer="";
-      while(true){const {value,done}=await reader.read();if(done)break;buffer+=decoder.decode(value,{stream:true});const lines=buffer.split("\n");buffer=lines.pop()||"";for(const line of lines){if(!line.startsWith("data:"))continue;const data=line.slice(5).trim();if(data==="[DONE]")continue;try{const packet=JSON.parse(data);if(packet.error)throw new Error(packet.error.message||"AI provider error");answer+=packet.choices?.[0]?.delta?.content||"";setChats(prev=>prev.map(c=>c.id===chatId?{...c,messages:c.messages.map((m,i)=>i===c.messages.length-1?{...m,content:answer}:m),updatedAt:Date.now()}:c));}catch(parseError){if(parseError instanceof SyntaxError)continue;throw parseError;}}}
+      const updateAssistantMessage = (content) => setChats(prev=>prev.map(c=>c.id===chatId?{...c,messages:c.messages.map((m,i)=>i===c.messages.length-1?{...m,content}:m),updatedAt:Date.now()}:c));
+      while(true){const {value,done}=await reader.read();if(done)break;buffer+=decoder.decode(value,{stream:true});const lines=buffer.split("\n");buffer=lines.pop()||"";for(const line of lines){if(!line.startsWith("data:"))continue;const data=line.slice(5).trim();if(data==="[DONE]")continue;try{const packet=JSON.parse(data);if(packet.error)throw new Error(packet.error.message||"AI provider error");answer+=packet.choices?.[0]?.delta?.content||"";updateAssistantMessage(answer);}catch(parseError){if(parseError instanceof SyntaxError)continue;throw parseError;}}}
       if(!answer)throw new Error("The model returned an empty response. Please try again.");
     } catch(err) {
       if(err.name!=="AbortError"){setError(err.message||"Something went wrong. Please try again.");setChats(prev=>prev.map(c=>c.id===chatId?{...c,messages:c.messages.filter((m,i)=>!(i===c.messages.length-1&&!m.content))}:c));}
