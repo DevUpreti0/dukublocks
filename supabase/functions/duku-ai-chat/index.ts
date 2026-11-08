@@ -2,13 +2,18 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 const cors = {"Access-Control-Allow-Origin":"https://ai.dukubusiness.online","Access-Control-Allow-Headers":"authorization, x-client-info, apikey, content-type","Access-Control-Allow-Methods":"POST, OPTIONS","Content-Type":"application/json"};
 const allowedModels = new Set(["google/gemini-3.6-flash","google/gemini-3.1-pro-preview","openai/gpt-5","alibaba/qwen3.5-flash"]);
 const fallbackModels = ["google/gemini-3.6-flash","google/gemini-3.1-pro-preview","openai/gpt-5","alibaba/qwen3.5-flash"];
+const legacyModelAliases: Record<string,string> = {
+  "openai/gpt-5.6-luna":"google/gemini-3.6-flash",
+  "openai/gpt-5.6-sol":"google/gemini-3.1-pro-preview",
+  "google/gemini-3.8-flash":"google/gemini-3.6-flash"
+};
 Deno.serve(async (req: Request) => {
   if(req.method==="OPTIONS") return new Response("ok",{headers:cors});
   if(req.method!=="POST") return new Response(JSON.stringify({error:"Method not allowed."}),{status:405,headers:cors});
   const gatewayKey=Deno.env.get("AI_GATEWAY_API_KEY");
   if(!gatewayKey) return new Response(JSON.stringify({error:"DuKu AI is not connected yet. An administrator must add the AI Gateway key to the secure Supabase function secrets."}),{status:503,headers:cors});
   try {
-    const body=await req.json(); const model=String(body?.model||""); const messages=Array.isArray(body?.messages)?body.messages:[];
+    const body=await req.json(); const requestedModel=String(body?.model||""); const model=legacyModelAliases[requestedModel]||requestedModel; const messages=Array.isArray(body?.messages)?body.messages:[];
     if(!allowedModels.has(model)) return new Response(JSON.stringify({error:"That model is not enabled in DuKu AI."}),{status:400,headers:cors});
     if(!messages.length||messages.length>60) return new Response(JSON.stringify({error:"Send between 1 and 60 messages."}),{status:400,headers:cors});
     const safeMessages=messages.map((message:any)=>{
