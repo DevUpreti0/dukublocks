@@ -1987,3 +1987,58 @@ body{background:#fff!important;color:#111018!important}
 @media(max-width:900px){#root .sidebar{width:205px!important}#root .main-content{padding:30px 24px 0!important}}
 @media(max-width:680px){#root .sidebar{width:64px!important;padding:18px 7px!important}#root .side-label,#root .workspace b,#root .workspace small,#root .side-link:not(.selected) i,#root .profile-row b,#root .profile-row small,#root .upgrade-card{display:none!important}#root .side-link{justify-content:center;padding:12px 5px!important;font-size:0!important}#root .side-link>span{font-size:18px!important}#root .main-content{padding:24px 16px 0!important}#root .editor-workspace{grid-template-columns:155px minmax(0,1fr)!important}#root .properties{display:none!important}#root .editor-actions{gap:5px!important;flex-wrap:wrap;justify-content:flex-end}#root .editor-actions .ghost-btn{padding:7px!important;font-size:10px!important}}
 @media(prefers-reduced-motion:no-preference){#root .side-link,#root .studio-element-group button,#root .editor-added-block{transition-duration:.2s!important}}
+
+
+/* UIL subsidiary partner ribbon — shown on every DuKu route */
+.uil-subsidiary-ribbon{position:sticky;top:0;z-index:99999;height:28px;display:flex;align-items:center;justify-content:center;gap:18px;overflow:hidden;background:#171222;color:#fff;border-bottom:1px solid #5b21f6;font:800 9px/1 'DM Sans',Arial,sans-serif;letter-spacing:1.65px;text-transform:uppercase}
+.uil-ribbon-track{display:flex;align-items:center;gap:52px;white-space:nowrap;animation:uil-marquee 25s linear infinite}
+.uil-ribbon-track span{display:inline-block}
+.uil-ribbon-track b{color:#b9a0ff;font-weight:950}
+.uil-ribbon-star{color:#a98aff;font-size:12px;animation:uil-twinkle 2.4s ease-in-out infinite}
+@keyframes uil-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes uil-twinkle{0%,100%{opacity:.55;transform:scale(.85)}50%{opacity:1;transform:scale(1.15)}}
+
+/* BOLD MODERN global system — public, dashboard, editor and admin */
+:root{--duku-ink:#111018;--duku-purple:#5b21f6;--duku-muted:#514d5d;--duku-border:#e5e1ed;--duku-soft:#f7f5fc}
+#root:has(.dd-dashboard),#root:has(.admin-dashboard),#root:has(.editor-studio-toolbar){color:var(--duku-ink)}
+#root:has(.dd-dashboard) .dd-dashboard{background:#f7f6fa!important;color:var(--duku-ink)!important}
+#root:has(.dd-dashboard) .dd-sidebar{background:#fff!important;border-right:1px solid var(--duku-border)!important}
+#root:has(.dd-dashboard) .dd-brand,#root:has(.dd-dashboard) .dd-section h2,#root:has(.dd-dashboard) .dd-section h3,#root:has(.dd-dashboard) .dd-panel-head h2,#root:has(.dd-dashboard) .dd-app-tile b,#root:has(.dd-dashboard) .dd-settings-card b{color:#111018!important}
+#root:has(.dd-dashboard) .dd-sidebar>button{color:#292633!important;font-weight:700!important}
+#root:has(.dd-dashboard) .dd-sidebar>button.dd-side-active{background:#eee8ff!important;color:#4c1bd6!important}
+#root:has(.dd-dashboard) .dd-main{background:#f7f6fa!important;color:#111018!important}
+#root:has(.dd-dashboard) .dd-hero{background:#fff!important;border:1px solid #e5e1ed!important;color:#111018!important;box-shadow:0 14px 36px #21123b0a!important}
+#root:has(.dd-dashboard) .dd-hero h1,#root:has(.dd-dashboard) .dd-hero h2{color:#111018!important;font-weight:850!important;letter-spacing:-1.8px!important}
+#root:has(.dd-dashboard) .dd-hero p,#root:has(.dd-dashboard) .dd-section p,#root:has(.dd-dashboard) .dd-section small{color:#403b4b!important}
+#root:has(.dd-dashboard) .dd-section,.dd-dashboard .dd-settings-card,.dd-dashboard .dd-app-tile,.dd-dashboard .dd-extension-card,.dd-dashboard .dd-panel,.dd-dashboard .dd-project-card{background:#fff!important;border-color:#e5e1ed!important;color:#111018!important}
+#root:has(.dd-dashboard) .dd-section button,#root:has(.dd-dashboard) .dd-app-tile em{color:#4e1cdb}
+#root:has(.dd-dashboard) .dd-section button.primary-btn,#root:has(.dd-dashboard) .dd-section .primary-btn{background:#5b21f6!important;color:#fff!important;border-color:#5b21f6!important}
+#root:has(.dd-dashboard) .dd-top-search input,#root:has(.dd-dashboard) .dd-brain-composer textarea,#root:has(.dd-dashboard) .dd-dev-inline input,#root:has(.dd-dashboard) .dd-dev-form input{background:#fff!important;color:#111018!important;border:1px solid #c9c4d4!important}
+#root:has(.dd-dashboard) .dd-brain-layout{background:#fff!important;border:1px solid #e5e1ed!important}
+#root:has(.dd-dashboard) .dd-brain-message p{color:#211e2a!important}
+#root:has(.dd-dashboard) .dd-brain-message.assistant{background:#f3efff!important;color:#111018!important}
+#root:has(.dd-dashboard) .dd-brain-message.user{background:#5b21f6!important;color:#fff!important}
+#root:has(.admin-dashboard) .admin-dashboard,#root:has(.admin-screen) .admin-screen{background:#f7f6fa!important;color:#111018!important}
+#root:has(.admin-dashboard) .admin-dashboard>header,#root:has(.admin-dashboard) .admin-layout>aside,#root:has(.admin-screen) .admin-login{background:#fff!important;border-color:#e5e1ed!important;color:#111018!important}
+#root:has(.admin-dashboard) .admin-layout>aside button{color:#292633!important;font-weight:700!important}
+#root:has(.admin-dashboard) .admin-layout>aside button.selected{background:#eee8ff!important;color:#4c1bd6!important}
+#root:has(.admin-dashboard) .admin-layout>main h1,#root:has(.admin-dashboard) .admin-layout>main h2,#root:has(.admin-screen) .admin-login h1{color:#111018!important;font-weight:850!important}
+#root:has(.admin-dashboard) .admin-metrics>div,#root:has(.admin-dashboard) .admin-panels article,#root:has(.admin-dashboard) .admin-data-panel,#root:has(.admin-dashboard) .admin-data-row{background:#fff!important;border:1px solid #e5e1ed!important;color:#111018!important}
+#root:has(.admin-dashboard) .admin-dashboard p,#root:has(.admin-dashboard) .admin-dashboard small,#root:has(.admin-dashboard) .admin-metrics small{color:#403b4b!important}
+#root:has(.admin-dashboard) .admin-dashboard input,#root:has(.admin-dashboard) .admin-dashboard select,#root:has(.admin-dashboard) .admin-dashboard textarea{background:#fff!important;color:#111018!important;border:1px solid #c9c4d4!important}
+#root:has(.editor-studio-toolbar) .editor-studio-toolbar{background:#fff!important;border-color:#e5e1ed!important}
+#root:has(.editor-studio-toolbar) .editor-studio-toolbar button{color:#211e2a!important;font-weight:750!important}
+#root:has(.editor-studio-toolbar) .editor-studio-toolbar button.active{background:#eee8ff!important;color:#4c1bd6!important}
+#root:has(.editor-studio-toolbar) .editor-workspace{background:#f4f3f8!important}
+#root:has(.editor-studio-toolbar) .editor-tools,#root:has(.editor-studio-toolbar) .properties{background:#fff!important;border-color:#e5e1ed!important;color:#111018!important}
+#root:has(.editor-studio-toolbar) .studio-element-group button{background:#fff!important;color:#211e2a!important;border-color:#e5e1ed!important}
+#root:has(.editor-studio-toolbar) .studio-element-group button:hover{border-color:#9b7af8!important;background:#f7f3ff!important}
+#root:has(.editor-studio-toolbar) .site-canvas{background:#fff!important;color:#111018!important;box-shadow:0 18px 55px #17102718!important}
+#root:has(.editor-studio-toolbar) .canvas-nav{color:#111018!important}
+#root:has(.editor-studio-toolbar) .canvas-hero h1,#root:has(.editor-studio-toolbar) .canvas-hero p{color:#111018!important}
+#root:has(.editor-studio-toolbar) .editor-added-block{border:1px dashed #8c6cf0!important;cursor:grab}
+#root:has(.editor-studio-toolbar) .editor-added-block:active{cursor:grabbing}
+#root:has(.editor-studio-toolbar) .editor-added-block.is-selected{outline:2px solid #5b21f6!important;outline-offset:3px}
+#root:has(.editor-studio-toolbar) .studio-save-state{color:#08784f!important}
+@media(prefers-reduced-motion:reduce){.uil-ribbon-track,.uil-ribbon-star{animation:none!important}}
+@media(max-width:600px){.uil-subsidiary-ribbon{height:25px;font-size:8px;letter-spacing:1.1px;gap:8px}.uil-ribbon-track{gap:28px;animation-duration:19s}}
