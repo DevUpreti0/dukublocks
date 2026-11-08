@@ -784,3 +784,14 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .platform-media-grid article>div>div{display:flex;gap:5px;flex-wrap:wrap}
 .platform-media-grid .ghost-btn{font-size:8px;color:#5849a8;padding:5px 7px;border:1px solid #e2e4ee;border-radius:6px}
 @media(max-width:760px){.platform-media-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cms-preview-heading{align-items:flex-start;flex-direction:column}}
+
+/* Verified live platform growth metrics */
+.duku-live-growth{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:22px;padding:14px 16px;border:1px solid rgba(145,157,190,.2);border-radius:12px;background:rgba(255,255,255,.72);backdrop-filter:blur(12px);max-width:510px;box-shadow:0 8px 24px rgba(23,35,58,.045)}
+.duku-live-growth>div:not(.duku-live-dot){display:grid;gap:3px}
+.duku-live-growth strong{font:800 21px Manrope,sans-serif;letter-spacing:-.8px;color:#1e2940;font-variant-numeric:tabular-nums}
+.duku-live-growth span{font-size:9px;color:#78859a;font-weight:650}
+.duku-live-growth>i{height:27px;width:1px;background:#e4e8f0}
+.duku-live-growth>small{width:100%;font-size:8px;color:#98a1b1}
+.duku-live-dot{width:7px;height:7px;border-radius:50%;background:#24b47e;box-shadow:0 0 0 4px #24b47e18;animation:duku-live-pulse 1.8s infinite}
+@keyframes duku-live-pulse{0%,100%{box-shadow:0 0 0 3px #24b47e18}50%{box-shadow:0 0 0 7px #24b47e08}}
+@media(max-width:600px){.duku-live-growth{gap:12px;padding:12px}.duku-live-growth strong{font-size:18px}.duku-live-growth span{font-size:8px}}
