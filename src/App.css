@@ -1269,3 +1269,9 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .dd-api-doc code{color:#50416f;font-size:11px;overflow-wrap:anywhere}
 .dd-api-doc small{margin-top:5px;color:#777085;font-size:10px}
 @media(max-width:760px){.dd-dev-create{flex-direction:column}.dd-dev-inline{min-width:0;width:100%}.dd-dev-row{flex-wrap:wrap}.dd-dev-row>div{flex-basis:100%}.dd-dev-row>button{margin-left:0}.dd-dev-tabs{overflow-x:auto}.dd-dev-tabs button{white-space:nowrap}}
+
+
+/* Automatic regional currency selector */
+.tenant-currency-switch{display:inline-flex;align-items:center;gap:7px;margin-left:12px;padding:5px 8px;border:1px solid #e6e1ef;border-radius:9px;color:inherit;font-size:11px;font-weight:600}
+.tenant-currency-switch select{max-width:90px;border:0;background:transparent;color:inherit;font:inherit;outline:none;cursor:pointer}
+@media(max-width:700px){.tenant-currency-switch{margin:7px 0 0 8px}.tenant-nav{flex-wrap:wrap}.tenant-nav nav{display:flex;flex-wrap:wrap;align-items:center;gap:10px}}
