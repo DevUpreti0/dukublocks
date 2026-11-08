@@ -1,6 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/styles/prism";
 import { supabase } from "./lib/supabase";
 import "./DuKuAI.css";
 
@@ -69,7 +67,7 @@ const MarkdownMessage=({content,onCopyCode,onDownloadCode,copied})=>{
  const flush=()=>{if(paragraph.length){blocks.push(<p key={"p"+i++}>{paragraph.map((line,n)=><React.Fragment key={n}>{n>0&&<br/>}{renderInlineMarkdown(line)}</React.Fragment>)}</p>);paragraph=[];}};
  while(i<lines.length){
   const line=lines[i],fence=line.match(/^\s*(\x60{3}|~~~)\s*([\w#+.-]*)\s*$/);
-  if(fence){flush();const marker=fence[1],language=fence[2]||"code",codeLines=[];i++;while(i<lines.length&&!new RegExp("^\\s*"+marker+"\\s*$").test(lines[i]))codeLines.push(lines[i++]);if(i<lines.length)i++;const code=codeLines.join("\n"),detectedLanguage=detectCodeLanguage(code,language);blocks.push(<div className="dai-code-block" key={"code"+i}><div className="dai-code-header"><span>{detectedLanguage==="text"?"Plain text":detectedLanguage}<small>{codeLines.length} {codeLines.length===1?"line":"lines"}</small></span><div className="dai-code-actions"><button type="button" onClick={()=>onCopyCode(code)}>{copied==="code"?"✓ Copied":"▢ Copy code"}</button><button type="button" onClick={()=>onDownloadCode(code,detectedLanguage)}>↓ Download</button></div></div><SyntaxHighlighter language={detectedLanguage==="text"?"text":detectedLanguage} style={vscDarkPlus} customStyle={{margin:0,padding:"15px",background:"#171923",fontSize:"12px",lineHeight:1.7,overflowX:"auto"}} showLineNumbers={codeLines.length>4}><>{code}</></SyntaxHighlighter></div>);continue;}
+  if(fence){flush();const marker=fence[1],language=fence[2]||"code",codeLines=[];i++;while(i<lines.length&&!new RegExp("^\\s*"+marker+"\\s*$").test(lines[i]))codeLines.push(lines[i++]);if(i<lines.length)i++;const code=codeLines.join("\n"),detectedLanguage=detectCodeLanguage(code,language);blocks.push(<div className="dai-code-block" key={"code"+i}><div className="dai-code-header"><span>{detectedLanguage==="text"?"Plain text":detectedLanguage}<small>{codeLines.length} {codeLines.length===1?"line":"lines"}</small></span><div className="dai-code-actions"><button type="button" onClick={()=>onCopyCode(code)}>{copied==="code"?"✓ Copied":"▢ Copy code"}</button><button type="button" onClick={()=>onDownloadCode(code,detectedLanguage)}>↓ Download</button></div></div><pre className="dai-code-pre"><code>{code}</code></pre></div>);continue;}
   if(i+1<lines.length&&lines[i].includes("|")&&isMarkdownTableDivider(lines[i+1])){
    flush();const headers=splitMarkdownTableRow(lines[i]),alignments=splitMarkdownTableRow(lines[i+1]).map(cell=>cell.startsWith(":")&&cell.endsWith(":")?"center":cell.endsWith(":")?"right":"left");i+=2;const rows=[];
    while(i<lines.length&&lines[i].includes("|")&&lines[i].trim()){rows.push(splitMarkdownTableRow(lines[i]));i++;}
