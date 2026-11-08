@@ -124,6 +124,7 @@ export default function DuKuAI() {
   useEffect(() => {
     if (syncReady) localStorage.setItem(STORE_KEY, JSON.stringify(chats));
   }, [chats, syncReady]);
+  useEffect(() => { localStorage.setItem("duku-ai-pinned-v1", JSON.stringify(pinnedIds)); }, [pinnedIds]);
   useEffect(() => {
     if (!user?.id || !syncReady || !chats.length || !supabase) return;
     setSyncStatus("Saving…");
