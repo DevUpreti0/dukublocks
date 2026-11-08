@@ -96,7 +96,6 @@ export default function DuKuAI() {
   const [legacyChats] = useState(readChats);
   const [chats,setChats] = useState(readChats);
   const [activeId,setActiveId] = useState(() => readChats()[0]?.id || "");
-  const [temporaryMode,setTemporaryMode] = useState(false);
   const [model,setModel] = useState(MODELS[0].id);
   const [responseStyle,setResponseStyle] = useState(() => localStorage.getItem("duku-ai-response-style-v1") || "balanced");
   const [webSearch,setWebSearch] = useState(false);
@@ -230,8 +229,8 @@ export default function DuKuAI() {
     return () => clearInterval(timer);
   }, [busy]);
   useEffect(()=>{bottomRef.current?.scrollIntoView({behavior:"smooth",block:"end"});},[activeChat?.messages?.length,latestMessageContent]);
-  const newChat = useCallback(()=>{const id=makeId();setChats(prev=>[{id,title:"New chat",model,updatedAt:Date.now(),messages:[]},...prev]);setActiveId(id);setTemporaryMode(false);setInput("");setError("");setAttached([]);setSidebarOpen(false);},[model]);
-  const newTemporaryChat = useCallback(()=>{const id=makeId();setChats(prev=>[{id,title:"Temporary chat",model,temporary:true,updatedAt:Date.now(),messages:[]},...prev]);setActiveId(id);setTemporaryMode(true);setInput("");setError("");setAttached([]);setSidebarOpen(false);setInstructionsOpen(false);},[model]);
+  const newChat = useCallback(()=>{const id=makeId();setChats(prev=>[{id,title:"New chat",model,updatedAt:Date.now(),messages:[]},...prev]);setActiveId(id);setInput("");setError("");setAttached([]);setSidebarOpen(false);},[model]);
+  const newTemporaryChat = useCallback(()=>{const id=makeId();setChats(prev=>[{id,title:"Temporary chat",model,temporary:true,updatedAt:Date.now(),messages:[]},...prev]);setActiveId(id);setInput("");setError("");setAttached([]);setSidebarOpen(false);setInstructionsOpen(false);},[model]);
   useEffect(() => {
     const handleShortcuts = (event) => {
       const target = event.target;
