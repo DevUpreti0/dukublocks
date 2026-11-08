@@ -102,3 +102,27 @@
   .dai-library-grid{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){.dai-app *{scroll-behavior:auto!important}}
+
+.dai-pin-chat{opacity:.55!important;min-width:24px!important;padding:3px!important;font-size:15px!important}
+.dai-pin-chat:hover,.dai-pin-chat.pinned{opacity:1!important;color:#f0b84b!important}
+.dai-prompt-library-btn{display:flex!important;align-items:center;gap:5px;white-space:nowrap}
+.dai-prompt-library-btn span{font-size:12px;font-weight:700}
+.dai-prompt-overlay{position:fixed;inset:0;z-index:1000;background:rgba(5,8,18,.72);backdrop-filter:blur(9px);display:flex;align-items:center;justify-content:center;padding:18px}
+.dai-prompt-modal{width:min(720px,100%);max-height:min(82vh,760px);overflow:hidden;display:flex;flex-direction:column;background:var(--dai-panel,#111827);border:1px solid rgba(255,255,255,.12);border-radius:22px;box-shadow:0 28px 90px rgba(0,0,0,.45);color:var(--dai-text,#f8fafc)}
+.dai-prompt-modal-head{display:flex;justify-content:space-between;gap:16px;padding:24px 24px 16px}
+.dai-prompt-modal-head span{font-size:10px;letter-spacing:.16em;font-weight:800;color:#a78bfa}
+.dai-prompt-modal-head h2{margin:7px 0 5px;font-size:25px}
+.dai-prompt-modal-head p{margin:0;color:var(--dai-muted,#9ca3af);font-size:13px}
+.dai-prompt-modal-head>button{align-self:flex-start;border:0;background:rgba(255,255,255,.08);color:inherit;border-radius:10px;width:34px;height:34px;font-size:22px}
+.dai-prompt-search{margin:0 24px 14px;padding:11px 13px;border:1px solid rgba(255,255,255,.14);border-radius:12px;display:flex;gap:9px;align-items:center;color:#a78bfa}
+.dai-prompt-search input{width:100%;border:0;outline:0;background:transparent;color:inherit;font:inherit}
+.dai-prompt-list{overflow:auto;padding:0 24px 18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.dai-prompt-list>button{min-width:0;text-align:left;display:flex;flex-direction:column;gap:7px;padding:14px;border:1px solid rgba(255,255,255,.1);border-radius:13px;background:rgba(255,255,255,.035);color:inherit;cursor:pointer}
+.dai-prompt-list>button:hover{border-color:#8b5cf6;background:rgba(139,92,246,.09)}
+.dai-prompt-list>button span{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#a78bfa;font-weight:800}
+.dai-prompt-list>button b{font-size:14px}
+.dai-prompt-list>button small{font-size:12px;line-height:1.5;color:var(--dai-muted,#9ca3af);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.dai-prompt-list>button i{font-size:11px;font-style:normal;font-weight:700;color:#c4b5fd;margin-top:2px}
+.dai-prompt-list>p{grid-column:1/-1;color:var(--dai-muted,#9ca3af);text-align:center;padding:25px}
+.dai-prompt-modal-foot{padding:12px 24px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:var(--dai-muted,#9ca3af)}
+@media(max-width:600px){.dai-prompt-overlay{padding:10px;align-items:flex-end}.dai-prompt-modal{max-height:88dvh;border-radius:20px 20px 14px 14px}.dai-prompt-modal-head{padding:19px 17px 13px}.dai-prompt-search{margin:0 17px 12px}.dai-prompt-list{padding:0 17px 15px;grid-template-columns:1fr}.dai-prompt-modal-foot{padding:11px 17px}.dai-prompt-library-btn span{display:none}}
