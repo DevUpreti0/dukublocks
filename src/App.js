@@ -474,6 +474,7 @@ function MainApp() {
   const [analyticsError, setAnalyticsError] = useState("");
   const [marketplaceAccount,setMarketplaceAccount]=useState(null);
   const [marketplaceOrders,setMarketplaceOrders]=useState([]);
+  const [orderFulfilments,setOrderFulfilments]=useState([]),[fulfilmentDrafts,setFulfilmentDrafts]=useState({}),[fulfilmentSavingId,setFulfilmentSavingId]=useState(""),[fulfilmentError,setFulfilmentError]=useState(""),[fulfilmentNotice,setFulfilmentNotice]=useState("");
   const [marketplaceLedger,setMarketplaceLedger]=useState([]);
   const [marketplacePayouts,setMarketplacePayouts]=useState([]);
   const [marketplaceLoading,setMarketplaceLoading]=useState(false);
@@ -650,16 +651,35 @@ function MainApp() {
     if (!workspace) return;
     setMarketplaceLoading(true); setMarketplaceError("");
     try {
-      const [accountResult,ordersResult,ledgerResult,payoutResult] = await Promise.all([
+      const [accountResult,ordersResult,ledgerResult,payoutResult,fulfilmentResult] = await Promise.all([
         supabase.from("marketplace_accounts").select("*").eq("workspace_id",workspace.id).maybeSingle(),
         supabase.from("marketplace_orders").select("id,site_id,provider,provider_order_id,provider_payment_id,buyer_name,buyer_email,currency,gross_amount_paise,commission_amount_paise,gateway_fee_paise,refund_amount_paise,seller_net_amount_paise,status,paid_at,created_at").eq("workspace_id",workspace.id).order("created_at",{ascending:false}).limit(100),
         supabase.from("marketplace_ledger").select("id,entry_type,amount_paise,currency,description,created_at").eq("workspace_id",workspace.id).order("created_at",{ascending:false}).limit(100),
-        supabase.from("marketplace_payout_requests").select("id,amount_paise,status,requested_at,processed_at,failure_reason").eq("workspace_id",workspace.id).order("requested_at",{ascending:false}).limit(50)
+        supabase.from("marketplace_payout_requests").select("id,amount_paise,status,requested_at,processed_at,failure_reason").eq("workspace_id",workspace.id).order("requested_at",{ascending:false}).limit(50),
+        supabase.from("store_fulfilments").select("*").eq("workspace_id",workspace.id).order("updated_at",{ascending:false}).limit(200)
       ]);
-      for (const result of [accountResult,ordersResult,ledgerResult,payoutResult]) if(result.error) throw result.error;
-      setMarketplaceAccount(accountResult.data||null); setMarketplaceOrders(ordersResult.data||[]); setMarketplaceLedger(ledgerResult.data||[]); setMarketplacePayouts(payoutResult.data||[]);
+      for (const result of [accountResult,ordersResult,ledgerResult,payoutResult,fulfilmentResult]) if(result.error) throw result.error;
+      setMarketplaceAccount(accountResult.data||null); setMarketplaceOrders(ordersResult.data||[]); setMarketplaceLedger(ledgerResult.data||[]); setMarketplacePayouts(payoutResult.data||[]); setOrderFulfilments(fulfilmentResult.data||[]);setFulfilmentDrafts(Object.fromEntries((fulfilmentResult.data||[]).map(row=>[row.order_id,{status:row.status||"unfulfilled",carrier:row.carrier||"",tracking_number:row.tracking_number||"",tracking_url:row.tracking_url||"",notes:row.notes||""}])));
     } catch(error) { setMarketplaceError(error.message||"Could not load payment earnings."); }
     finally { setMarketplaceLoading(false); }
+  };
+  const saveOrderFulfilment=async(order)=>{
+    if(!workspace||!order?.id)return;
+    const draft=fulfilmentDrafts[order.id]||{status:"unfulfilled",carrier:"",tracking_number:"",tracking_url:"",notes:""};
+    const trackingUrl=draft.tracking_url.trim();
+    if(trackingUrl){try{const parsed=new URL(trackingUrl);if(parsed.protocol!=="https:")throw new Error();}catch{setFulfilmentError("Tracking link must be a valid HTTPS URL.");return;}}
+    if(["shipped","delivered"].includes(draft.status)&&!draft.tracking_number.trim()){setFulfilmentError("Add a tracking number before marking an order shipped or delivered.");return;}
+    setFulfilmentSavingId(order.id);setFulfilmentError("");setFulfilmentNotice("");
+    try{
+      const existing=orderFulfilments.find(row=>row.order_id===order.id);
+      const now=new Date().toISOString();
+      const payload={workspace_id:workspace.id,order_id:order.id,status:draft.status,carrier:draft.carrier.trim()||null,tracking_number:draft.tracking_number.trim()||null,tracking_url:trackingUrl||null,notes:draft.notes.trim()||null,shipped_at:draft.status==="shipped"?(existing?.shipped_at||now):existing?.shipped_at||null,delivered_at:draft.status==="delivered"?(existing?.delivered_at||now):existing?.delivered_at||null,updated_at:now};
+      const {data,error}=await supabase.from("store_fulfilments").upsert(payload,{onConflict:"order_id"}).select("*").single();
+      if(error)throw error;
+      setOrderFulfilments(rows=>[data,...rows.filter(row=>row.order_id!==order.id)]);
+      setFulfilmentNotice("Fulfilment details saved for order "+(order.provider_order_id||order.id)+".");
+    }catch(e){setFulfilmentError(e.message||"Could not save fulfilment details.");}
+    finally{setFulfilmentSavingId("");}
   };
   const exportMarketplaceReport = () => {
     const rows = [
@@ -1213,6 +1233,8 @@ function MainApp() {
         </section> : active === "Payments & earnings" ? <section className="analytics-panel marketplace-panel">
           <div className="form-inbox-heading"><div><div className="eyebrow">SELLER PAYMENTS</div><h1>Your <em>earnings.</em></h1><p>Track sales, DuKu commission, refunds and seller settlements from your published websites.</p></div><div className="analytics-actions"><button className="ghost-btn" onClick={exportMarketplaceReport} disabled={!marketplaceOrders.length&&!marketplaceLedger.length&&!marketplacePayouts.length}>↓ Export CSV</button><button className="ghost-btn" onClick={loadMarketplace} disabled={marketplaceLoading}>{marketplaceLoading?"Refreshing…":"↻ Refresh"}</button></div></div>
           {marketplaceError&&<div className="form-inbox-error">{marketplaceError}</div>}
+          {fulfilmentError&&<div className="form-inbox-error">{fulfilmentError}</div>}{fulfilmentNotice&&<div className="domain-notice">{fulfilmentNotice}</div>}
+
           <div className="marketplace-banner"><div><b>Marketplace payments · Cashfree Easy Split</b><p>Customer payments are designed to split automatically: 2.1% DuKu platform commission and the remaining eligible amount to your verified seller account.</p></div><span className={"domain-status "+(marketplaceAccount?.onboarding_status==="verified"?"verified":"pending")}>{marketplaceAccount?.onboarding_status==="verified"?"KYC verified":"Gateway setup required"}</span></div>
           <div className="analytics-stats marketplace-stats">
             <div><small>Gross sales</small><b>₹{(marketplaceOrders.filter(o=>["paid","partially_refunded","refunded"].includes(o.status)).reduce((n,o)=>n+Number(o.gross_amount_paise||0),0)/100).toLocaleString("en-IN",{minimumFractionDigits:2})}</b><span>Successful customer payments</span></div>
@@ -1257,7 +1279,16 @@ function MainApp() {
           <div className="form-inbox-stats"><div><small>Orders recorded</small><b>{marketplaceOrders.length}</b></div><div><small>Paid orders</small><b>{marketplaceOrders.filter(x=>x.status==="paid").length}</b></div><div><small>Gross recorded</small><b>₹{(marketplaceOrders.filter(x=>x.status==="paid").reduce((n,x)=>n+Number(x.gross_amount_paise||0),0)/100).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})}</b></div></div>
           {marketplaceError&&<div className="form-inbox-error">{marketplaceError}</div>}
           <div className="admin-toolbar"><input className="admin-search" value={orderSearch} onChange={e=>setOrderSearch(e.target.value)} placeholder="Search order ID, customer name or email…"/><select value={orderStatusFilter} onChange={e=>setOrderStatusFilter(e.target.value)}><option value="all">All statuses</option><option value="paid">Paid</option><option value="pending">Pending</option><option value="failed">Failed</option><option value="refunded">Refunded</option></select><span>{marketplaceOrders.filter(x=>(orderStatusFilter==="all"||String(x.status||"").toLowerCase()===orderStatusFilter)&&[x.provider_order_id,x.buyer_name,x.buyer_email,x.id].some(v=>String(v||"").toLowerCase().includes(orderSearch.toLowerCase()))).length} matching</span></div>
-          {marketplaceLoading&&!marketplaceOrders.length?<div className="cloud-empty">Loading orders…</div>:!marketplaceOrders.length?<div className="cloud-empty">No store orders have been recorded yet. Orders will appear here when a connected payment provider records them.</div>:<div className="store-order-list">{marketplaceOrders.filter(x=>(orderStatusFilter==="all"||String(x.status||"").toLowerCase()===orderStatusFilter)&&[x.provider_order_id,x.buyer_name,x.buyer_email,x.id].some(v=>String(v||"").toLowerCase().includes(orderSearch.toLowerCase()))).map(order=><article className="store-order-card" key={order.id}><div className="store-order-main"><div><b>{order.buyer_name||"Customer details unavailable"}</b><small>{order.buyer_email||"No email recorded"} · {order.provider||"Payment provider"}</small><small>Order {order.provider_order_id||order.id} · {new Date(order.created_at).toLocaleString()}</small></div><div className="store-order-total"><b>{order.currency||"INR"} {(Number(order.gross_amount_paise||0)/100).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})}</b><span className={"store-order-status "+String(order.status||"unknown").toLowerCase()}>{order.status||"Unknown"}</span></div></div><div className="store-order-breakdown"><span>DuKu commission: ₹{(Number(order.commission_amount_paise||0)/100).toFixed(2)}</span><span>Refunded: ₹{(Number(order.refund_amount_paise||0)/100).toFixed(2)}</span><span>Seller net: ₹{(Number(order.seller_net_amount_paise||0)/100).toFixed(2)}</span></div></article>)}</div>}
+          {marketplaceLoading&&!marketplaceOrders.length?<div className="cloud-empty">Loading orders…</div>:!marketplaceOrders.length?<div className="cloud-empty">No store orders have been recorded yet. Orders will appear here when a connected payment provider records them.</div>:<div className="store-order-list">{marketplaceOrders.filter(x=>(orderStatusFilter==="all"||String(x.status||"").toLowerCase()===orderStatusFilter)&&[x.provider_order_id,x.buyer_name,x.buyer_email,x.id].some(v=>String(v||"").toLowerCase().includes(orderSearch.toLowerCase()))).map(order=><article className="store-order-card" key={order.id}><div className="store-order-main"><div><b>{order.buyer_name||"Customer details unavailable"}</b><small>{order.buyer_email||"No email recorded"} · {order.provider||"Payment provider"}</small><small>Order {order.provider_order_id||order.id} · {new Date(order.created_at).toLocaleString()}</small></div><div className="store-order-total"><b>{order.currency||"INR"} {(Number(order.gross_amount_paise||0)/100).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})}</b><span className={"store-order-status "+String(order.status||"unknown").toLowerCase()}>{order.status||"Unknown"}</span></div></div><div className="store-order-breakdown"><span>DuKu commission: ₹{(Number(order.commission_amount_paise||0)/100).toFixed(2)}</span><span>Refunded: ₹{(Number(order.refund_amount_paise||0)/100).toFixed(2)}</span><span>Seller net: ₹{(Number(order.seller_net_amount_paise||0)/100).toFixed(2)}</span></div>
+              {order.status==="paid"&&<div className="duku-fulfilment-editor"><div className="duku-fulfilment-title"><b>Fulfilment & delivery</b><small>{orderFulfilments.find(row=>row.order_id===order.id)?.updated_at?"Updated "+new Date(orderFulfilments.find(row=>row.order_id===order.id).updated_at).toLocaleString():"Not fulfilled yet"}</small></div>
+                <div className="duku-fulfilment-grid"><label>Fulfilment status<select value={fulfilmentDrafts[order.id]?.status||"unfulfilled"} onChange={e=>setFulfilmentDrafts(rows=>({...rows,[order.id]:{status:"unfulfilled",carrier:"",tracking_number:"",tracking_url:"",notes:"",...rows[order.id],status:e.target.value}}))}>{["unfulfilled","processing","packed","shipped","delivered","cancelled","returned"].map(status=><option key={status} value={status}>{status.charAt(0).toUpperCase()+status.slice(1)}</option>)}</select></label>
+                  <label>Carrier<input value={fulfilmentDrafts[order.id]?.carrier||""} onChange={e=>setFulfilmentDrafts(rows=>({...rows,[order.id]:{status:"unfulfilled",carrier:"",tracking_number:"",tracking_url:"",notes:"",...rows[order.id],carrier:e.target.value}}))} placeholder="e.g. Delhivery, Blue Dart"/></label>
+                  <label>Tracking number<input value={fulfilmentDrafts[order.id]?.tracking_number||""} onChange={e=>setFulfilmentDrafts(rows=>({...rows,[order.id]:{status:"unfulfilled",carrier:"",tracking_number:"",tracking_url:"",notes:"",...rows[order.id],tracking_number:e.target.value}}))} placeholder="Shipment reference"/></label>
+                  <label>Tracking URL (HTTPS)<input value={fulfilmentDrafts[order.id]?.tracking_url||""} onChange={e=>setFulfilmentDrafts(rows=>({...rows,[order.id]:{status:"unfulfilled",carrier:"",tracking_number:"",tracking_url:"",notes:"",...rows[order.id],tracking_url:e.target.value}}))} placeholder="https://carrier.example/track/…"/></label>
+                  <label className="duku-fulfilment-notes">Internal notes<input value={fulfilmentDrafts[order.id]?.notes||""} onChange={e=>setFulfilmentDrafts(rows=>({...rows,[order.id]:{status:"unfulfilled",carrier:"",tracking_number:"",tracking_url:"",notes:"",...rows[order.id],notes:e.target.value}}))} placeholder="Packing notes, delivery instructions…"/></label>
+                </div>
+                <div className="duku-fulfilment-actions">{fulfilmentDrafts[order.id]?.tracking_url&&<a href={fulfilmentDrafts[order.id].tracking_url} target="_blank" rel="noreferrer">Open tracking link ↗</a>}<button className="primary-btn" onClick={()=>saveOrderFulfilment(order)} disabled={fulfilmentSavingId===order.id}>{fulfilmentSavingId===order.id?"Saving…":"Save fulfilment"}</button></div>
+              </div>}</article>)}</div>}
           <p className="analytics-privacy-note">This is a payment-record view, not a fulfilment system. Order status is supplied by recorded payment events; this screen does not issue refunds, capture payments, or change provider order status.</p>
         </section> : active === "Form submissions" ? <section className="form-inbox-panel">
           <div className="form-inbox-heading"><div><div className="eyebrow">CUSTOMER MESSAGES</div><h1>Form <em>submissions.</em></h1><p>Messages sent through contact forms on your published websites.</p></div><button className="ghost-btn" onClick={loadFormInbox} disabled={formInboxLoading}>{formInboxLoading ? "Refreshing…" : "↻ Refresh"}</button></div>
