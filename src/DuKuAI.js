@@ -46,7 +46,7 @@ const detectCodeLanguage = (code, declared = "") => {
  const aliases={js:"javascript",jsx:"jsx",ts:"typescript",tsx:"tsx",py:"python",sh:"bash",shell:"bash",yml:"yaml",html:"xml",svg:"xml",md:"markdown",jsonc:"json",csharp:"csharp",cs:"csharp"};
  if(lang&&lang!=="code")return aliases[lang]||lang;
  const sample=String(code||"").trim();
- if(/^\s*[\[{]/.test(sample)&&/["'][\w-]+["']\s*:/.test(sample))return "json";
+ if((sample[0]==="["||sample[0]==="{")&&/["'][\w-]+["']\s*:/.test(sample))return "json";
  if(/^\s*(import\s+React|export\s+default|const\s+\w+\s*=|function\s+\w+\s*\()/m.test(sample))return "javascript";
  if(/^\s*(def\s+\w+\s*\(|import\s+\w+|from\s+\w+\s+import)/m.test(sample))return "python";
  if(/^\s*(SELECT|CREATE TABLE|INSERT INTO|UPDATE\s+\w+)/im.test(sample))return "sql";
