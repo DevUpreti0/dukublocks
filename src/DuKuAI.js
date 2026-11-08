@@ -193,6 +193,7 @@ export default function DuKuAI() {
   };
   const send = async (overrideText, options = {}) => {
     const text = String(overrideText ?? input).trim();
+    const requestModel = options.model || model;
     if((!text && !attached.length) || busy) return;
     if(!user){setError("Sign in to start a private AI conversation.");return;}
     const chatId=ensureChat();
@@ -201,7 +202,7 @@ export default function DuKuAI() {
     const existingMessages=chats.find(c=>c.id===chatId)?.messages||[];
     const baseMessages=options.regenerate?existingMessages.slice(0,-1):existingMessages;
     const nextMessages=options.regenerate?[...baseMessages,{id:makeId(),role:"assistant",content:""}]:[...baseMessages,{id:makeId(),role:"user",content:promptText || "Please analyze the attached image(s).",files:outgoingFiles.map(f=>({name:f.name,type:f.type}))},{id:makeId(),role:"assistant",content:""}];
-    setChats(prev=>prev.map(c=>c.id===chatId?{...c,title:c.messages.length?c.title:(text||"New chat").slice(0,42)+(text.length>42?"…":""),model,updatedAt:Date.now(),messages:nextMessages}:c));
+    setChats(prev=>prev.map(c=>c.id===chatId?{...c,title:c.messages.length?c.title:(text||"New chat").slice(0,42)+(text.length>42?"…":""),model,updatedAt:Date.now(),model:requestModel,messages:nextMessages}:c));
     setInput("");setAttached([]);setBusy(true);setError("");
     const controller=new AbortController();abortRef.current=controller;
     try {
@@ -216,7 +217,7 @@ export default function DuKuAI() {
       const response=await fetch(process.env.REACT_APP_SUPABASE_URL+"/functions/v1/duku-ai-chat",{
         method:"POST",signal:controller.signal,
         headers:{"Content-Type":"application/json","Authorization":"Bearer "+session.access_token,"apikey":process.env.REACT_APP_SUPABASE_PUBLISHABLE_KEY},
-        body:JSON.stringify({model,messages:conversationMessages})
+        body:JSON.stringify({model:requestModel,messages:conversationMessages})
       });
       if(!response.ok){
         let detail="AI service request failed ("+response.status+").";
@@ -383,7 +384,7 @@ export default function DuKuAI() {
   const filteredChats=useMemo(()=>chats.filter(c=>c.title.toLowerCase().includes(search.toLowerCase())&&(!selectedFolder||(chatFolders[c.id]||"")===selectedFolder)).sort((a,b)=>Number(pinnedIds.includes(b.id))-Number(pinnedIds.includes(a.id)) || (b.updatedAt||0)-(a.updatedAt||0)),[chats,search,pinnedIds,selectedFolder,chatFolders]);
   const createFolder=()=>{const name=window.prompt("Name this folder");if(!name?.trim())return;const clean=name.trim().slice(0,40);setFolders(prev=>prev.some(folder=>folder.toLowerCase()===clean.toLowerCase())?prev:[...prev,clean]);setSelectedFolder(clean);};
   const assignChatFolder=(id,folder)=>setChatFolders(prev=>({...prev,[id]:folder}));
-  const regenerateLastResponse=(chat)=>{if(busy||!chat?.messages?.length)return;const last=chat.messages[chat.messages.length-1];const previous=chat.messages[chat.messages.length-2];if(last?.role!=="assistant"||previous?.role!=="user")return;if(previous.files?.some(file=>file.type?.startsWith("image/"))){setError("This message included an image. Please attach it again before regenerating.");return;}setActiveId(chat.id);setModel(chat.model||model);send(previous.content,{regenerate:true});}
+  const regenerateLastResponse=(chat)=>{if(busy||!chat?.messages?.length)return;const last=chat.messages[chat.messages.length-1];const previous=chat.messages[chat.messages.length-2];if(last?.role!=="assistant"||previous?.role!=="user")return;if(previous.files?.some(file=>file.type?.startsWith("image/"))){setError("This message included an image. Please attach it again before regenerating.");return;}setActiveId(chat.id);setModel(chat.model||model);send(previous.content,{regenerate:true,model:chat.model||model});}
   const filteredPrompts=useMemo(()=>promptLibrary.filter(p=>(p.title+" "+p.category+" "+p.prompt).toLowerCase().includes(promptSearch.toLowerCase())),[promptSearch]);
   const togglePinned=(id)=>setPinnedIds(prev=>prev.includes(id)?prev.filter(item=>item!==id):[id,...prev]);
   const extractPdfText = async (file) => {
