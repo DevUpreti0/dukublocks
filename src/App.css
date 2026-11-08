@@ -2234,3 +2234,29 @@ a:hover{ text-decoration-thickness:2px }
 .dd-domain-empty p{margin:7px 0 0;color:#77798b;font-size:13px}
 @media(max-width:1000px){.dd-hope .dd-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.dd-domain-intro{align-items:flex-start;flex-direction:column}.dd-domain-steps{justify-content:flex-start}}
 @media(max-width:650px){.dd-hope .dd-stats{grid-template-columns:1fr 1fr;gap:9px}.dd-hope .dd-stat-card{padding:13px;min-height:100px}.dd-domain-form{grid-template-columns:1fr}.dd-domain-form .dd-primary{width:100%}.dd-domain-transfer{grid-template-columns:1fr}.dd-domain-card{padding:14px}.dd-domain-card-head,.dd-domain-card-footer{align-items:flex-start;flex-direction:column}.dd-dns-row{align-items:flex-start;flex-wrap:wrap}.dd-dns-row>div{flex-basis:100%}.dd-domain-steps span{white-space:normal}}
+
+/* DuKu domain registrar and hosting workflow */
+.dd-transfer-panel{display:grid;gap:11px;padding:18px;border:1px solid #e1e3ed;border-radius:16px;background:#fff;min-width:0}
+.dd-transfer-panel> b{color:#202039;font-size:15px}
+.dd-transfer-panel>p{margin:0 0 3px;color:#696b7e;font-size:12px;line-height:1.55}
+.dd-transfer-panel>label,.dd-transfer-quote>label{display:grid;gap:6px;color:#37394f;font-size:11px;font-weight:800}
+.dd-transfer-panel input,.dd-transfer-panel select,.dd-transfer-quote input{width:100%;min-width:0;height:40px;padding:0 11px;border:1px solid #d9dbe7;border-radius:9px;background:#fff;color:#202039;font:inherit;font-size:13px}
+.dd-transfer-panel input:focus,.dd-transfer-panel select:focus,.dd-transfer-quote input:focus{outline:0;border-color:#6554d9;box-shadow:0 0 0 3px rgba(101,84,217,.1)}
+.dd-transfer-panel .dd-transfer-check{display:flex;align-items:center;gap:9px}
+.dd-transfer-panel .dd-transfer-check input{width:16px;height:16px;accent-color:#5140c7}
+.dd-transfer-panel .dd-secondary{width:100%;height:42px;background:#f5f4ff;border-color:#d9d5ff;color:#4939b8}
+.dd-transfer-quote{display:grid;gap:11px;margin-top:8px;padding:15px;border:1px solid #d8d4ff;border-radius:13px;background:#f8f7ff}
+.dd-transfer-quote>b{color:#33258e;font-size:18px}
+.dd-transfer-quote>small{color:#62647a;font-size:11px;line-height:1.5}
+.dd-transfer-contact{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dd-transfer-contact label{display:grid;gap:5px;color:#37394f;font-size:10px;font-weight:800}
+.dd-transfer-panel .dd-primary{height:44px;border:0;border-radius:10px;background:#4936c8;color:#fff;font-size:12px;font-weight:850;cursor:pointer}
+.dd-transfer-panel .dd-primary:disabled{opacity:.55;cursor:not-allowed}
+.dd-transfer-panel>small{color:#737589;font-size:10px;line-height:1.55}
+.dd-domain-actions{display:flex;gap:8px;flex-wrap:wrap}
+.dd-hosting-state{display:grid;gap:10px;margin-top:13px;padding:15px;border:1px solid #e0e2f0;border-radius:13px;background:#f9faff}
+.dd-hosting-state>b{color:#282a46;font-size:13px}
+.dd-hosting-state>div{display:grid;gap:4px}
+.dd-hosting-state small{color:#696b7e;font-size:10px;line-height:1.5}
+.dd-hosting-state code{display:block;padding:8px 10px;border:1px solid #e5e6ef;border-radius:8px;background:#fff;color:#292b46;font-size:11px;overflow-wrap:anywhere}
+@media(max-width:700px){.dd-transfer-contact{grid-template-columns:1fr}.dd-transfer-panel{padding:14px}.dd-domain-actions{width:100%}.dd-domain-actions button{width:100%}}
