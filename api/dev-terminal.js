@@ -160,6 +160,7 @@ module.exports = async function handler(req, res) {
         const framework = String(project.framework || "expo").toLowerCase();
         const packageId = /^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)+$/.test(String(project.package_name || "")) ? String(project.package_name) : "com.dukubusiness.myapp";
         const appLabel = String(project.name || "DuKu App").replace(/[^a-zA-Z0-9 _-]/g, "").slice(0, 48) || "DuKu App";
+        const packageOrg = packageId.split(".").slice(0, -1).join(".") || "com.dukubusiness";
         const bootstrap = framework === "expo" ? [
           "if [ ! -f package.json ]; then cat > package.json <<'JSON'",
           JSON.stringify({ name: "duku-mobile-app", private: true, main: "node_modules/expo/AppEntry.js", scripts: { start: "expo start", android: "expo run:android" }, dependencies: { expo: "*", "expo-status-bar": "*", react: "*", "react-native": "*" } }),
@@ -194,7 +195,7 @@ module.exports = async function handler(req, res) {
           "export PATH=\"$HOME/flutter/bin:$PATH\"",
           "flutter precache --android",
           "flutter pub get",
-          "if [ ! -d android ]; then flutter create --platforms=android --org com.dukubusiness .; fi"
+          "if [ ! -d android ]; then flutter create --platforms=android --org " + packageOrg + " .; fi"
         ] : framework === "kotlin" || framework === "java" ? [
           "if [ ! -f settings.gradle ] && [ ! -f settings.gradle.kts ] && [ ! -f gradlew ]; then",
           "  SOURCE_FILE=$(find app/src/main/java -maxdepth 1 -type f \\( -name 'MainActivity.kt' -o -name 'MainActivity.java' \\) 2>/dev/null | head -1)",
