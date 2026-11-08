@@ -227,6 +227,10 @@ function TenantSite() {
   const [storeProducts,setStoreProducts]=useState([]);
   const [storeCart,setStoreCart]=useState(()=>{try{return JSON.parse(localStorage.getItem("duku-store-cart-"+window.location.hostname)||"[]");}catch{return [];}});
   const [cartOpen,setCartOpen]=useState(false);
+  const [checkoutBuyer,setCheckoutBuyer]=useState({name:"",email:"",phone:""});
+  const [checkoutBusy,setCheckoutBusy]=useState(false);
+  const [checkoutError,setCheckoutError]=useState("");
+  const [checkoutNotice,setCheckoutNotice]=useState("");
   const [trackingOrderId,setTrackingOrderId]=useState("");
   const [trackingEmail,setTrackingEmail]=useState("");
   const [trackingResult,setTrackingResult]=useState(null);
@@ -309,6 +313,37 @@ function TenantSite() {
   };
   const updateStoreCartQuantity=(productId,quantity)=>setStoreCart(rows=>quantity<=0?rows.filter(row=>row.product_id!==productId):rows.map(row=>{if(row.product_id!==productId)return row;const limit=row.track_inventory?Math.max(1,Number(row.inventory_quantity)||1):99;return {...row,quantity:Math.min(limit,Math.max(1,Number(quantity)||1))};}));
   const lookupCustomerOrder=async(event)=>{event.preventDefault();setTrackingBusy(true);setTrackingError("");setTrackingResult(null);try{const id=trackingOrderId.trim();const email=trackingEmail.trim();if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id))throw new Error("Enter the order ID from your confirmation email.");if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error("Enter the email address used for the order.");const {data,error}=await supabase.rpc("lookup_store_order_tracking",{p_order_id:id,p_buyer_email:email});if(error)throw error;if(!data?.length)throw new Error("We couldn't find an order matching those details.");setTrackingResult(data[0]);}catch(error){setTrackingError(error.message||"Could not look up this order.");}finally{setTrackingBusy(false);}};
+
+  const startStoreCheckout=async()=>{
+    if(!site?.id||!storeCart.length||checkoutBusy)return;
+    setCheckoutBusy(true);setCheckoutError("");setCheckoutNotice("");
+    try{
+      if(!checkoutBuyer.name.trim()||!/^\\+?[0-9]{8,15}$/.test(checkoutBuyer.phone.replace(/[^0-9+]/g,""))||!/^\\S+@\\S+\\.\\S+$/.test(checkoutBuyer.email.trim()))throw new Error("Enter your name, valid email and phone number.");
+      const {data,error}=await supabase.functions.invoke("marketplace-checkout",{body:{
+        site_id:site.id,
+        buyer:{name:checkoutBuyer.name.trim(),email:checkoutBuyer.email.trim(),phone:checkoutBuyer.phone.replace(/[^0-9+]/g,"")},
+        items:storeCart.map(row=>({product_id:row.product_id,quantity:Number(row.quantity)})),
+        idempotency_key:crypto.randomUUID().replaceAll("-","")
+      }});
+      if(error)throw error;
+      if(!data?.payment_session_id)throw new Error(data?.error||"The payment session could not be started.");
+      let cashfree=window.Cashfree;
+      if(!cashfree){
+        await new Promise((resolve,reject)=>{
+          const existing=document.querySelector('script[data-cashfree-sdk="true"]');
+          if(existing){existing.addEventListener("load",resolve,{once:true});existing.addEventListener("error",()=>reject(new Error("Cashfree checkout could not load.")),{once:true});return;}
+          const script=document.createElement("script");script.src="https://sdk.cashfree.com/js/v3/cashfree.js";script.async=true;script.dataset.cashfreeSdk="true";script.onload=resolve;script.onerror=()=>reject(new Error("Cashfree checkout could not load."));document.head.appendChild(script);
+        });
+        cashfree=window.Cashfree;
+      }
+      if(typeof cashfree!=="function")throw new Error("Cashfree checkout is unavailable. Please try again.");
+      const cf= cashfree({mode:data.mode==="production"?"production":"sandbox"});
+      await cf.checkout({paymentSessionId:data.payment_session_id,redirectTarget:"_modal"});
+      setCheckoutNotice("Payment window closed. Your order will be confirmed only after Cashfree verifies the payment.");
+    }catch(error){
+      setCheckoutError(error?.message||"Checkout could not be started. Please try again.");
+    }finally{setCheckoutBusy(false);}
+  };
   const storeCartTotal=storeCart.reduce((sum,row)=>sum+Number(row.price_paise||0)*Number(row.quantity||0),0);
   const pages = site && Array.isArray(site.pages) ? site.pages : [];
   const currentPage = pages.find(page => page.slug === pageSlug) || pages.find(page => page.is_homepage) || pages[0];
@@ -336,7 +371,7 @@ function TenantSite() {
     <main className="tenant-published-main">
       <section className="tenant-published-hero"><div className="eyebrow">POWERED BY DUKU FCA</div><h1>{content.headline || site.name}</h1><p>{content.subline || ""}</p></section>
       {storeProducts.length>0&&<section className="tenant-storefront"><div className="tenant-storefront-heading"><div><div className="eyebrow">SHOP THE COLLECTION</div><h2>Featured products</h2><p>Discover products available from this store.</p></div><button className="tenant-cart-open" onClick={()=>setCartOpen(true)}>Cart <span>{storeCart.reduce((sum,row)=>sum+Number(row.quantity||0),0)}</span></button></div><div className="tenant-product-grid">{storeProducts.map(product=><article className="tenant-product-card" key={product.id}>{product.image_url?<img src={product.image_url} alt={product.title} loading="lazy"/>:<div className="tenant-product-image-placeholder">✦</div>}<div className="tenant-product-info"><h3>{product.title}</h3><p>{product.description||""}</p><div className="tenant-product-price">{formatLocalPrice("INR "+(Number(product.price_paise||0)/100).toFixed(2))}{product.compare_at_price_paise>product.price_paise&&<del>{formatLocalPrice("INR "+(Number(product.compare_at_price_paise)/100).toFixed(2))}</del>}</div><small>{product.track_inventory?(product.inventory_quantity>0?product.inventory_quantity+" in stock":"Out of stock"):"Available"}</small><button onClick={()=>addStoreCartItem(product)} disabled={product.track_inventory&&Number(product.inventory_quantity)<=0}>Add to cart</button></div></article>)}</div></section>}
-      {cartOpen&&<div className="tenant-cart-backdrop" onClick={()=>setCartOpen(false)}><aside className="tenant-cart-drawer" onClick={event=>event.stopPropagation()}><div className="tenant-cart-heading"><div><div className="eyebrow">YOUR SELECTION</div><h2>Your cart</h2></div><button aria-label="Close cart" onClick={()=>setCartOpen(false)}>×</button></div>{storeCart.length?<><div className="tenant-cart-items">{storeCart.map(row=><article key={row.product_id}>{row.image_url?<img src={row.image_url} alt=""/>:<div className="tenant-cart-thumb">✦</div>}<div><b>{row.title}</b><small>{formatLocalPrice("INR "+(Number(row.price_paise||0)/100).toFixed(2))}</small><div className="tenant-cart-quantity"><button onClick={()=>updateStoreCartQuantity(row.product_id,Number(row.quantity)-1)}>−</button><span>{row.quantity}</span><button onClick={()=>updateStoreCartQuantity(row.product_id,Number(row.quantity)+1)}>+</button><button className="tenant-cart-remove" onClick={()=>updateStoreCartQuantity(row.product_id,0)}>Remove</button></div></div></article>)}</div><div className="tenant-cart-total"><span>Subtotal</span><b>{formatLocalPrice("INR "+(storeCartTotal/100).toFixed(2))}</b></div><div className="tenant-checkout-note">Online checkout is not enabled for this store yet. Please contact the store owner to complete your purchase.</div><button className="tenant-checkout-disabled" disabled>Checkout setup required</button></>:<div className="tenant-cart-empty">Your cart is empty. Add a product to get started.</div>}</aside></div>}
+      {cartOpen&&<div className="tenant-cart-backdrop" onClick={()=>setCartOpen(false)}><aside className="tenant-cart-drawer" onClick={event=>event.stopPropagation()}><div className="tenant-cart-heading"><div><div className="eyebrow">YOUR SELECTION</div><h2>Your cart</h2></div><button aria-label="Close cart" onClick={()=>setCartOpen(false)}>×</button></div>{storeCart.length?<><div className="tenant-cart-items">{storeCart.map(row=><article key={row.product_id}>{row.image_url?<img src={row.image_url} alt=""/>:<div className="tenant-cart-thumb">✦</div>}<div><b>{row.title}</b><small>{formatLocalPrice("INR "+(Number(row.price_paise||0)/100).toFixed(2))}</small><div className="tenant-cart-quantity"><button onClick={()=>updateStoreCartQuantity(row.product_id,Number(row.quantity)-1)}>−</button><span>{row.quantity}</span><button onClick={()=>updateStoreCartQuantity(row.product_id,Number(row.quantity)+1)}>+</button><button className="tenant-cart-remove" onClick={()=>updateStoreCartQuantity(row.product_id,0)}>Remove</button></div></div></article>)}</div><div className="tenant-cart-total"><span>Subtotal</span><b>{formatLocalPrice("INR "+(storeCartTotal/100).toFixed(2))}</b></div><div className="tenant-checkout-form"><h3>Secure checkout</h3><label>Your name<input value={checkoutBuyer.name} onChange={e=>setCheckoutBuyer(v=>({...v,name:e.target.value}))} placeholder="Full name" autoComplete="name"/></label><label>Email address<input type="email" value={checkoutBuyer.email} onChange={e=>setCheckoutBuyer(v=>({...v,email:e.target.value}))} placeholder="you@example.com" autoComplete="email"/></label><label>Phone number<input type="tel" value={checkoutBuyer.phone} onChange={e=>setCheckoutBuyer(v=>({...v,phone:e.target.value}))} placeholder="+91 98765 43210" autoComplete="tel"/></label>{checkoutError&&<p className="tenant-checkout-error">{checkoutError}</p>}{checkoutNotice&&<p className="tenant-checkout-notice">{checkoutNotice}</p>}<button className="tenant-checkout-button" onClick={startStoreCheckout} disabled={checkoutBusy}>{checkoutBusy?"Preparing secure payment…":"Continue to secure payment"}</button><small>Payments are processed securely by Cashfree. Your order is confirmed only after server-side payment verification.</small></div></>:<div className="tenant-cart-empty">Your cart is empty. Add a product to get started.</div>}</aside></div>}
 
       {blocks.map((block,index) => {
         const type = String(block.type || "Text").toLowerCase();
