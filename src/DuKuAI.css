@@ -17,3 +17,20 @@
 .dai-media-reference-preview{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px}
 .dai-media-reference-preview img{width:76px;height:76px;object-fit:cover;border-radius:10px;border:1px solid var(--dai-border,#e5e7eb)}
 .dai-media-reference-preview button{border:0;background:transparent;color:var(--dai-accent,#5b45d6);font-weight:650;cursor:pointer}
+
+
+.dai-library-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0;color:var(--dai-muted,#6b7280);font-size:13px}
+.dai-library-toolbar button,.dai-library-info button,.dai-library-empty button{border:1px solid var(--dai-border,#dce0e8);background:var(--dai-panel,#fff);color:var(--dai-text,#171923);border-radius:10px;padding:9px 13px;font-weight:650;cursor:pointer}
+.dai-library-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0 36px}
+.dai-library-item{overflow:hidden;border:1px solid var(--dai-border,#e1e4eb);background:var(--dai-panel,#fff);border-radius:16px;min-width:0}
+.dai-library-preview{height:180px;background:var(--dai-surface,#f3f4f7);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.dai-library-preview img{width:100%;height:100%;object-fit:cover}
+.dai-library-video{font-size:13px;letter-spacing:2px;font-weight:800;color:var(--dai-muted,#737987)}
+.dai-library-info{padding:13px;display:flex;flex-direction:column;gap:8px}
+.dai-library-info b{font-size:14px;overflow-wrap:anywhere;color:var(--dai-text,#171923)}
+.dai-library-info small{font-size:11px;color:var(--dai-muted,#737987)}
+.dai-library-info p{font-size:12px;line-height:1.5;color:var(--dai-muted,#737987);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px}
+.dai-library-info>div{display:flex;gap:8px}.dai-library-info button{flex:1;font-size:12px;padding:8px}.dai-library-info button:last-child{color:#b42318}
+.dai-library-empty{border:1px dashed var(--dai-border,#cfd4df);border-radius:18px;padding:38px 20px;text-align:center;background:var(--dai-panel,#fff)}
+.dai-library-empty>span{font-size:34px;color:var(--dai-accent,#5b45d6)}.dai-library-empty h2{font-size:20px;color:var(--dai-text,#171923)}.dai-library-empty p{color:var(--dai-muted,#737987);font-size:13px;margin:8px 0 18px}
+@media(max-width:640px){.dai-library-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.dai-library-preview{height:130px}.dai-library-info{padding:10px}.dai-library-info p{font-size:11px}}
