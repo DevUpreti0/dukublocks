@@ -557,3 +557,22 @@
 @keyframes dai-progress-sweep{0%{transform:translateX(-110%);width:28%}50%{width:58%}100%{transform:translateX(260%);width:28%}}
 @media(prefers-reduced-motion:reduce){.dai-thinking-orb,.dai-thinking-orb i,.dai-thinking-orb b,.dai-thinking-live i,.dai-thinking-progress i{animation:none!important}.dai-thinking-progress i{width:65%}}
 @media(max-width:540px){.dai-thinking-wrap{width:100%;padding:11px 12px}.dai-thinking-orb{width:31px;height:31px;flex-basis:31px}}
+
+
+/* Expandable activity details in the thinking indicator */
+.dai-thinking-details-toggle{align-self:flex-start;border:0;background:transparent;padding:2px 0;color:#4779bd;font:600 9px 'Google Sans','Roboto',sans-serif;cursor:pointer}
+.dai-thinking-details-toggle:hover{color:#174ea6;text-decoration:underline}
+.dai-thinking-details-toggle span{display:inline-block;margin-left:3px;transition:transform .2s ease}
+.dai-thinking-activity{display:flex;flex-direction:column;gap:0;margin-top:5px;padding:8px 0 1px;border-top:1px solid #e9eef6;animation:dai-activity-in .22s ease both}
+.dai-thinking-activity-step{position:relative;display:flex;align-items:flex-start;gap:8px;padding:5px 0;color:#a0aaba}
+.dai-thinking-activity-step:not(:last-child):after{content:"";position:absolute;left:8px;top:23px;bottom:-5px;width:1px;background:#e4eaf3}
+.dai-thinking-activity-step>i{z-index:1;width:17px;height:17px;flex:0 0 17px;display:grid;place-items:center;border:1px solid #dce4ef;border-radius:50%;background:#fff;font-size:9px;font-style:normal}
+.dai-thinking-activity-step>span{display:flex;flex-direction:column;gap:2px}
+.dai-thinking-activity-step b{font-size:9px;font-weight:600;color:#8491a4}
+.dai-thinking-activity-step small{font-size:8px;color:#a1aaba;line-height:1.45}
+.dai-thinking-activity-step.done>i{border-color:#b8d9ca;background:#edf8f1;color:#23845c}
+.dai-thinking-activity-step.done b{color:#527e69}
+.dai-thinking-activity-step.active>i{border-color:#9dbcf0;background:#edf4ff;color:#3975c7;animation:dai-thinking-pulse 1.2s ease-in-out infinite}
+.dai-thinking-activity-step.active b{color:#3975c7}
+@keyframes dai-activity-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.dai-thinking-activity,.dai-thinking-activity-step.active>i{animation:none!important}}
