@@ -1235,3 +1235,37 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .dd-api-panel>div{max-width:720px}
 @media(max-width:900px){.dd-extension-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.dd-extension-grid{grid-template-columns:1fr}.dd-extension-toolbar,.dd-api-panel{align-items:flex-start;flex-direction:column}.dd-installed-row{flex-wrap:wrap}.dd-installed-row>div{min-width:calc(100% - 60px)}.dd-installed-row>button{margin-left:auto}}
+
+
+/* DuKu API and webhook control centre */
+.dd-integrations{scroll-margin-top:90px}
+.dd-dev-tabs{display:flex;gap:8px;border-bottom:1px solid #e9e6ef;margin:18px 0}
+.dd-dev-tabs button{border:0;background:transparent;color:#706981;padding:11px 15px;font-size:13px;font-weight:700;border-bottom:2px solid transparent;cursor:pointer}
+.dd-dev-tabs button.active{color:#34205f;border-color:#5d43a3}
+.dd-dev-create{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding:20px;border:1px solid #e9e6ef;border-radius:15px;background:#fff;margin-bottom:14px}
+.dd-dev-create h3{margin:0 0 6px;color:#281e40;font-size:16px}
+.dd-dev-create p{margin:0;color:#756f83;font-size:12px;line-height:1.6;max-width:520px}
+.dd-dev-inline{display:flex;gap:8px;min-width:320px}
+.dd-dev-inline input,.dd-dev-form>input{min-width:0;flex:1;padding:11px 12px;border:1px solid #e2dfeb;border-radius:9px;color:#2b2144;background:#fff;font-size:12px}
+.dd-dev-inline button,.dd-dev-form>button,.dd-secret-reveal button{border:0;border-radius:9px;background:#34205f;color:white;padding:11px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.dd-dev-inline button:disabled,.dd-dev-form>button:disabled{opacity:.5;cursor:not-allowed}
+.dd-dev-form{display:grid;gap:9px;width:min(100%,460px)}
+.dd-event-options{display:flex;flex-wrap:wrap;gap:7px}
+.dd-event-options label{display:flex;align-items:center;gap:5px;padding:6px 8px;border:1px solid #e9e6ef;border-radius:8px;color:#554d69;font-size:10px}
+.dd-dev-list{display:grid;gap:9px;margin:12px 0}
+.dd-dev-list>p{padding:18px;border:1px dashed #ddd8e8;border-radius:12px;color:#746d83;font-size:13px}
+.dd-dev-row{display:flex;align-items:center;gap:14px;padding:13px 15px;border:1px solid #eae7f0;border-radius:12px;background:#fff}
+.dd-dev-row>div{display:grid;gap:4px;min-width:0;flex:1}
+.dd-dev-row b{color:#2b2143;font-size:13px}
+.dd-dev-row code{color:#55447d;font-size:11px;overflow-wrap:anywhere}
+.dd-dev-row small{color:#817a8e;font-size:10px}
+.dd-dev-row button{border:1px solid #e1ddeb;border-radius:8px;background:#faf9fc;color:#55447d;padding:8px 10px;font-size:11px;font-weight:700;cursor:pointer}
+.dd-secret-reveal{display:grid;gap:10px;margin:12px 0;padding:16px;border:1px solid #d8cda9;border-radius:12px;background:#fffaf0}
+.dd-secret-reveal b{color:#614b19;font-size:12px}
+.dd-secret-reveal code{padding:10px;border-radius:8px;background:#fff;color:#33284c;overflow-wrap:anywhere;font-size:12px}
+.dd-secret-reveal button{justify-self:start}
+.dd-api-doc{display:grid;gap:7px;margin-top:18px;padding:17px;border:1px solid #e8e5ef;border-radius:13px;background:#f9f8fc}
+.dd-api-doc>b{color:#2d2346;font-size:13px}
+.dd-api-doc code{color:#50416f;font-size:11px;overflow-wrap:anywhere}
+.dd-api-doc small{margin-top:5px;color:#777085;font-size:10px}
+@media(max-width:760px){.dd-dev-create{flex-direction:column}.dd-dev-inline{min-width:0;width:100%}.dd-dev-row{flex-wrap:wrap}.dd-dev-row>div{flex-basis:100%}.dd-dev-row>button{margin-left:0}.dd-dev-tabs{overflow-x:auto}.dd-dev-tabs button{white-space:nowrap}}
