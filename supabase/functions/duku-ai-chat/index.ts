@@ -1,7 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 const cors = {"Access-Control-Allow-Origin":"https://ai.dukubusiness.online","Access-Control-Allow-Headers":"authorization, x-client-info, apikey, content-type","Access-Control-Allow-Methods":"POST, OPTIONS","Content-Type":"application/json"};
-const allowedModels = new Set(["google/gemini-3.6-flash","google/gemini-3.1-pro-preview","openai/gpt-5","deepseek/deepseek-v3.2"]);
-const fallbackModels = ["google/gemini-3.6-flash","google/gemini-3.1-pro-preview","openai/gpt-5","deepseek/deepseek-v3.2"];
+const allowedModels = new Set(["google/gemini-3.6-flash","google/gemini-3.1-pro-preview","openai/gpt-5","alibaba/qwen3.5-flash"]);
+const fallbackModels = ["google/gemini-3.6-flash","google/gemini-3.1-pro-preview","openai/gpt-5","alibaba/qwen3.5-flash"];
 Deno.serve(async (req: Request) => {
   if(req.method==="OPTIONS") return new Response("ok",{headers:cors});
   if(req.method!=="POST") return new Response(JSON.stringify({error:"Method not allowed."}),{status:405,headers:cors});
