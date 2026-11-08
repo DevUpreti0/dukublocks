@@ -587,3 +587,26 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 
 /* Homepage CMS ordering is applied through each section's inline order value. */
 .main-content{display:flex;flex-direction:column}
+
+
+/* DuKu Code Studio — IDE workspace */
+.code-ide-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 16px;background:#101c29;color:#f3f6fa;border-radius:14px 14px 0 0;flex-wrap:wrap}
+.code-ide-toolbar>div:last-child{display:flex;gap:8px;flex-wrap:wrap}
+.code-ide-brand{display:flex;flex-direction:column;gap:3px}.code-ide-brand span{font-size:11px;color:#a8b5c4}
+.code-ide-layout{display:grid;grid-template-columns:minmax(160px,220px) minmax(280px,1fr) minmax(280px,1fr);min-height:560px;background:#111d2a;border:1px solid #26384a;border-radius:0 0 14px 14px;overflow:hidden}
+.code-explorer{padding:16px 10px;background:#172535;color:#e8edf3;border-right:1px solid #2b3b4c;display:flex;flex-direction:column;gap:7px;min-width:0}
+.code-explorer>b,.code-library-bar>b{font-size:10px;letter-spacing:.12em}.code-explorer>small{font-size:10px;color:#90a1b4;margin:8px 0}
+.code-explorer>button{border:0;text-align:left;background:transparent;color:#c7d1dd;border-radius:6px;padding:8px;font-size:12px;overflow-wrap:anywhere}.code-explorer>button:hover,.code-explorer>button.active-file{background:#263d53;color:white}
+.code-new-file{display:grid;gap:8px;margin-top:auto}.code-new-file input,.code-library-bar input{min-width:0;width:100%;padding:9px;border:1px solid #34485b;background:#0e1925;color:#fff;border-radius:7px}
+.code-new-file>button,.code-library-bar>button{border:1px solid #4a6077;background:#263d53;color:#fff;border-radius:7px;padding:8px;cursor:pointer}
+.code-upload{position:relative;display:block;text-align:center;border:1px dashed #526b82;padding:9px;border-radius:7px;font-size:11px;cursor:pointer}.code-upload input{position:absolute;inset:0;opacity:0;width:100%;cursor:pointer}
+.code-editor-column{display:flex;flex-direction:column;min-width:0;border-right:1px solid #2b3b4c}.code-file-tab{padding:11px 14px;background:#1b2b3d;color:#fff;font-size:12px;display:flex;justify-content:space-between}.code-file-tab span{color:#9eb1c4;font-size:10px}
+.code-source-editor{width:100%;min-height:350px;resize:vertical;border:0;border-radius:0;padding:16px;background:#0e1925;color:#e3edf7;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;outline:none}
+.code-library-bar{display:grid;grid-template-columns:1fr auto;gap:8px;padding:12px;background:#172535;color:#d7e1ec;font-size:11px}.code-library-bar>b,.code-library-bar>span,.code-library-bar>small{grid-column:1/-1}.code-library-bar span,.code-library-bar small{color:#9fb0c1;line-height:1.5}
+.code-library-bar input{grid-column:1}.code-library-bar>button{grid-column:2}
+.code-ide-layout .dev-preview{padding:14px;background:#f7f9fb;color:#1d2d3c;display:flex;flex-direction:column;gap:12px;min-width:0}.code-ide-layout .dev-preview iframe{width:100%;flex:1;min-height:400px;border:1px solid #dce3e9;border-radius:8px;background:#fff}
+.admin-search{width:100%;padding:12px 14px;margin:10px 0 18px;border:1px solid #dce3e9;border-radius:10px;background:#fff;color:#1c2d3e}
+.tenant-powered-by{display:inline-flex;gap:4px;align-items:center;font-size:12px;opacity:.8}.tenant-powered-by a{color:inherit;font-weight:700;text-decoration:none}
+@media(max-width:1050px){.code-ide-layout{grid-template-columns:160px minmax(260px,1fr)}.code-ide-layout .dev-preview{grid-column:1/-1;min-height:360px}.code-editor-column{border-right:0}}
+@media(max-width:640px){.code-ide-layout{display:flex;flex-direction:column}.code-explorer{max-height:230px;overflow:auto}.code-source-editor{min-height:280px}.code-library-bar{grid-template-columns:1fr}.code-library-bar input,.code-library-bar>button{grid-column:1}.code-ide-toolbar{align-items:flex-start;flex-direction:column}.code-ide-toolbar>div:last-child{width:100%}.code-ide-toolbar button{flex:1}}
+
