@@ -1737,3 +1737,44 @@ footer .brand{color:#fff}footer a{color:#c6cde0}
 #root:has(.launch-card) .auth-modal h2{color:#fff!important}
 @media(max-width:850px){#root:has(.launch-card) .launch-card{grid-template-columns:1fr;padding:30px 22px!important;margin:0 14px 45px!important}#root:has(.launch-card) .launch-art{min-height:320px}#root:has(.launch-card) .duku-suite-grid{grid-template-columns:1fr}}
 @media(max-width:560px){#root:has(.launch-card) .welcome-row{padding:45px 22px 20px!important}#root:has(.launch-card) .launch-art{min-height:250px}#root:has(.launch-card) .duku-suite-card{min-height:420px;padding:19px}#root:has(.launch-card) .suite-browser{width:62%;right:10px}#root:has(.launch-card) .suite-phone{right:30px}#root:has(.launch-card) .suite-commerce-art,#root:has(.launch-card) .suite-ai-chat{width:48%;right:12px}}
+
+
+/* DuKu motion system — restrained, fluid and accessible */
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:no-preference){
+  #root:has(.launch-card) .launch-card{animation:duku-rise .85s cubic-bezier(.2,.75,.25,1) both}
+  #root:has(.launch-card) .welcome-row{animation:duku-fade .7s ease-out both}
+  #root:has(.launch-card) .duku-suite-heading{animation:duku-rise .75s .08s both}
+  #root:has(.launch-card) .duku-suite-card{animation:duku-rise .8s cubic-bezier(.2,.75,.25,1) both;transition:transform .35s cubic-bezier(.2,.75,.25,1),border-color .35s,box-shadow .35s,background .35s}
+  #root:has(.launch-card) .duku-suite-card:nth-child(2){animation-delay:.1s}
+  #root:has(.launch-card) .duku-suite-card:nth-child(3){animation-delay:.18s}
+  #root:has(.launch-card) .duku-suite-card:nth-child(4){animation-delay:.26s}
+  #root:has(.launch-card) .duku-suite-card:hover{transform:translateY(-7px);border-color:#6575ad;box-shadow:0 22px 65px #0005;background:linear-gradient(145deg,#17243a,#101a2b)}
+  #root:has(.launch-card) .suite-browser,#root:has(.launch-card) .suite-phone,#root:has(.launch-card) .suite-commerce-art,#root:has(.launch-card) .suite-ai-chat{transition:transform .5s cubic-bezier(.2,.75,.25,1),box-shadow .5s}
+  #root:has(.launch-card) .suite-web:hover .suite-browser{transform:translateY(-9px) rotate(-1deg);box-shadow:0 18px 55px #3d74c55a}
+  #root:has(.launch-card) .suite-app:hover .suite-phone{transform:translateY(-10px) rotate(3deg)}
+  #root:has(.launch-card) .suite-commerce:hover .suite-commerce-art{transform:translateY(-8px)}
+  #root:has(.launch-card) .suite-ai:hover .suite-ai-chat{transform:translateY(-7px);box-shadow:0 15px 45px #9e83ff25}
+  #root:has(.launch-card) .suite-icon{transition:transform .35s cubic-bezier(.2,.75,.25,1),filter .35s}
+  #root:has(.launch-card) .duku-suite-card:hover .suite-icon{transform:translateY(-3px) rotate(-5deg);filter:brightness(1.2)}
+  #root:has(.launch-card) button,#root:has(.launch-card) a{transition:color .2s ease,background-color .25s ease,border-color .25s ease,transform .25s ease,box-shadow .25s ease}
+  #root:has(.launch-card) .primary-btn:hover,#root:has(.launch-card) .duku-suite-card>button:hover{transform:translateY(-2px)}
+  #root:has(.launch-card) .launch-art{animation:duku-float 8s ease-in-out infinite}
+  #root:has(.launch-card) .float-card{animation:duku-float 6s ease-in-out infinite}
+  #root:has(.launch-card) .float-card:nth-child(2){animation-delay:-2.5s}
+  #root:has(.launch-card) .pricing-section .public-plan{transition:transform .3s ease,border-color .3s,box-shadow .3s}
+  #root:has(.launch-card) .pricing-section .public-plan:hover{transform:translateY(-5px);border-color:#6575ad!important;box-shadow:0 20px 55px #0004}
+  #root:has(.dd-dashboard),#root:has(.dd-sidebar){scroll-behavior:smooth}
+  #root:has(.dd-dashboard) .dd-section{animation:duku-rise .65s ease-out both}
+}
+@keyframes duku-rise{from{opacity:0;transform:translate3d(0,18px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+@keyframes duku-fade{from{opacity:0}to{opacity:1}}
+@keyframes duku-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+@media(max-width:700px){
+  #root:has(.launch-card) .duku-platform-suite{padding-top:58px;padding-bottom:62px}
+  #root:has(.launch-card) .duku-suite-card{transition:none}
+}
