@@ -1756,7 +1756,7 @@ function App() {
   else if (window.location.pathname==="/blog" || window.location.pathname.startsWith("/blog/")) page = <BlogPage />;
   else if (host !== "dukubusiness.online" && host !== "www.dukubusiness.online" && !host.startsWith("admin.") && !host.startsWith("dashboard.") && host !== "localhost" && !host.endsWith(".vercel.app")) page = <TenantSite />;
   else page = <MainApp />;
-  return <><UILSubsidiaryTagline />{page}</>;
+  return host.startsWith("ai.") ? page : <><UILSubsidiaryTagline />{page}</>;
 }
 
 export default App;
