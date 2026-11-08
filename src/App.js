@@ -2,13 +2,13 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import { supabase, isSupabaseConfigured } from "./lib/supabase";
 
-async function toggleDukuFullscreen(selector) {
+function toggleDukuFullscreen(selector) {
   const target=document.querySelector(selector); if(!target)return;
   if(document.fullscreenElement){document.exitFullscreen?.().catch?.(()=>{});return;}
   target.requestFullscreen?.().catch?.(()=>{});
 }
 
-function copyToClipboard(value) {
+async function copyToClipboard(value) {
   const text = String(value ?? "");
   try {
     if (navigator.clipboard && window.isSecureContext) {
