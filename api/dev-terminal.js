@@ -158,7 +158,7 @@ module.exports = async function handler(req, res) {
       if (action === "android-build") {
         const buildType = body.buildType === "release" ? "release" : "debug";
         const framework = String(project.framework || "expo").toLowerCase();
-        const packageId = /^[a-zA-Z][a-zA-Z0-9_]*(\\.[a-zA-Z][a-zA-Z0-9_]*)+$/.test(String(project.package_name || "")) ? String(project.package_name) : "com.dukubusiness.myapp";
+        const packageId = /^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)+$/.test(String(project.package_name || "")) ? String(project.package_name) : "com.dukubusiness.myapp";
         const appLabel = String(project.name || "DuKu App").replace(/[^a-zA-Z0-9 _-]/g, "").slice(0, 48) || "DuKu App";
         const bootstrap = framework === "expo" ? [
           "if [ ! -f package.json ]; then cat > package.json <<'JSON'",
