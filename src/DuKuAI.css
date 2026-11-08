@@ -716,3 +716,41 @@
 .dai-profile-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-top:1px solid #edf0f4;color:#9aa4b2;font-size:9px}
 .dai-profile-footer button{padding:8px 17px;border:0;border-radius:8px;background:#755bd0;color:#fff;font-size:10px;font-weight:700;cursor:pointer}
 @media(max-width:560px){.dai-profile-overlay{padding:8px}.dai-profile-modal{max-height:94vh;border-radius:13px}.dai-profile-head,.dai-profile-content{padding-left:16px;padding-right:16px}.dai-profile-security form{flex-direction:column}.dai-profile-security form button{width:100%}.dai-profile-footer{padding-left:16px;padding-right:16px}}
+
+/* Notification centre */
+.dai-notification-trigger{position:relative}
+.dai-notification-trigger>i{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;padding:0 3px;display:grid;place-items:center;border:2px solid #fff;border-radius:20px;background:#e65c70;color:#fff;font-size:8px;font-style:normal;font-weight:800}
+.dai-notification-trigger.active{background:#eee9fb;color:#755bd0}
+.dai-notification-overlay{position:fixed;inset:0;z-index:1200;display:flex;justify-content:flex-end;align-items:flex-start;padding:68px 18px 18px;background:#15243a26;backdrop-filter:blur(3px)}
+.dai-notification-panel{width:min(410px,100%);max-height:min(690px,calc(100vh - 90px));display:flex;flex-direction:column;overflow:hidden;border:1px solid #e5eaf1;border-radius:16px;background:#fff;box-shadow:0 22px 70px #14233b30}
+.dai-notification-panel>header{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 20px 14px;border-bottom:1px solid #edf0f4}
+.dai-notification-panel>header span{color:#8873c9;font-size:9px;font-weight:800;letter-spacing:1.2px}
+.dai-notification-panel>header h2{margin:5px 0 3px;color:#293a51;font-size:19px}
+.dai-notification-panel>header h2 i{margin-left:5px;padding:3px 6px;border-radius:20px;background:#f0ebff;color:#7259c8;font-size:9px;font-style:normal;vertical-align:middle}
+.dai-notification-panel>header p{margin:0;color:#8793a4;font-size:10px}
+.dai-notification-panel>header>button{width:29px;height:29px;border:0;border-radius:8px;background:#f3f5f8;color:#637187;font-size:20px;cursor:pointer}
+.dai-notification-tools{display:flex;gap:7px;padding:10px 14px;border-bottom:1px solid #edf0f4}
+.dai-notification-tools button{padding:7px 9px;border:1px solid #e8ebf1;border-radius:7px;background:#fff;color:#68768a;font-size:9px;font-weight:700;cursor:pointer}
+.dai-notification-tools button:disabled{opacity:.4;cursor:not-allowed}
+.dai-notification-preferences{padding:12px 17px;background:#faf9fd;border-bottom:1px solid #edf0f4}
+.dai-notification-preferences>b{display:block;margin-bottom:8px;color:#34445b;font-size:11px}
+.dai-notification-preferences label{display:flex;align-items:center;justify-content:space-between;padding:6px 0;color:#59677b;font-size:10px}
+.dai-notification-preferences input{accent-color:#755bd0}
+.dai-notification-preferences small{display:block;margin-top:7px;color:#929dad;font-size:9px;line-height:1.5}
+.dai-notification-list{overflow:auto;min-height:120px}
+.dai-notification-item{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;border-bottom:1px solid #f0f2f5}
+.dai-notification-item.unread{background:#f8f6ff}
+.dai-notification-icon{flex:0 0 30px;width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#f0edfb;color:#765fc7;font-size:14px}
+.dai-notification-icon.account{background:#edf6ff;color:#467db7}
+.dai-notification-icon.product{background:#fff5e8;color:#b47a36}
+.dai-notification-item>div{flex:1;min-width:0}
+.dai-notification-item b{display:block;color:#34445b;font-size:11px}
+.dai-notification-item p{margin:4px 0;color:#68768a;font-size:10px;line-height:1.5}
+.dai-notification-item small{color:#9aa4b2;font-size:9px}
+.dai-notification-item>button{border:0;background:transparent;color:#8a70d5;font-size:10px;cursor:pointer}
+.dai-notification-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:210px;padding:18px;text-align:center}
+.dai-notification-empty>span{font-size:28px;color:#9b88d8}
+.dai-notification-empty b{margin-top:8px;color:#3b4b60;font-size:12px}
+.dai-notification-empty p{color:#8a96a7;font-size:10px}
+.dai-notification-panel>footer{padding:10px 16px;border-top:1px solid #edf0f4;color:#9aa4b2;font-size:9px}
+@media(max-width:560px){.dai-notification-overlay{padding:56px 8px 8px;justify-content:center}.dai-notification-panel{max-height:calc(100vh - 66px);border-radius:13px}.dai-notification-tools{gap:5px;padding:9px}.dai-notification-tools button{flex:1;padding:7px 4px;font-size:8px}}
