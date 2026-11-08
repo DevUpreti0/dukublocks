@@ -198,6 +198,7 @@ export default function DuKuAI() {
   useEffect(() => { localStorage.setItem("duku-ai-response-style-v1", responseStyle); }, [responseStyle]);
   useEffect(() => { localStorage.setItem("duku-ai-folders-v1", JSON.stringify(folders)); }, [folders]);
   useEffect(() => { localStorage.setItem("duku-ai-chat-folders-v1", JSON.stringify(chatFolders)); }, [chatFolders]);
+  useEffect(() => { localStorage.setItem("duku-ai-folder-colors-v1", JSON.stringify(folderColors)); }, [folderColors]);
   useEffect(() => {
     if (!user?.id || !syncReady || !chats.length || !supabase) return;
     setSyncStatus("Saving…");
