@@ -2484,3 +2484,26 @@ a:hover{ text-decoration-thickness:2px }
 #root .admin-dashboard :is(.status-success,.status-active,.is-active) { color:#17643b; }
 #root .admin-dashboard :is(.status-warning,.status-pending,.is-pending) { color:#80520b; }
 #root .admin-dashboard :is(.status-danger,.status-failed,.is-failed) { color:#a12620; }
+
+/* Dedicated developer connections workspace */
+.dd-main[data-area="developer"] > #developer { display:block!important; }
+.dd-main[data-area="developer"] > .dd-notice { display:block!important; }
+.dd-developer-hub { background:linear-gradient(145deg,#fff 0%,#f8f7fc 100%); }
+.dd-dev-platform-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:30px; }
+.dd-dev-platform-card { display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:25px;border:1px solid #e2e4ec;border-radius:18px;background:#fff;box-shadow:0 12px 35px rgba(28,20,58,.055); }
+.dd-platform-mark { width:48px;height:48px;border-radius:14px;background:#eee9ff;color:#5426c7;display:grid;place-items:center;font-size:25px;font-weight:850; }
+.dd-android-mark { background:#e6f7ec;color:#18834a; }
+.dd-dev-platform-card>small { color:#71678a;font-size:9px;font-weight:850;letter-spacing:1.4px; }
+.dd-dev-platform-card h3 { margin:0;color:#19172a;font-size:21px;letter-spacing:-.5px; }
+.dd-dev-platform-card p,.dd-dev-platform-card li { color:#5c596b;font-size:12px;line-height:1.75; }
+.dd-dev-platform-card p { margin:0;min-height:64px; }
+.dd-dev-platform-card ol { padding-left:18px;margin:2px 0 8px; }
+.dd-dev-platform-card li { padding:3px 0; }
+.dd-dev-platform-card button { background:#5426c7!important;color:#fff!important;border:1px solid #5426c7!important;border-radius:9px;padding:11px 14px;font-weight:750;cursor:pointer; }
+.dd-dev-platform-card a { color:#5426c7;font-size:12px;font-weight:750;text-decoration:none;margin-top:2px; }
+.dd-dev-platform-note { margin-top:22px;padding:22px 24px;border:1px solid #e2dcef;border-radius:15px;background:#f2effb; }
+.dd-dev-platform-note b { color:#211b36;font-size:15px; }
+.dd-dev-platform-note p { color:#5e586f;font-size:12px;line-height:1.8; }
+.dd-dev-platform-note button { color:#fff!important;background:#5426c7!important;border:0;border-radius:8px;padding:11px 15px;font-weight:750; }
+@media(max-width:900px){.dd-dev-platform-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:620px){.dd-dev-platform-grid{grid-template-columns:1fr;}.dd-dev-platform-card p{min-height:0;}}
