@@ -72,7 +72,7 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ ok: true, output: "Saved project files synced into the isolated Linux workspace.", exitCode: 0, sandbox: sandboxName });
     }
     if (action === "status") {
-      const r = await sandbox.runCommand("bash", ["-lc", "printf 'Linux: '; uname -sr; printf 'Node: '; node --version 2>/dev/null || true; printf 'Python: '; python3 --version 2>/dev/null || true; printf 'Package managers: '; command -v npm; command -v pnpm || true; command -v bun || true; printf '\\nWorkspace files: '; find . -maxdepth 2 -type f | wc -l"], { cwd: "/vercel/sandbox/workspace" });
+      const r = await sandbox.runCommand({ cmd: "bash", args: ["-lc", "printf 'Linux: '; uname -sr; printf 'Node: '; node --version 2>/dev/null || true; printf 'Python: '; python3 --version 2>/dev/null || true; printf 'Package managers: '; command -v npm; command -v pnpm || true; command -v bun || true; printf '\\nWorkspace files: '; find . -maxdepth 2 -type f | wc -l"], cwd: "/vercel/sandbox/workspace" }); uname -sr; printf 'Node: '; node --version 2>/dev/null || true; printf 'Python: '; python3 --version 2>/dev/null || true; printf 'Package managers: '; command -v npm; command -v pnpm || true; command -v bun || true; printf '\\nWorkspace files: '; find . -maxdepth 2 -type f | wc -l"], { cwd: "/vercel/sandbox/workspace" });
       return res.status(200).json({ ok: r.exitCode === 0, output: await r.stdout(), stderr: await r.stderr(), exitCode: r.exitCode, sandbox: sandboxName });
     }
     if (action === "preview") {
