@@ -63,7 +63,7 @@ const splitMarkdownTableRow = (line) => {
 };
 const HighlightedText = ({text,query}) => {
  const value=String(text||"");const term=String(query||"").trim();if(!term)return value;
- const parts=value.split(new RegExp("(" + term.replace(/[.*+?^${}()|[\]\\]/g,"\\const isMarkdownTableDivider =") + ")","ig"));
+ const escaped=term.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");const parts=value.split(new RegExp("(" + escaped + ")","ig"));
  return <>{parts.map((part,index)=>part.toLowerCase()===term.toLowerCase()?<mark key={index}>{part}</mark>:part)}</>;
 };
 const isMarkdownTableDivider = (line) => /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(line||"");
