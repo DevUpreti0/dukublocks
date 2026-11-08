@@ -1696,9 +1696,9 @@ function DeveloperDashboard() {
 }
 
 function UILSubsidiaryTagline() {
-  return <div className="uil-subsidiary-ribbon" role="note" aria-label="Upreti Industries Limited subsidiary partner">
+  return <div className="uil-subsidiary-ribbon" role="note" aria-label="This website comes under Upreti Industries Limited (UIL), as a official subsidiary.">
     <span className="uil-ribbon-star" aria-hidden="true">✦</span>
-    <span className="uil-ribbon-track"><span>UPRETI INDUSTRIES LIMITED <b>(UIL)</b> · SUBSIDIARY PARTNER</span><span aria-hidden="true">UPRETI INDUSTRIES LIMITED <b>(UIL)</b> · SUBSIDIARY PARTNER</span></span>
+    <span className="uil-ribbon-track"><span>This website comes under Upreti Industries Limited <b>(UIL)</b>, as a official subsidiary.</span><span aria-hidden="true">UPRETI INDUSTRIES LIMITED <b>(UIL)</b> · SUBSIDIARY PARTNER</span></span>
     <span className="uil-ribbon-star" aria-hidden="true">✦</span>
   </div>;
 }
