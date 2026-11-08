@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/styles/prism";
 import { supabase } from "./lib/supabase";
 import "./DuKuAI.css";
 
@@ -41,12 +43,38 @@ const renderInlineMarkdown = (text) => {
   return part;
  });
 };
+const detectCodeLanguage = (code, declared = "") => {
+ const lang=String(declared||"").toLowerCase().replace(/^language-/,"");
+ const aliases={js:"javascript",jsx:"jsx",ts:"typescript",tsx:"tsx",py:"python",sh:"bash",shell:"bash",yml:"yaml",html:"xml",svg:"xml",md:"markdown",jsonc:"json",csharp:"csharp",cs:"csharp"};
+ if(lang&&lang!=="code")return aliases[lang]||lang;
+ const sample=String(code||"").trim();
+ if(/^\s*[\[{]/.test(sample)&&/["'][\w-]+["']\s*:/.test(sample))return "json";
+ if(/^\s*(import\s+React|export\s+default|const\s+\w+\s*=|function\s+\w+\s*\()/m.test(sample))return "javascript";
+ if(/^\s*(def\s+\w+\s*\(|import\s+\w+|from\s+\w+\s+import)/m.test(sample))return "python";
+ if(/^\s*(SELECT|CREATE TABLE|INSERT INTO|UPDATE\s+\w+)/im.test(sample))return "sql";
+ if(/^\s*<\/?[a-z][\s\S]*>/i.test(sample))return "xml";
+ if(/^\s*(body|html|\.?[#\w-]+\s*\{)/m.test(sample)&&/[{}:;]/.test(sample))return "css";
+ if(/^\s*(npm |yarn |git |cd |sudo )/m.test(sample))return "bash";
+ return "text";
+};
+const splitMarkdownTableRow = (line) => {
+ let value=String(line||"").trim();
+ if(value.startsWith("|"))value=value.slice(1);
+ if(value.endsWith("|"))value=value.slice(0,-1);
+ return value.split("|").map(cell=>cell.trim());
+};
+const isMarkdownTableDivider = (line) => /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(line||"");
 const MarkdownMessage=({content,onCopyCode,copied})=>{
  const lines=String(content||"").replace(/\r\n?/g,"\n").split("\n"),blocks=[];let paragraph=[],i=0;
  const flush=()=>{if(paragraph.length){blocks.push(<p key={"p"+i++}>{paragraph.map((line,n)=><React.Fragment key={n}>{n>0&&<br/>}{renderInlineMarkdown(line)}</React.Fragment>)}</p>);paragraph=[];}};
  while(i<lines.length){
   const line=lines[i],fence=line.match(/^\s*(\x60{3}|~~~)\s*([\w#+.-]*)\s*$/);
-  if(fence){flush();const marker=fence[1],language=fence[2]||"code",codeLines=[];i++;while(i<lines.length&&!new RegExp("^\\s*"+marker+"\\s*$").test(lines[i]))codeLines.push(lines[i++]);if(i<lines.length)i++;const code=codeLines.join("\n");blocks.push(<div className="dai-code-block" key={"code"+i}><div className="dai-code-header"><span>{language}</span><button type="button" onClick={()=>onCopyCode(code)}>{copied==="code"?"Copied":"Copy code"}</button></div><pre><code>{code}</code></pre></div>);continue;}
+  if(fence){flush();const marker=fence[1],language=fence[2]||"code",codeLines=[];i++;while(i<lines.length&&!new RegExp("^\\s*"+marker+"\\s*$").test(lines[i]))codeLines.push(lines[i++]);if(i<lines.length)i++;const code=codeLines.join("\n"),detectedLanguage=detectCodeLanguage(code,language);blocks.push(<div className="dai-code-block" key={"code"+i}><div className="dai-code-header"><span>{detectedLanguage==="text"?"Plain text":detectedLanguage}</span><button type="button" onClick={()=>onCopyCode(code)}>{copied==="code"?"Copied":"Copy code"}</button></div><SyntaxHighlighter language={detectedLanguage==="text"?"text":detectedLanguage} style={vscDarkPlus} customStyle={{margin:0,padding:"15px",background:"#171923",fontSize:"12px",lineHeight:1.7,overflowX:"auto"}} showLineNumbers={codeLines.length>4}><>{code}</></SyntaxHighlighter></div>);continue;}
+  if(i+1<lines.length&&lines[i].includes("|")&&isMarkdownTableDivider(lines[i+1])){
+   flush();const headers=splitMarkdownTableRow(lines[i]),alignments=splitMarkdownTableRow(lines[i+1]).map(cell=>cell.startsWith(":")&&cell.endsWith(":")?"center":cell.endsWith(":")?"right":"left");i+=2;const rows=[];
+   while(i<lines.length&&lines[i].includes("|")&&lines[i].trim()){rows.push(splitMarkdownTableRow(lines[i]));i++;}
+   blocks.push(<div className="dai-table-wrap" key={"table"+i}><table className="dai-md-table"><thead><tr>{headers.map((cell,n)=><th key={n} style={{textAlign:alignments[n]||"left"}}>{renderInlineMarkdown(cell)}</th>)}</tr></thead><tbody>{rows.map((row,n)=><tr key={n}>{headers.map((_,c)=><td key={c} style={{textAlign:alignments[c]||"left"}}>{renderInlineMarkdown(row[c]||"")}</td>)}</tr>)}</tbody></table></div>);continue;
+  }
   const heading=line.match(/^(#{1,6})\s+(.+)$/);
   if(heading){flush();const Tag="h"+heading[1].length;blocks.push(<Tag className="dai-md-heading" key={"h"+i++}>{renderInlineMarkdown(heading[2])}</Tag>);continue;}
   if(/^\s*(---+|\*\*\*+|___+)\s*$/.test(line)){flush();blocks.push(<hr className="dai-md-rule" key={"hr"+i++}/>);continue;}
