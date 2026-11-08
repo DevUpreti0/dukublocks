@@ -521,3 +521,51 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 @media(max-width:1050px){.public-pricing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.careers-section{gap:25px}}
 @media(max-width:760px){.corporate-ticker{justify-content:flex-start;gap:8px;font-size:9px}.corporate-ticker span:last-child{display:none}.pricing-section,.careers-section{padding:36px 0}.public-pricing-grid{grid-template-columns:1fr 1fr;gap:8px}.public-plan{padding:15px 12px}.public-plan>strong{font-size:22px}.public-plan li{font-size:9px}.careers-section{grid-template-columns:1fr;gap:20px}.career-form{padding:17px}.career-fields{grid-template-columns:1fr 1fr}.duku-ai-widget{right:12px;bottom:12px}.duku-ai-panel{height:min(440px,70vh)}}
 @media(max-width:420px){.public-pricing-grid{grid-template-columns:1fr}.career-fields{grid-template-columns:1fr}.corporate-ticker b{display:none}}
+
+
+/* DuKu FCA engineering studio, administrator CMS and newsroom */
+.admin-dashboard .admin-layout>aside{position:sticky;top:0;align-self:start}
+.admin-live-notice{margin:14px 0;padding:11px 14px;border:1px solid #d5e5dc;background:#f0f6f2;color:#315c45;border-radius:6px;font-size:12px}
+.admin-status-live{display:inline-block;color:#367b58;font-size:10px;margin-top:9px}
+.cms-editor{margin-top:24px;background:#fff;border:1px solid #dce4e9;border-radius:9px;padding:20px}
+.cms-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}
+.cms-heading h2{margin:0 0 5px}.cms-heading p{margin:0;color:#75818b;font-size:11px}
+.cms-grid{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(350px,1.1fr);gap:22px}
+.cms-fields,.cms-visual{min-width:0}
+.cms-fields h3,.cms-visual h3{font-size:13px;color:#20394d;margin:18px 0 10px}
+.cms-fields label,.blog-admin-form label{display:block;font-size:10px;font-weight:650;color:#52616d;margin:0 0 12px}
+.cms-fields input,.cms-fields textarea,.blog-admin-form input,.blog-admin-form textarea,.blog-admin-form select{display:block;width:100%;margin-top:5px;padding:10px;border:1px solid #d8e1e7;border-radius:5px;background:#fff;color:#233744;font:11px Inter,Arial,sans-serif}
+.cms-fields .cms-check{display:flex;align-items:center;gap:8px}.cms-fields .cms-check input{width:auto;margin:0}
+.cms-section-row{display:flex;align-items:center;gap:10px;padding:11px;border:1px solid #e1e7eb;border-radius:6px;margin:7px 0;background:#fafcfd;cursor:grab}
+.cms-section-row>span{color:#8b99a3}.cms-section-row>b{font-size:11px;flex:1}.cms-section-row small{font-size:9px;color:#82909a}.cms-section-row button{border:1px solid #d9e2e8;background:white;border-radius:4px;padding:5px 9px;font-size:9px;color:#35536a}
+.cms-code{display:block;width:100%;min-height:100px;resize:vertical;padding:10px;border:1px solid #d8e1e7;border-radius:5px;background:#111c25;color:#d7e5ec;font:10px/1.6 ui-monospace,SFMono-Regular,monospace}
+.blog-admin-layout{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(300px,1.2fr);gap:20px}
+.blog-admin-item{display:flex;align-items:center;gap:8px;padding:12px 0;border-bottom:1px solid #e8edf0}
+.blog-admin-item>div{flex:1;min-width:0}.blog-admin-item b,.blog-admin-item small{display:block}.blog-admin-item b{font-size:11px}.blog-admin-item small{font-size:9px;color:#7e8b95;margin-top:4px}
+.blog-admin-form{padding:16px;background:#f8fafb;border:1px solid #e1e8ed;border-radius:7px}.blog-admin-form h3{margin:0 0 13px;font-size:15px}
+.dev-workspace,.blog-listing{padding:24px;background:#fff;border:1px solid #e0e7ec;border-radius:9px;margin:18px 0 25px}
+.dev-workspace h1,.blog-listing h1{font-size:30px;color:#172c3b;letter-spacing:-1px;margin:8px 0}.dev-workspace>p,.blog-listing>p{font-size:12px;color:#6e7c87;line-height:1.7}
+.dev-toolbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:17px 0}
+.dev-toolbar input,.dev-toolbar select{min-width:0;flex:1;padding:11px;border:1px solid #dbe3e9;border-radius:5px;background:#fff;color:#243846;font-size:11px}
+.dev-project-list{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.dev-project-list button{border:1px solid #dbe4e9;background:#f7fafb;border-radius:5px;padding:8px 11px;font-size:10px;color:#35536a}
+.dev-code-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:15px}
+.dev-code-grid label,.source-label{display:block;font-size:10px;color:#536675;font-weight:650;margin-bottom:12px}
+.dev-code-grid textarea,.android-source{display:block;width:100%;margin-top:6px;padding:12px;border:1px solid #263e50;border-radius:6px;background:#111c25;color:#d6e4ed;font:10px/1.6 ui-monospace,SFMono-Regular,monospace;resize:vertical}
+.dev-preview{min-width:0;display:flex;flex-direction:column;gap:8px}.dev-preview>b{font-size:11px;color:#41586b}.dev-preview iframe{width:100%;height:470px;border:1px solid #dce4e9;border-radius:6px;background:#fff}
+.dev-notice{padding:10px 12px;background:#eff5f2;color:#315f49;border-radius:5px;font-size:11px}
+.android-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:17px 0}
+.android-options button{display:flex;flex-direction:column;gap:6px;text-align:left;padding:13px;border:1px solid #dce5eb;border-radius:6px;background:#fff;color:#344c5d}
+.android-options button.chosen{border-color:#537c96;background:#f1f6f9;box-shadow:0 0 0 2px #537c9615}
+.android-options b{font-size:10px}.android-options small{font-size:9px;color:#7a8993;line-height:1.5}
+.android-project-list{margin-top:20px}.android-project-list h3{font-size:14px}.android-project-list article{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #e8edf0}.android-project-list b,.android-project-list small{display:block}.android-project-list b{font-size:11px}.android-project-list small{font-size:9px;color:#7b8992;margin-top:4px}
+.dev-disclaimer{padding:10px 12px;background:#f6f8f9;border:1px solid #e5eaee;border-radius:5px;font-size:10px;color:#75818a;line-height:1.6}
+.blog-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-top:24px}
+.blog-card-grid article{overflow:hidden;border:1px solid #e0e7ec;border-radius:7px;background:#fff;padding:14px}
+.blog-card-grid img{width:100%;height:150px;object-fit:cover;border-radius:5px;margin-bottom:12px}
+.blog-card-grid small{font-size:9px;color:#7a8992}.blog-card-grid h2{font-size:16px;line-height:1.35;color:#20394d;margin:9px 0}.blog-card-grid p{font-size:11px;line-height:1.6;color:#71808a}.blog-card-grid a{font-size:10px;color:#315c78;font-weight:650;text-decoration:none}
+.public-blog{min-height:100vh;background:#f8fafb;color:#20313e}.public-blog>header{height:70px;padding:0 max(5vw,20px);display:flex;align-items:center;justify-content:space-between;background:white;border-bottom:1px solid #e4eaee}.public-blog>header nav{display:flex;gap:22px}.public-blog>header nav a{font-size:11px;color:#526879;text-decoration:none}
+.public-blog>main{max-width:1100px;margin:0 auto;padding:55px 24px 80px}.public-blog>main>h1{font-size:38px;letter-spacing:-1.5px;color:#172c3b;margin:10px 0}.public-blog>main>p{font-size:13px;color:#74818b}
+.public-blog-article{max-width:790px;margin:0 auto}.public-blog-article>a{display:inline-block;color:#4c6a7e;font-size:11px;text-decoration:none;margin-bottom:28px}.public-blog-article h1{font-size:42px;line-height:1.12;letter-spacing:-1.5px;color:#172c3b}.public-blog-article .blog-excerpt{font-size:16px;line-height:1.6;color:#687985}.public-blog-article .blog-cover{width:100%;max-height:420px;object-fit:cover;border-radius:8px;margin:22px 0}.blog-body{font-size:14px;line-height:1.9;color:#3d4f5b;white-space:pre-wrap}.public-blog-article>small{display:block;color:#83909a;margin-top:25px}
+.public-blog>footer{padding:25px;text-align:center;border-top:1px solid #e1e8ed;background:#fff;font-size:10px;color:#71808b}
+@media(max-width:950px){.cms-grid,.blog-admin-layout{grid-template-columns:1fr}.android-options{grid-template-columns:repeat(2,minmax(0,1fr))}.blog-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.cms-editor{padding:13px}.cms-heading{align-items:flex-start;flex-direction:column}.dev-workspace,.blog-listing{padding:15px}.dev-code-grid{grid-template-columns:1fr}.dev-preview iframe{height:320px}.android-options{grid-template-columns:1fr 1fr}.blog-card-grid{grid-template-columns:1fr}.public-blog>main{padding:35px 17px}.public-blog>main>h1{font-size:30px}.public-blog-article h1{font-size:32px}.public-blog>header nav{gap:10px}}
