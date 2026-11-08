@@ -71,7 +71,7 @@ export default function DuKuAI() {
     if(!user){setError("Sign in to start a private AI conversation.");return;}
     const chatId=ensureChat();
     const outgoingFiles = attached.slice();
-    const promptText = text + outgoingFiles.filter(f=>f.extractedText).map(f=>"\n\n[File: "+f.name+"]\n"+f.extractedText).join("");
+    const promptText = (text + outgoingFiles.filter(f=>f.extractedText).map(f=>"\n\n[File: "+f.name+"]\n"+f.extractedText).join("")).slice(0,18000);
     const nextMessages=[...(chats.find(c=>c.id===chatId)?.messages||[]),{id:makeId(),role:"user",content:promptText || "Please analyze the attached image(s).",files:outgoingFiles.map(f=>({name:f.name,type:f.type}))},{id:makeId(),role:"assistant",content:""}];
     setChats(prev=>prev.map(c=>c.id===chatId?{...c,title:c.messages.length?c.title:text.slice(0,42)+(text.length>42?"…":""),model,updatedAt:Date.now(),messages:nextMessages}:c));
     setInput("");setAttached([]);setBusy(true);setError("");
