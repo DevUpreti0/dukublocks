@@ -2180,3 +2180,11 @@ a:hover{ text-decoration-thickness:2px }
     transition-duration:.01ms!important;
   }
 }
+
+/* Super-admin feature registry layout */
+.feature-registry-controls{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px}
+.feature-registry-controls label{display:inline-flex;align-items:center;gap:7px;color:#292334;font-size:13px;font-weight:700}
+.feature-registry-controls input{accent-color:#5420d8;width:17px;height:17px}
+.platform-controls-panel .platform-control-grid>article{min-width:0}
+.platform-controls-panel .platform-control-item{align-items:flex-start}
+@media(max-width:600px){.feature-registry-controls{gap:10px}.platform-controls-panel .platform-control-grid{grid-template-columns:minmax(0,1fr)}}
