@@ -125,15 +125,19 @@ module.exports = async function handler(req, res) {
       const line = cleanText(body.command, MAX_COMMAND);
       if (!line) return res.status(400).json({ error: "Enter a shell command." });
       let state = await getSession();
-      let shell;
-      try { if (state?.shell_command_id) shell = await sandbox.getCommand(state.shell_command_id); } catch (_) { shell = null; }
-      if (!shell) {
-        await sandbox.runCommand({ cmd: "bash", args: ["-lc", "command -v script >/dev/null 2>&1 || (sudo apt-get update && sudo apt-get install -y util-linux); : > /tmp/duku-shell.tty.log"], cwd: WORKDIR });
-        shell = await sandbox.runCommand({ cmd: "script", args: ["-qefc", "env TERM=dumb PS1='ubuntu@duku:\\w$ ' bash --noprofile --norc -i", "/tmp/duku-shell.tty.log"], cwd: WORKDIR, stdin: true, detached: true });
-        await upsertSession({ shell_session_id: shell.sessionId || null, shell_command_id: shell.id, shell_output_offset: 0 });
+      let shell = null;
+      if (state?.shell_command_id) {
+        try {
+          shell = await sandbox.getCommand(state.shell_command_id);
+          await shell.writeStdin(line + "\n");
+          return res.status(200).json({ ok: true, output: "Command sent to persistent interactive PTY.", shellReady: true });
+        } catch (_) { shell = null; }
       }
+      await sandbox.runCommand({ cmd: "bash", args: ["-lc", "command -v script >/dev/null 2>&1 || (sudo apt-get update && sudo apt-get install -y util-linux); : > /tmp/duku-shell.tty.log"], cwd: WORKDIR });
+      shell = await sandbox.runCommand({ cmd: "script", args: ["-qefc", "env TERM=dumb PS1='ubuntu@duku:\\w$ ' bash --noprofile --norc -i", "/tmp/duku-shell.tty.log"], cwd: WORKDIR, stdin: true, detached: true });
+      await upsertSession({ shell_session_id: shell.sessionId || null, shell_command_id: shell.id, shell_output_offset: 0 });
       await shell.writeStdin(line + "\n");
-      return res.status(200).json({ ok: true, output: "Command sent to persistent interactive PTY.", shellReady: true });
+      return res.status(200).json({ ok: true, output: "Reconnected persistent interactive PTY and sent command.", shellReady: true });
     }
 
     if (action === "shell-read") {
