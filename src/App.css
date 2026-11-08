@@ -1283,3 +1283,10 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .admin-form-grid .admin-toggle{flex-direction:row;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--admin-border,#dbe2ea);border-radius:10px}
 .admin-form-grid .admin-toggle input{width:auto}
 @media(max-width:700px){.admin-form-grid{grid-template-columns:1fr}}
+
+.checkout-modal{width:min(500px,100%);max-height:min(88vh,760px);overflow:auto}
+.checkout-modal label select{display:block;width:100%;margin-top:7px;padding:11px;background:#0d111d;border:1px solid var(--line);border-radius:8px;color:#fff;outline:none;font-size:12px}
+.checkout-modal label select:focus{border-color:#a78bfa}
+.checkout-plan-name{font-weight:750;color:#d8c9ff;font-size:15px;margin:10px 0 4px}
+.checkout-modal .admin-notice{margin-top:14px;white-space:normal;overflow-wrap:anywhere}
+.checkout-modal>small{display:block;color:#8f96aa;font-size:10px;line-height:1.55;margin-top:14px}
