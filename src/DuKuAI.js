@@ -35,6 +35,9 @@ export default function DuKuAI() {
   const [sidebarOpen,setSidebarOpen] = useState(false);
   const [menuOpen,setMenuOpen] = useState(false);
   const [attached,setAttached] = useState([]);
+  const [listening,setListening] = useState(false);
+  const [speakingId,setSpeakingId] = useState("");
+  const recognitionRef = useRef(null);
   const [copied,setCopied] = useState("");
   const bottomRef = useRef(null);
   const abortRef = useRef(null);
@@ -64,10 +67,12 @@ export default function DuKuAI() {
   };
   const send = async (overrideText) => {
     const text = String(overrideText ?? input).trim();
-    if(!text || busy) return;
+    if((!text && !attached.length) || busy) return;
     if(!user){setError("Sign in to start a private AI conversation.");return;}
     const chatId=ensureChat();
-    const nextMessages=[...(chats.find(c=>c.id===chatId)?.messages||[]),{id:makeId(),role:"user",content:text},{id:makeId(),role:"assistant",content:""}];
+    const outgoingFiles = attached.slice();
+    const promptText = text + outgoingFiles.filter(f=>f.extractedText).map(f=>"\n\n[File: "+f.name+"]\n"+f.extractedText).join("");
+    const nextMessages=[...(chats.find(c=>c.id===chatId)?.messages||[]),{id:makeId(),role:"user",content:promptText || "Please analyze the attached image(s).",files:outgoingFiles.map(f=>({name:f.name,type:f.type}))},{id:makeId(),role:"assistant",content:""}];
     setChats(prev=>prev.map(c=>c.id===chatId?{...c,title:c.messages.length?c.title:text.slice(0,42)+(text.length>42?"…":""),model,updatedAt:Date.now(),messages:nextMessages}:c));
     setInput("");setAttached([]);setBusy(true);setError("");
     const controller=new AbortController();abortRef.current=controller;
@@ -76,7 +81,7 @@ export default function DuKuAI() {
       const response=await fetch(process.env.REACT_APP_SUPABASE_URL+"/functions/v1/duku-ai-chat",{
         method:"POST",signal:controller.signal,
         headers:{"Content-Type":"application/json","Authorization":"Bearer "+session.access_token,"apikey":process.env.REACT_APP_SUPABASE_PUBLISHABLE_KEY},
-        body:JSON.stringify({model,messages:nextMessages.filter(m=>m.content).map(m=>({role:m.role,content:m.content}))})
+        body:JSON.stringify({model,messages:nextMessages.filter(m=>m.content).map((m,i)=>({role:m.role,content:m.role==="user" && i===nextMessages.length-2 ? [{type:"text",text:m.content},...outgoingFiles.filter(f=>f.dataUrl).map(f=>({type:"image_url",image_url:{url:f.dataUrl}}))] : m.content}))})
       });
       if(!response.ok){let detail="AI service request failed ("+response.status+").";try{const payload=await response.json();detail=payload.error||detail;}catch{}throw new Error(detail);}
       if(!response.body)throw new Error("Streaming is not supported by this browser.");
