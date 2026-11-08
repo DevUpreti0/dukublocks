@@ -515,3 +515,5 @@
 @media(max-width:600px){.dai-voice-panel{padding:14px;border-radius:17px}.dai-sent-files{width:100%}}
 
 .dai-rename-chat{border:0;background:transparent;color:#85818f;padding:5px 7px;opacity:0;cursor:pointer}.dai-history-item:hover .dai-rename-chat,.dai-history-item:focus-within .dai-rename-chat{opacity:1}.dai-rename-chat:hover{color:#4f7fe8;background:#edf3ff;border-radius:6px}.dai-sent-file-preview{display:block!important;width:100%;padding:9px 11px;margin-top:8px;border:1px solid #e8eaf0;border-radius:9px;background:#f8f9fc}.dai-sent-file-preview small{display:block;color:#71809a;font-size:9px;font-weight:700;letter-spacing:.06em}.dai-sent-file-preview p{display:block!important;margin:6px 0 0;color:#525b6b;font-size:11px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}@media(max-width:640px){.dai-rename-chat{opacity:1;padding:6px}}
+
+.dai-history-group{margin:0 0 13px}.dai-history-group-title{padding:10px 9px 5px;color:#8a8794;font-size:9px;font-weight:800;letter-spacing:.09em;text-transform:uppercase}.dai-history-group:first-child .dai-history-group-title{padding-top:5px}.dai-history-group .dai-history-item{margin-top:2px}
