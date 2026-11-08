@@ -132,7 +132,7 @@ module.exports = async function handler(req, res) {
         shell = await sandbox.runCommand({ cmd: "script", args: ["-qefc", "env TERM=dumb PS1='ubuntu@duku:\\w$ ' bash --noprofile --norc -i", "/tmp/duku-shell.tty.log"], cwd: WORKDIR, stdin: true, detached: true });
         await upsertSession({ shell_session_id: shell.sessionId || null, shell_command_id: shell.id, shell_output_offset: 0 });
       }
-      await shell.writeStdin(line + "\\n");
+      await shell.writeStdin(line + "\n");
       return res.status(200).json({ ok: true, output: "Command sent to persistent interactive PTY.", shellReady: true });
     }
 
