@@ -513,3 +513,5 @@
 .dai-sent-file>p{margin:0;padding:10px 12px;border-top:1px solid #e8ebf1;color:#626b7a;font-size:10px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;max-height:180px;overflow:auto}
 @media(prefers-reduced-motion:reduce){.dai-voice-orb.is-listening{animation:none}}
 @media(max-width:600px){.dai-voice-panel{padding:14px;border-radius:17px}.dai-sent-files{width:100%}}
+
+.dai-rename-chat{border:0;background:transparent;color:#85818f;padding:5px 7px;opacity:0;cursor:pointer}.dai-history-item:hover .dai-rename-chat,.dai-history-item:focus-within .dai-rename-chat{opacity:1}.dai-rename-chat:hover{color:#4f7fe8;background:#edf3ff;border-radius:6px}.dai-sent-file-preview{display:block!important;width:100%;padding:9px 11px;margin-top:8px;border:1px solid #e8eaf0;border-radius:9px;background:#f8f9fc}.dai-sent-file-preview small{display:block;color:#71809a;font-size:9px;font-weight:700;letter-spacing:.06em}.dai-sent-file-preview p{display:block!important;margin:6px 0 0;color:#525b6b;font-size:11px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}@media(max-width:640px){.dai-rename-chat{opacity:1;padding:6px}}
