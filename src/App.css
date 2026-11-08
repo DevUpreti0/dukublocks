@@ -1888,3 +1888,102 @@ body{background:#fff!important;color:#111018!important}
  #root:has(.launch-card) .duku-suite-card:hover{transform:translateY(-6px);border-color:#a58af5!important;box-shadow:0 20px 44px #21123b12!important}
 }
 @keyframes duku-sheen{0%,18%{left:-35%}55%,100%{left:120%}}
+
+
+/* BOLD MODERN — unified application surfaces */
+:root{--duku-ink:#111018;--duku-muted:#514d5d;--duku-purple:#5b21f6;--duku-line:#e7e4ee;--duku-paper:#fff;--duku-wash:#f6f4fa}
+#root .app-shell{background:#fff!important;color:var(--duku-ink)!important}
+#root .layout{background:#fff!important;color:var(--duku-ink)!important;max-width:1600px}
+#root .sidebar{background:#faf9fc!important;border-right:1px solid var(--duku-line)!important}
+#root .workspace{border-bottom-color:var(--duku-line)!important}
+#root .workspace b,#root .profile-row b{color:#17141f!important;font-weight:800!important}
+#root .workspace small,#root .profile-row small{color:#595466!important}
+#root .side-label{color:#625d70!important;font-weight:800!important}
+#root .side-link{color:#292533!important;font-weight:650!important;border-radius:9px!important;transition:background .18s,color .18s,transform .18s!important}
+#root .side-link>span{color:#5c5669!important}
+#root .side-link.selected,#root .side-link:hover{background:#eee9ff!important;color:#35119b!important;transform:translateX(2px)}
+#root .side-link.selected>span{color:#5b21f6!important}
+#root .side-link i{background:#e9e5f0!important;color:#373142!important}
+#root .upgrade-card{background:#21153e!important;border:1px solid #39266a!important;border-radius:12px!important}
+#root .upgrade-card b,#root .upgrade-card p{color:#fff!important}
+#root .upgrade-card p{opacity:.82}
+#root .upgrade-card button{color:#d7c8ff!important}
+#root .avatar{background:#e9e2ff!important;color:#35119b!important;font-weight:800}
+#root .main-content{background:#fff!important;color:#111018!important}
+#root .main-content h1,#root .main-content h2,#root .main-content h3,#root .main-content h4{color:#111018}
+#root .main-content p{color:#403b4b}
+#root .main-content .eyebrow{color:#5420dc!important}
+#root .main-content .welcome-row h1{font-weight:850!important;letter-spacing:-2px!important}
+#root .main-content .welcome-copy{color:#464151!important}
+#root .main-content .welcome-orb{border-color:#ded4ff!important;box-shadow:0 0 0 10px #f7f4ff!important}
+#root .main-content .orb-inner{background:#5b21f6!important;color:white!important}
+#root .main-content .launch-card{background:#fff!important}
+#root .main-content .template-card,#root .main-content .feature-card,#root .main-content .public-plan{background:#fff!important;color:#111018!important;border:1px solid #e5e1ec!important;box-shadow:0 8px 28px #20143c0a!important}
+#root .main-content .template-meta b,#root .main-content .feature-card h3{color:#111018!important}
+#root .main-content .template-meta small,#root .main-content .feature-card p{color:#514c5b!important}
+#root .main-content .filter-pills button{color:#393444!important}
+#root .main-content .filter-pills button.active{background:#eee9ff!important;color:#3b169f!important;border-color:#cfc0ff!important}
+#root .main-content .search-box{border-color:#d9d5e2!important;color:#4b4558!important}
+#root .main-content .search-box input{color:#17141f!important}
+#root .main-content .stats-strip{border-color:#e7e4ee!important}
+#root .main-content .stats-strip span,#root .main-content .stats-strip .stats-note{color:#393444!important}
+#root .main-content .stats-strip b{color:#5420dc!important}
+#root .editor-overlay{background:#f5f4f8!important;color:#111018!important}
+#root .editor-top{background:#fff!important;border-bottom:1px solid #e4e1eb!important;color:#111018!important;box-shadow:0 3px 18px #160d2a08!important}
+#root .editor-brand{color:#111018!important}
+#root .editor-brand .brand-mark{background:#5b21f6!important;color:#fff!important;box-shadow:none!important}
+#root .editor-site input{color:#111018!important;font-weight:800!important}
+#root .editor-site .saved{color:#08784f!important}
+#root .editor-actions .ghost-btn{color:#252130!important;border:1px solid #e1dce9!important;border-radius:8px!important;padding:9px 11px!important;background:#fff!important}
+#root .editor-actions .ghost-btn:hover{border-color:#b9a5fa!important;color:#4c1bd1!important}
+#root .editor-studio-toolbar{background:#fff!important;border-bottom:1px solid #e5e1eb!important}
+#root .studio-toolbar-left button,#root .studio-toolbar-centre button{color:#393444!important;font-weight:700!important}
+#root .studio-toolbar-left button.active,#root .studio-toolbar-centre button.active{color:#4d1bce!important;background:#eee9ff!important}
+#root .studio-toolbar-right{color:#312c3a!important}
+#root .studio-toolbar-right .studio-save-state{color:#08784f!important}
+#root .editor-workspace{background:#f4f3f7!important}
+#root .editor-tools,#root .properties{background:#fff!important;border-color:#e5e1eb!important;color:#17141f!important}
+#root .studio-panel-heading b,#root .studio-setting-group>b,#root .studio-element-group>b{color:#17141f!important;font-weight:850!important}
+#root .studio-panel-heading small,#root .studio-setting-group p,#root .studio-setting-group small{color:#514c5b!important}
+#root .studio-element-group button,#root .studio-library-list button{background:#fff!important;border:1px solid #e5e1eb!important;color:#24202d!important;border-radius:9px!important;transition:border-color .18s,box-shadow .18s,transform .18s!important}
+#root .studio-element-group button:hover,#root .studio-library-list button:hover{border-color:#a58bf4!important;box-shadow:0 5px 16px #26124c10!important;transform:translateY(-1px)}
+#root .studio-element-group button small{color:#5b21f6!important}
+#root .studio-element-search,#root .studio-setting-group input,#root .studio-setting-group textarea,#root .studio-setting-group select{background:#fff!important;color:#17141f!important;border:1px solid #d9d4e2!important}
+#root .studio-setting-group label{color:#292533!important}
+#root .studio-setting-group input::placeholder,#root .studio-setting-group textarea::placeholder{color:#777182!important}
+#root .editor-canvas-wrap{background:#eeedf2!important}
+#root .canvas-toolbar{color:#484353!important}
+#root .site-canvas{background:#fff!important;color:#111018!important;box-shadow:0 12px 42px #17102718!important}
+#root .canvas-nav{border-color:#e8e4ec!important}
+#root .canvas-nav b{color:#111018!important}
+#root .canvas-nav span{color:#35303e!important}
+#root .canvas-nav button,#root .canvas-copy button{background:#5b21f6!important;color:#fff!important;border-radius:5px!important}
+#root .canvas-copy h1{color:#111018!important}
+#root .canvas-copy p{color:#393444!important}
+#root .editor-added-block{color:#111018!important;border:1px solid #e3deeb!important;transition:box-shadow .2s,border-color .2s,transform .2s!important}
+#root .editor-added-block.is-selected{outline:2px solid #5b21f6!important;outline-offset:2px!important}
+#root .editor-added-block.is-dragging{opacity:.48;transform:scale(.99)}
+#root .studio-layer-row button,#root .page-manager-row button{color:#292533!important}
+#root .studio-layer-row button.active,#root .page-manager-row.active{background:#eee9ff!important;color:#35119b!important}
+#root .editor-help,#root .property-note{background:#f5f2fb!important;color:#494354!important;border:1px solid #e7e1f2!important}
+#root .media-notice,#root .cloud-save-notice{background:#f0ebff!important;color:#30127f!important;border:1px solid #d9cbff!important}
+#root .ai-builder-backdrop{background:#171222b8!important;backdrop-filter:blur(10px)!important}
+#root .ai-builder-modal{background:#fff!important;color:#111018!important;border:1px solid #e5e1eb!important;box-shadow:0 28px 90px #120a2780!important;border-radius:18px!important}
+#root .ai-builder-modal h2,#root .ai-builder-modal h3{color:#111018!important;font-weight:850!important}
+#root .ai-builder-modal p,#root .ai-builder-modal small,#root .ai-builder-modal label{color:#393444!important}
+#root .ai-builder-modal textarea,#root .ai-builder-modal select{background:#fff!important;color:#17141f!important;border:1px solid #d8d3e0!important}
+#root .ai-builder-modal textarea::placeholder{color:#777182!important}
+#root .ai-builder-eyebrow{color:#5420dc!important}
+#root .ai-builder-notice{background:#fff5e8!important;color:#754300!important;border:1px solid #f1d6ad!important}
+#root .ai-builder-close{color:#252130!important}
+#root .auth-modal,#root .profile-setup-modal{background:#fff!important;color:#111018!important;border:1px solid #e4dfeb!important}
+#root .auth-modal h2,#root .profile-setup-modal h2{color:#111018!important}
+#root .auth-modal p,#root .auth-modal label,#root .profile-setup-modal label{color:#393444!important}
+#root .auth-modal input,#root .profile-setup-modal input,#root .profile-setup-modal select{background:#fff!important;color:#17141f!important;border:1px solid #d7d2df!important}
+#root .auth-modal input::placeholder{color:#777182!important}
+#root .modal-legal{color:#5b5365!important}
+#root .tenant-storefront{color:#111018!important}
+#root .platform-maintenance{background:#fff!important;color:#111018!important}
+@media(max-width:900px){#root .sidebar{width:205px!important}#root .main-content{padding:30px 24px 0!important}}
+@media(max-width:680px){#root .sidebar{width:64px!important;padding:18px 7px!important}#root .side-label,#root .workspace b,#root .workspace small,#root .side-link:not(.selected) i,#root .profile-row b,#root .profile-row small,#root .upgrade-card{display:none!important}#root .side-link{justify-content:center;padding:12px 5px!important;font-size:0!important}#root .side-link>span{font-size:18px!important}#root .main-content{padding:24px 16px 0!important}#root .editor-workspace{grid-template-columns:155px minmax(0,1fr)!important}#root .properties{display:none!important}#root .editor-actions{gap:5px!important;flex-wrap:wrap;justify-content:flex-end}#root .editor-actions .ghost-btn{padding:7px!important;font-size:10px!important}}
+@media(prefers-reduced-motion:no-preference){#root .side-link,#root .studio-element-group button,#root .editor-added-block{transition-duration:.2s!important}}
