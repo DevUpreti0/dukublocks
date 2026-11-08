@@ -131,7 +131,6 @@ export default function DuKuAI() {
   const [messageFeedback,setMessageFeedback] = useState(() => { try { return JSON.parse(localStorage.getItem("duku-ai-message-feedback-v1")||"{}"); } catch { return {}; } });
   const [thinkingStage,setThinkingStage] = useState(0);
   const [thinkingElapsed,setThinkingElapsed] = useState(0);
-  const [thinkingReceiving,setThinkingReceiving] = useState(false);
   const thinkingStageTimerRef = useRef(null);
   const [thinkingDetailsOpen,setThinkingDetailsOpen] = useState(false);
   const [error,setError] = useState("");
@@ -290,7 +289,7 @@ export default function DuKuAI() {
     if (syncReady) localStorage.setItem(STORE_KEY, JSON.stringify(chats.filter(chat=>!chat.temporary)));
   }, [chats, syncReady]);
   useEffect(() => { localStorage.setItem("duku-ai-pinned-v1", JSON.stringify(pinnedIds)); }, [pinnedIds]);
-  useEffect(()=>{setProfileName(user?.user_metadata?.full_name||user?.user_metadata?.name||"");},[user?.id]);
+  useEffect(()=>{setProfileName(user?.user_metadata?.full_name||user?.user_metadata?.name||"");},[user?.id,user?.user_metadata?.full_name,user?.user_metadata?.name]);
   useEffect(() => { localStorage.setItem("duku-ai-response-style-v1", responseStyle); }, [responseStyle]);
   useEffect(() => { localStorage.setItem("duku-ai-appearance-v1", appearance); }, [appearance]);
   useEffect(() => { localStorage.setItem("duku-ai-compact-v1", String(compactMode)); }, [compactMode]);
@@ -320,15 +319,14 @@ export default function DuKuAI() {
   const latestMessageContent = activeChat?.messages?.[activeChat.messages.length - 1]?.content;
   const thinkingStages = ["Understanding your request", "Planning the best approach", "Working through the details", "Checking the response", "Preparing a clear answer", "Polishing the final response"];
   useEffect(() => {
-    if (!busy) { setThinkingStage(0); setThinkingElapsed(0); setThinkingReceiving(false); setThinkingDetailsOpen(false); return; }
+    if (!busy) { setThinkingStage(0); setThinkingElapsed(0); setThinkingDetailsOpen(false); return; }
     setThinkingStage(0);
     setThinkingElapsed(0);
-    setThinkingReceiving(false);
     const stageTimer = setInterval(() => setThinkingStage(value => (value + 1) % thinkingStages.length), 1850);
     thinkingStageTimerRef.current = stageTimer;
     const elapsedTimer = setInterval(() => setThinkingElapsed(value => value + 1), 1000);
     return () => { clearInterval(stageTimer); clearInterval(elapsedTimer); thinkingStageTimerRef.current = null; };
-  }, [busy]);
+  }, [busy,thinkingStages.length]);
   useEffect(()=>{bottomRef.current?.scrollIntoView({behavior:"smooth",block:"end"});},[activeChat?.messages?.length,latestMessageContent]);
   const newChat = useCallback(()=>{const id=makeId();setChats(prev=>[{id,title:"New chat",model,updatedAt:Date.now(),messages:[]},...prev]);setActiveId(id);setInput("");setError("");setAttached([]);setSidebarOpen(false);},[model]);
   const newTemporaryChat = useCallback(()=>{const id=makeId();setChats(prev=>[{id,title:"Temporary chat",model,temporary:true,updatedAt:Date.now(),messages:[]},...prev]);setActiveId(id);setInput("");setError("");setAttached([]);setSidebarOpen(false);setInstructionsOpen(false);},[model]);
@@ -491,7 +489,7 @@ export default function DuKuAI() {
         try{packet=JSON.parse(data);}catch{return;}
         if(packet.error)throw new Error(packet.error.message||"AI provider error");
         const delta=packet.choices?.[0]?.delta?.content;
-        if(typeof delta==="string"&&delta){if(!answer){setThinkingReceiving(true);if(thinkingStageTimerRef.current)clearInterval(thinkingStageTimerRef.current);setThinkingStage(5);}answer+=delta;completedText=true;queueAssistantRender();}
+        if(typeof delta==="string"&&delta){if(!answer){if(thinkingStageTimerRef.current)clearInterval(thinkingStageTimerRef.current);setThinkingStage(5);}answer+=delta;completedText=true;queueAssistantRender();}
       };
       while(true){
         const {value,done}=await reader.read();
