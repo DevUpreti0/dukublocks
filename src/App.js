@@ -378,7 +378,7 @@ function TenantSite() {
     if (!site || !currentPage || !isSupabaseConfigured) return;
     let referrerHost = null;
     try { referrerHost = document.referrer ? new URL(document.referrer).hostname : null; } catch (error) { referrerHost = null; }
-    supabase.rpc("track_site_page_view", { p_subdomain: tenant, p_page_slug: currentPage.slug || "", p_referrer_host: referrerHost });
+    supabase.rpc("track_site_page_view", { p_subdomain: site?.subdomain || tenant, p_page_slug: currentPage.slug || "", p_referrer_host: referrerHost });
   }, [site, currentPage, tenant]);
   useEffect(() => {
     if (!site || !currentPage) return;
@@ -1726,7 +1726,7 @@ function App() {
   if (host.startsWith("admin.")) page = <AdminErrorBoundary><AdminPortal /></AdminErrorBoundary>;
   else if (host.startsWith("dashboard.")) page = new URLSearchParams(window.location.search).has("openSite") ? <MainApp /> : <DeveloperDashboard />;
   else if (window.location.pathname==="/blog" || window.location.pathname.startsWith("/blog/")) page = <BlogPage />;
-  else if (host !== "dukubusiness.online" && host !== "www.dukubusiness.online" && !host.startsWith("admin.") && !host.startsWith("dashboard.")) page = <TenantSite />;
+  else if (host !== "dukubusiness.online" && host !== "www.dukubusiness.online" && !host.startsWith("admin.") && !host.startsWith("dashboard.") && host !== "localhost" && !host.endsWith(".vercel.app")) page = <TenantSite />;
   else page = <MainApp />;
   return <><UILSubsidiaryTagline />{page}</>;
 }
