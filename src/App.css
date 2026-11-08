@@ -2188,3 +2188,49 @@ a:hover{ text-decoration-thickness:2px }
 .platform-controls-panel .platform-control-grid>article{min-width:0}
 .platform-controls-panel .platform-control-item{align-items:flex-start}
 @media(max-width:600px){.feature-registry-controls{gap:10px}.platform-controls-panel .platform-control-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* DuKu Studio workspace and custom-domain expansion */
+.dd-hope .dd-stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.dd-hope .dd-stat-card{min-height:112px;border:1px solid #e7e8f0;border-radius:18px;background:linear-gradient(145deg,#fff 0%,#f8f9ff 100%);box-shadow:0 8px 24px rgba(28,31,58,.045)}
+.dd-hope .dd-stat-card>div:last-child{min-width:0}
+.dd-hope .dd-stat-card b{font-size:clamp(22px,2vw,30px);letter-spacing:-.04em;color:#17172a}
+.dd-hope .dd-stat-card small{color:#65677a;font-weight:700}
+.dd-hope .dd-stat-card span{color:#77798b}
+.dd-domains-section{scroll-margin-top:100px}
+.dd-domain-intro{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 24px;border:1px solid #e3e5ef;border-radius:20px;background:linear-gradient(120deg,#f5f5ff,#f8fbff);margin:20px 0}
+.dd-domain-intro>div:first-child{display:flex;align-items:center;gap:16px;min-width:0}
+.dd-domain-mark{display:grid;place-items:center;flex:0 0 52px;width:52px;height:52px;border-radius:16px;background:#e8e7ff;color:#4d36bd;font-size:28px;font-weight:800}
+.dd-domain-intro b,.dd-domain-transfer b{display:block;color:#202039;font-size:15px}
+.dd-domain-intro p,.dd-domain-transfer p{margin:5px 0 0;color:#65677b;font-size:13px;line-height:1.55}
+.dd-domain-steps{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.dd-domain-steps span{padding:8px 10px;border-radius:999px;background:#fff;border:1px solid #e4e5ee;color:#4b4d62;font-size:11px;font-weight:800;white-space:nowrap}
+.dd-domain-form{display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,.8fr) auto;align-items:end;gap:14px;padding:20px;border:1px solid #e4e5ef;border-radius:18px;background:#fff;box-shadow:0 8px 28px rgba(27,31,59,.04)}
+.dd-domain-form label{display:grid;gap:8px;color:#33354a;font-size:12px;font-weight:800}
+.dd-domain-form input,.dd-domain-form select{width:100%;min-width:0;height:46px;padding:0 13px;border:1px solid #d9dbe7;border-radius:11px;background:#fff;color:#1f2034;font:inherit;font-size:14px;outline:none}
+.dd-domain-form input:focus,.dd-domain-form select:focus{border-color:#6554d9;box-shadow:0 0 0 3px rgba(101,84,217,.12)}
+.dd-domain-form .dd-primary{height:46px;min-width:160px;border:0;border-radius:11px;background:#4936c8;color:#fff;font-weight:800;padding:0 18px;cursor:pointer}
+.dd-domain-form .dd-primary:disabled{opacity:.55;cursor:not-allowed}
+.dd-domain-transfer{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.dd-domain-transfer>div{padding:17px 18px;border:1px solid #e7e8f0;border-radius:15px;background:#fbfbfe}
+.dd-domain-list{display:grid;gap:14px;margin-top:16px}
+.dd-domain-card{padding:19px;border:1px solid #e3e5ee;border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(27,31,59,.035)}
+.dd-domain-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.dd-domain-card-head b{display:block;overflow-wrap:anywhere;color:#202039;font-size:17px}
+.dd-domain-card-head small{display:block;margin-top:5px;color:#77798b;font-size:12px}
+.dd-domain-status{display:inline-flex;align-items:center;flex:0 0 auto;padding:7px 10px;border-radius:999px;font-size:11px;font-weight:800}
+.dd-domain-status.is-verified{background:#e8f7ef;color:#17683d}
+.dd-domain-status.is-pending{background:#fff4df;color:#86530a}
+.dd-dns-row{display:flex;align-items:center;gap:14px;min-height:55px;padding:10px 12px;border-top:1px solid #ececf2}
+.dd-dns-row>div{display:grid;gap:4px;min-width:0;flex:1}
+.dd-dns-row small{color:#77798b;font-size:11px;font-weight:700}
+.dd-dns-row b,.dd-dns-row code{color:#282940;font-size:13px;overflow-wrap:anywhere}
+.dd-dns-row button,.dd-secondary{flex:0 0 auto;border:1px solid #d8d9e6;border-radius:9px;background:#fff;color:#37344e;font-size:12px;font-weight:800;padding:8px 11px;cursor:pointer}
+.dd-domain-card-footer{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:12px;padding-top:14px;border-top:1px solid #ececf2}
+.dd-domain-card-footer span{color:#6e7082;font-size:12px;line-height:1.45}
+.dd-domain-card-footer button:disabled{opacity:.55;cursor:wait}
+.dd-domain-next{margin:12px 0 0;padding:11px 13px;border-radius:10px;background:#f2f3ff;color:#4b4c69;font-size:12px;line-height:1.55}
+.dd-domain-empty{margin-top:16px;padding:28px;text-align:center;border:1px dashed #d6d8e5;border-radius:16px;background:#fbfbfe}
+.dd-domain-empty b{color:#25263d}
+.dd-domain-empty p{margin:7px 0 0;color:#77798b;font-size:13px}
+@media(max-width:1000px){.dd-hope .dd-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.dd-domain-intro{align-items:flex-start;flex-direction:column}.dd-domain-steps{justify-content:flex-start}}
+@media(max-width:650px){.dd-hope .dd-stats{grid-template-columns:1fr 1fr;gap:9px}.dd-hope .dd-stat-card{padding:13px;min-height:100px}.dd-domain-form{grid-template-columns:1fr}.dd-domain-form .dd-primary{width:100%}.dd-domain-transfer{grid-template-columns:1fr}.dd-domain-card{padding:14px}.dd-domain-card-head,.dd-domain-card-footer{align-items:flex-start;flex-direction:column}.dd-dns-row{align-items:flex-start;flex-wrap:wrap}.dd-dns-row>div{flex-basis:100%}.dd-domain-steps span{white-space:normal}}
