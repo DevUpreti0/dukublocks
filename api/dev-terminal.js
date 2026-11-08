@@ -88,7 +88,7 @@ module.exports = async function handler(req, res) {
     if (action === "preview") {
       const install = await sandbox.runCommand({
         cmd: "bash",
-        args: ["-lc", "if [ -f package.json ] && [ ! -d node_modules ]; then npm install --no-audit --no-fund; fi"],
+        args: ["-lc", "if [ -f package.json ] && [ ! -d node_modules ]; then timeout 45s npm install --no-audit --no-fund; fi"],
         cwd: "/vercel/sandbox/workspace"
       });
       if (install.exitCode !== 0) return res.status(200).json({ ok: false, output: await install.stdout(), stderr: await install.stderr(), exitCode: install.exitCode });
