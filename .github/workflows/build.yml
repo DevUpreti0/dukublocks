@@ -20,6 +20,8 @@ jobs:
           node-version: 22
       - name: Install dependencies
         run: npm install
+      - name: Validate Linux terminal API syntax
+        run: node --check api/dev-terminal.js
       - name: Compile production bundle
         env:
           CI: "true"
