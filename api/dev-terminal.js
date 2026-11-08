@@ -112,35 +112,41 @@ module.exports = async function handler(req, res) {
       if (existing?.shell_command_id) {
         try {
           await sandbox.getCommand(existing.shell_command_id);
-          return res.status(200).json({ ok: true, output: "Persistent shell is already connected.", shellReady: true });
+          return res.status(200).json({ ok: true, output: "Persistent PTY shell is already connected.", shellReady: true });
         } catch (_) {}
       }
-      await sandbox.runCommand({ cmd: "bash", args: ["-lc", ": > /tmp/duku-shell.log"], cwd: WORKDIR });
-      const shellScript = "while IFS= read -r line; do printf '\\n$ %s\\n' \"$line\" >> /tmp/duku-shell.log; eval \"$line\" >> /tmp/duku-shell.log 2>&1; code=$?; printf '\\n[exit %s] %s\\n__DUKU_READY__\\n' \"$code\" \"$PWD\" >> /tmp/duku-shell.log; done";
-      const shell = await sandbox.runCommand({ cmd: "bash", args: ["--noprofile", "--norc", "-c", shellScript], cwd: WORKDIR, stdin: true, detached: true });
-      await upsertSession({ shell_session_id: shell.sessionId || null, shell_command_id: shell.id });
-      return res.status(200).json({ ok: true, output: "Persistent Bash session connected. Commands share the same working directory and installed packages.", shellReady: true });
+      await sandbox.runCommand({ cmd: "bash", args: ["-lc", "command -v script >/dev/null 2>&1 || (sudo apt-get update && sudo apt-get install -y util-linux); : > /tmp/duku-shell.tty.log"], cwd: WORKDIR });
+      const shell = await sandbox.runCommand({ cmd: "script", args: ["-qefc", "env TERM=dumb PS1='ubuntu@duku:\\w$ ' bash --noprofile --norc -i", "/tmp/duku-shell.tty.log"], cwd: WORKDIR, stdin: true, detached: true });
+      await upsertSession({ shell_session_id: shell.sessionId || null, shell_command_id: shell.id, shell_output_offset: 0 });
+      return res.status(200).json({ ok: true, output: "Persistent interactive Bash PTY connected. Working directory and shell state persist while the sandbox session is active.", shellReady: true });
     }
 
     if (action === "shell-input") {
       const line = cleanText(body.command, MAX_COMMAND);
       if (!line) return res.status(400).json({ error: "Enter a shell command." });
       let state = await getSession();
-      if (!state?.shell_command_id) {
-        await sandbox.runCommand({ cmd: "bash", args: ["-lc", ": > /tmp/duku-shell.log"], cwd: WORKDIR });
-        const shellScript = "while IFS= read -r line; do printf '\\n$ %s\\n' \"$line\" >> /tmp/duku-shell.log; eval \"$line\" >> /tmp/duku-shell.log 2>&1; code=$?; printf '\\n[exit %s] %s\\n__DUKU_READY__\\n' \"$code\" \"$PWD\" >> /tmp/duku-shell.log; done";
-        const shellProcess = await sandbox.runCommand({ cmd: "bash", args: ["--noprofile", "--norc", "-c", shellScript], cwd: WORKDIR, stdin: true, detached: true });
-        await upsertSession({ shell_session_id: shellProcess.sessionId || null, shell_command_id: shellProcess.id });
-        state = await getSession();
+      let shell;
+      try { if (state?.shell_command_id) shell = await sandbox.getCommand(state.shell_command_id); } catch (_) { shell = null; }
+      if (!shell) {
+        await sandbox.runCommand({ cmd: "bash", args: ["-lc", "command -v script >/dev/null 2>&1 || (sudo apt-get update && sudo apt-get install -y util-linux); : > /tmp/duku-shell.tty.log"], cwd: WORKDIR });
+        shell = await sandbox.runCommand({ cmd: "script", args: ["-qefc", "env TERM=dumb PS1='ubuntu@duku:\\w$ ' bash --noprofile --norc -i", "/tmp/duku-shell.tty.log"], cwd: WORKDIR, stdin: true, detached: true });
+        await upsertSession({ shell_session_id: shell.sessionId || null, shell_command_id: shell.id, shell_output_offset: 0 });
       }
-      const shell = await sandbox.getCommand(state.shell_command_id);
       await shell.writeStdin(line + "\\n");
-      return res.status(200).json({ ok: true, output: "Command sent to persistent Bash session.", shellReady: true });
+      return res.status(200).json({ ok: true, output: "Command sent to persistent interactive PTY.", shellReady: true });
     }
 
     if (action === "shell-read") {
-      const r = await sandbox.runCommand({ cmd: "bash", args: ["-lc", "if [ -f /tmp/duku-shell.log ]; then cat /tmp/duku-shell.log; : > /tmp/duku-shell.log; fi"], cwd: WORKDIR });
-      return res.status(200).json({ ok: true, output: (await r.stdout()).slice(-24000) });
+      const state = await getSession();
+      const offset = Number(state?.shell_output_offset || 0);
+      const readScript = "size=$(stat -c%s /tmp/duku-shell.tty.log 2>/dev/null || echo 0); start=$(( " + offset + " + 1 )); if [ \"$size\" -ge \"$start\" ] && [ \"$size\" -gt " + offset + " ]; then tail -c +\"$start\" /tmp/duku-shell.tty.log; fi; printf '\\n__DUKU_SIZE__='; printf '%s' \"$size\"";
+      const r = await sandbox.runCommand({ cmd: "bash", args: ["-lc", readScript], cwd: WORKDIR });
+      const raw = await r.stdout();
+      const marker = raw.lastIndexOf("__DUKU_SIZE__=");
+      const output = (marker >= 0 ? raw.slice(0, marker) : raw).slice(-24000);
+      const newOffset = marker >= 0 ? Number(raw.slice(marker + 14).trim()) : offset;
+      if (Number.isFinite(newOffset) && newOffset >= offset) await db.from("dev_terminal_sessions").update({ shell_output_offset: newOffset, updated_at: new Date().toISOString() }).eq("user_id", owner).eq("project_id", projectId).eq("project_type", projectType);
+      return res.status(200).json({ ok: true, output });
     }
 
     if (action === "job-start" || action === "android-build") {
@@ -157,8 +163,9 @@ module.exports = async function handler(req, res) {
           "mkdir -p \"$ANDROID_HOME/cmdline-tools\"",
           "if [ ! -x \"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager\" ]; then",
           "  tmp=$(mktemp -d)",
-          "  curl -fsSL https://dl.google.com/android/repository/commandlinetools-linux-13114758_latest.zip -o \"$tmp/tools.zip\"",
+          "  curl -fsSL https://dl.google.com/android/repository/commandlinetools-linux-15859902_latest.zip -o \"$tmp/tools.zip\"",
           "  mkdir -p \"$tmp/unpack\"",
+          "  echo \"4e4c464f145a7515b57d088ac6c278c03c9eea610886b35a5e0804e74eedf583  $tmp/tools.zip\" | sha256sum -c -",
           "  unzip -q \"$tmp/tools.zip\" -d \"$tmp/unpack\"",
           "  rm -rf \"$ANDROID_HOME/cmdline-tools/latest\"",
           "  mv \"$tmp/unpack/cmdline-tools\" \"$ANDROID_HOME/cmdline-tools/latest\"",
@@ -180,7 +187,7 @@ module.exports = async function handler(req, res) {
           "  . .duku-signing/signing.env",
           "  export DUKU_STORE_PASSWORD DUKU_KEY_ALIAS DUKU_KEY_PASSWORD DUKU_KEYSTORE_PATH=\"$PWD/.duku-signing/release.jks\"",
           "  cat > /tmp/duku-signing.init.gradle <<'GRADLE'",
-          "allprojects { p -> p.afterEvaluate {",
+          "gradle.projectsEvaluated { gradle.rootProject.allprojects.each { p ->",
           "  if (p.plugins.hasPlugin('com.android.application')) {",
           "    def a = p.extensions.findByName('android')",
           "    a.signingConfigs.maybeCreate('dukuRelease').with {",
