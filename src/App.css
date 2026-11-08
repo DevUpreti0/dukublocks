@@ -1275,3 +1275,11 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .tenant-currency-switch{display:inline-flex;align-items:center;gap:7px;margin-left:12px;padding:5px 8px;border:1px solid #e6e1ef;border-radius:9px;color:inherit;font-size:11px;font-weight:600}
 .tenant-currency-switch select{max-width:90px;border:0;background:transparent;color:inherit;font:inherit;outline:none;cursor:pointer}
 @media(max-width:700px){.tenant-currency-switch{margin:7px 0 0 8px}.tenant-nav{flex-wrap:wrap}.tenant-nav nav{display:flex;flex-wrap:wrap;align-items:center;gap:10px}}
+
+/* Super-admin payment gateway configuration */
+.admin-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0 24px}
+.admin-form-grid label{display:flex;flex-direction:column;gap:8px;color:var(--admin-muted,#64748b);font-size:13px;font-weight:600}
+.admin-form-grid input,.admin-form-grid select{width:100%;min-width:0;padding:12px 13px;border:1px solid var(--admin-border,#dbe2ea);border-radius:10px;background:var(--admin-input,#fff);color:var(--admin-text,#172033);font:inherit}
+.admin-form-grid .admin-toggle{flex-direction:row;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--admin-border,#dbe2ea);border-radius:10px}
+.admin-form-grid .admin-toggle input{width:auto}
+@media(max-width:700px){.admin-form-grid{grid-template-columns:1fr}}
