@@ -316,7 +316,7 @@ export default function DuKuAI() {
     let completedText=false;
     let pendingRenderTimer=null;
     let latestStreamText="";
-    const flushStreamText=()=>{if(pendingRenderTimer){clearTimeout(pendingRenderTimer);pendingRenderTimer=null;}if(latestStreamText)updateAssistantMessage(latestStreamText);};
+    const flushStreamText=()=>{if(pendingRenderTimer){clearTimeout(pendingRenderTimer);pendingRenderTimer=null;}if(latestStreamText)setChats(prev=>prev.map(c=>c.id===chatId?{...c,messages:c.messages.map((m,i)=>i===c.messages.length-1?{...m,content:latestStreamText}:m),updatedAt:Date.now()}:c));};
     try {
       const {data:{session}}=await supabase.auth.getSession();
       if(!session?.access_token)throw new Error("Your sign-in session expired. Please sign in again.");
