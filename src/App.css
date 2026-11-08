@@ -795,3 +795,24 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 .duku-live-dot{width:7px;height:7px;border-radius:50%;background:#24b47e;box-shadow:0 0 0 4px #24b47e18;animation:duku-live-pulse 1.8s infinite}
 @keyframes duku-live-pulse{0%,100%{box-shadow:0 0 0 3px #24b47e18}50%{box-shadow:0 0 0 7px #24b47e08}}
 @media(max-width:600px){.duku-live-growth{gap:12px;padding:12px}.duku-live-growth strong{font-size:18px}.duku-live-growth span{font-size:8px}}
+
+
+/* Homepage technology ecosystem marquee */
+.ecosystem-section{padding:42px 0 46px;border-bottom:1px solid var(--line);overflow:hidden}
+.ecosystem-heading{text-align:center;margin:0 auto 24px;max-width:620px}
+.ecosystem-heading h2{font:700 clamp(22px,2.6vw,30px)/1.2 Manrope;letter-spacing:-1px;margin:9px 0}
+.ecosystem-heading h2 em{font-style:normal;background:linear-gradient(90deg,#c2a9ff,#81caff);background-clip:text;color:transparent}
+.ecosystem-heading p{font-size:11px;color:#999fb2;margin:0}
+.ecosystem-marquee{width:100%;overflow:hidden;position:relative;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.ecosystem-track{display:flex;align-items:center;gap:54px;width:max-content;animation:ecosystem-scroll 42s linear infinite;padding:13px 0}
+.ecosystem-marquee:hover .ecosystem-track{animation-play-state:paused}
+.ecosystem-wordmark{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;color:#c5c8d5;font:700 19px Manrope;letter-spacing:-.8px;opacity:.78;filter:grayscale(1);transition:opacity .2s,filter .2s}
+.ecosystem-wordmark:hover{opacity:1;filter:grayscale(0)}
+.ecosystem-wordmark.brand-0{font-weight:800;letter-spacing:-1.2px}
+.ecosystem-wordmark.brand-1{font-weight:800;letter-spacing:-1.1px}
+.ecosystem-wordmark.brand-2{font-weight:600;letter-spacing:-.5px}
+.ecosystem-wordmark.brand-5{font-weight:800;letter-spacing:-1px}
+.ecosystem-disclaimer{text-align:center;color:#747b91;font-size:9px;line-height:1.6;max-width:720px;margin:8px auto 0;padding:0 14px}
+@keyframes ecosystem-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.ecosystem-track{animation:none;flex-wrap:wrap;justify-content:center;width:100%;gap:18px 28px}.ecosystem-marquee{mask-image:none}}
+@media(max-width:700px){.ecosystem-section{padding:32px 0}.ecosystem-track{gap:34px;animation-duration:34s}.ecosystem-wordmark{font-size:16px}.ecosystem-heading{padding:0 12px}}
