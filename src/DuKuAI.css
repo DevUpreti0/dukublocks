@@ -429,3 +429,30 @@
 .dai-md-table tbody tr:nth-child(even){background:#fbfaff}
 .dai-code-block .dai-code-header span{text-transform:lowercase}
 .dai-code-block pre code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+
+/* DuKu AI usability pass — clearer code actions and touch-friendly controls */
+.dai-code-header{height:auto;min-height:44px;padding:7px 10px 7px 14px;gap:12px}
+.dai-code-header>span{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.02em}
+.dai-code-header>span small{font-size:9px;font-weight:500;color:#8e92a3;text-transform:none;letter-spacing:0}
+.dai-code-actions{display:flex;align-items:center;gap:7px}
+.dai-code-actions button{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:32px;padding:6px 11px;border:1px solid #454858;border-radius:8px;background:#303342;color:#f4f5fa;font:600 11px 'Google Sans','Roboto',sans-serif;white-space:nowrap;transition:background .16s ease,border-color .16s ease,transform .16s ease}
+.dai-code-actions button:hover{background:#41465a;border-color:#68708b;transform:translateY(-1px)}
+.dai-code-actions button:active{transform:translateY(0)}
+.dai-code-block pre{overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#51566b #171923}
+.dai-code-block pre code{user-select:text;-webkit-user-select:text}
+.dai-message-actions{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:9px}
+.dai-message-actions button{min-height:32px;padding:6px 10px;border:1px solid transparent;border-radius:18px;background:transparent}
+.dai-message-actions button:focus-visible,.dai-code-actions button:focus-visible{outline:2px solid #4285f4;outline-offset:2px}
+.dai-composer{transition:box-shadow .18s ease,background .18s ease}
+.dai-composer textarea{resize:none;max-height:220px;overflow-y:auto}
+.dai-attach-btn,.dai-voice-btn,.dai-send-btn,.dai-stop-btn{touch-action:manipulation}
+.dai-disclaimer{line-height:1.5}
+.dai-history-item:focus-within .dai-delete-chat,.dai-history-item:hover .dai-delete-chat{opacity:1}
+@media(max-width:640px){
+ .dai-code-header{align-items:flex-start;flex-direction:column;padding:9px 10px;gap:8px}
+ .dai-code-actions{width:100%;justify-content:flex-end}
+ .dai-code-actions button{flex:1;min-height:36px}
+ .dai-message-actions button{min-height:36px}
+ .dai-composer-tools>div{flex-wrap:wrap}
+}
