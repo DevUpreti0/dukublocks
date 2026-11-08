@@ -27,6 +27,7 @@ export default function DuKuAI() {
   const [authError,setAuthError] = useState("");
   const [syncReady,setSyncReady] = useState(false);
   const [syncStatus,setSyncStatus] = useState("Connecting…");
+  const [legacyChats] = useState(readChats);
   const [chats,setChats] = useState(readChats);
   const [activeId,setActiveId] = useState(() => readChats()[0]?.id || "");
   const [model,setModel] = useState(MODELS[0].id);
@@ -101,8 +102,8 @@ export default function DuKuAI() {
     return () => { cancelled = true; };
   }, [user?.id]);
   useEffect(() => {
-    localStorage.setItem(STORE_KEY, JSON.stringify(chats));
-  }, [chats]);
+    if (syncReady) localStorage.setItem(STORE_KEY, JSON.stringify(chats));
+  }, [chats, syncReady]);
   useEffect(() => {
     if (!user?.id || !syncReady || !chats.length || !supabase) return;
     setSyncStatus("Saving…");
@@ -124,6 +125,17 @@ export default function DuKuAI() {
   const latestMessageContent = activeChat?.messages?.[activeChat.messages.length - 1]?.content;
   useEffect(()=>{bottomRef.current?.scrollIntoView({behavior:"smooth",block:"end"});},[activeChat?.messages?.length,latestMessageContent]);
   const newChat = useCallback(()=>{const id=makeId();setChats(prev=>[{id,title:"New chat",model,updatedAt:Date.now(),messages:[]},...prev]);setActiveId(id);setInput("");setError("");setAttached([]);setSidebarOpen(false);},[model]);
+  const importLegacyChats = () => {
+    if (!syncReady || !legacyChats.length || chats.length) return;
+    const restored = legacyChats.map(chat => ({
+      ...chat,
+      messages: Array.isArray(chat.messages) ? chat.messages : [],
+      model: chat.model || MODELS[0].id
+    }));
+    setChats(restored);
+    setActiveId(restored[0]?.id || "");
+    setSyncStatus("Importing this device’s chats…");
+  };
   const ensureChat = () => {
     if(activeChat) return activeChat.id;
     const id=makeId();setChats(prev=>[{id,title:"New chat",model,updatedAt:Date.now(),messages:[]},...prev]);setActiveId(id);return id;
@@ -299,6 +311,7 @@ export default function DuKuAI() {
       <button className="dai-new-chat" onClick={newChat}><span>＋</span> New chat <kbd>⌘ K</kbd></button>
       <label className="dai-search"><span>⌕</span><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search chats"/></label>
       <div className="dai-history-label">YOUR CHATS</div>
+      {syncReady && chats.length === 0 && legacyChats.length > 0 && <button className="dai-import-history" onClick={importLegacyChats}>Import {legacyChats.length} saved chat{legacyChats.length === 1 ? "" : "s"} from this device</button>}
       <div className="dai-history">{filteredChats.map(c=><div key={c.id} className={"dai-history-item "+(c.id===activeId?"active":"")}><button onClick={()=>{setActiveId(c.id);setSidebarOpen(false);}}><span>◷</span><span>{c.title}</span></button><button className="dai-delete-chat" title="Delete chat" onClick={()=>deleteChat(c.id)}>×</button></div>)}{!filteredChats.length&&<p className="dai-history-empty">Your conversations will appear here.</p>}</div>
       <div className="dai-sidebar-bottom"><div className="dai-plan-card"><span>✦</span><div><b>DuKu AI workspace</b><small>GPT + Gemini models</small></div><i>●</i></div><button className="dai-account" onClick={()=>setMenuOpen(!menuOpen)}><span className="dai-avatar">{(user.email||"U").slice(0,1).toUpperCase()}</span><span><b>{user.email?.split("@")[0]}</b><small>Personal workspace</small></span><span className="dai-more">···</span></button>{menuOpen&&<div className="dai-account-menu"><button onClick={()=>supabase.auth.signOut()}>Sign out</button></div>}</div>
     </aside>
