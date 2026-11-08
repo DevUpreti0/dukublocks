@@ -420,3 +420,12 @@
 .dai-code-header button{border:1px solid #454858;border-radius:6px;background:#303342;color:#e7e8ef;padding:5px 9px;font:10px 'DM Sans',sans-serif;cursor:pointer}
 .dai-code-block pre{margin:0;padding:15px;overflow:auto;max-width:100%;font:12px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;tab-size:2;white-space:pre}.dai-code-block code{font:inherit;color:inherit}
 @media(max-width:640px){.dai-markdown h1.dai-md-heading{font-size:20px}.dai-markdown h2.dai-md-heading{font-size:17px}.dai-code-block pre{font-size:11px;padding:12px}}
+
+.dai-table-wrap{width:100%;overflow-x:auto;margin:14px 0 18px;border:1px solid #e8e6ee;border-radius:10px}
+.dai-md-table{width:100%;border-collapse:collapse;font-size:13px;min-width:360px;background:#fff}
+.dai-md-table th{background:#f6f5fa;color:#34313f;font-weight:700}
+.dai-md-table th,.dai-md-table td{padding:10px 12px;border-bottom:1px solid #ebe9f0;vertical-align:top}
+.dai-md-table tr:last-child td{border-bottom:0}
+.dai-md-table tbody tr:nth-child(even){background:#fbfaff}
+.dai-code-block .dai-code-header span{text-transform:lowercase}
+.dai-code-block pre code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
