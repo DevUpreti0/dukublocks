@@ -37,6 +37,15 @@ export default function DuKuAI() {
   const [attached,setAttached] = useState([]);
   const [listening,setListening] = useState(false);
   const [speakingId,setSpeakingId] = useState("");
+  const [toolMode,setToolMode] = useState("chat");
+  const [mediaPrompt,setMediaPrompt] = useState("");
+  const [mediaBusy,setMediaBusy] = useState(false);
+  const [mediaError,setMediaError] = useState("");
+  const [mediaImages,setMediaImages] = useState([]);
+  const [videoModel,setVideoModel] = useState("google/veo-3.1-generate-001");
+  const [videoDuration,setVideoDuration] = useState(5);
+  const [videoJob,setVideoJob] = useState(null);
+  const [videoStatus,setVideoStatus] = useState(null);
   const recognitionRef = useRef(null);
   const [copied,setCopied] = useState("");
   const bottomRef = useRef(null);
@@ -94,6 +103,32 @@ export default function DuKuAI() {
     } finally {setBusy(false);abortRef.current=null;}
   };
   const stop = () => abortRef.current?.abort();
+
+  const mediaRequest = async (payload) => {
+    const {data:{session}}=await supabase.auth.getSession();
+    if(!session?.access_token)throw new Error("Please sign in again.");
+    const response=await fetch(process.env.REACT_APP_SUPABASE_URL+"/functions/v1/duku-ai-media",{
+      method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+session.access_token,"apikey":process.env.REACT_APP_SUPABASE_PUBLISHABLE_KEY},
+      body:JSON.stringify(payload)
+    });
+    const data=await response.json();if(!response.ok)throw new Error(data.error||"Media generation failed.");return data;
+  };
+  const generateImage = async () => {
+    if(!mediaPrompt.trim()||mediaBusy)return;setMediaBusy(true);setMediaError("");setMediaImages([]);
+    try{const data=await mediaRequest({action:"generate_image",model:"openai/gpt-image-2",prompt:mediaPrompt.trim()});setMediaImages(data.images||[]);}
+    catch(err){setMediaError(err.message||"Image generation failed.");}finally{setMediaBusy(false);}
+  };
+  const generateVideo = async () => {
+    if(!mediaPrompt.trim()||mediaBusy)return;setMediaBusy(true);setMediaError("");setVideoStatus(null);setVideoJob(null);
+    try{const data=await mediaRequest({action:"start_video",model:videoModel,prompt:mediaPrompt.trim(),duration:videoDuration});setVideoJob({operation:data.operation,model:data.model});setVideoStatus("pending");}
+    catch(err){setMediaError(err.message||"Video generation could not start.");}finally{setMediaBusy(false);}
+  };
+  const checkVideo = async () => {
+    if(!videoJob||mediaBusy)return;setMediaBusy(true);setMediaError("");
+    try{const data=await mediaRequest({action:"check_video",model:videoJob.model,operation:videoJob.operation});setVideoStatus(data);}
+    catch(err){setMediaError(err.message||"Could not check video status.");}finally{setMediaBusy(false);}
+  };
+
   const deleteChat = (id) => {setChats(prev=>prev.filter(c=>c.id!==id));if(activeId===id)setActiveId("");};
   const copyMessage = async (value,id) => {try{await navigator.clipboard.writeText(value);setCopied(id);setTimeout(()=>setCopied(""),1400);}catch{setError("Clipboard access was blocked by your browser.");}};
   const filteredChats=useMemo(()=>chats.filter(c=>c.title.toLowerCase().includes(search.toLowerCase())),[chats,search]);
