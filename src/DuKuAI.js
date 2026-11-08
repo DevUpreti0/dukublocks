@@ -113,6 +113,7 @@ export default function DuKuAI() {
       if(file.size>8*1024*1024){setError(file.name+" exceeds the 8 MB file limit.");continue;}
       try{
         if(type.startsWith("image/")&&["image/png","image/jpeg","image/webp","image/gif"].includes(type)){
+          if(file.size>3800000){setError(file.name+" is too large for image analysis. Please use an image under 3.8 MB.");continue;}
           const dataUrl=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file);});
           setAttached(prev=>[...prev,{name:file.name,type,dataUrl,size:file.size}].slice(-5));
         }else if(type==="application/pdf"||file.name.toLowerCase().endsWith(".pdf")){
