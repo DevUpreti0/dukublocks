@@ -252,7 +252,7 @@ export default function DuKuAI() {
     const path = user.id+"/"+id+"."+ext;
     const {error: uploadError} = await supabase.storage.from("duku-ai-library").upload(path,blob,{contentType:finalType,upsert:false});
     if (uploadError) throw uploadError;
-    const {data,error: rowError} = await supabase.from("duku_ai_media_assets").insert({user_id:user.id,asset_type:type,name,prompt,model,bucket_path:path,mime_type:finalType,file_size:blob.size,metadata}).select().single();
+    const {data:row,error: rowError} = await supabase.from("duku_ai_media_assets").insert({user_id:user.id,asset_type:type,name,prompt,model,bucket_path:path,mime_type:finalType,file_size:blob.size,metadata}).select().single();
     if (rowError) { await supabase.storage.from("duku-ai-library").remove([path]); throw rowError; }
     setMediaLibrary(prev=>[row,...prev]);
     return row;
