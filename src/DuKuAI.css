@@ -126,3 +126,21 @@
 .dai-prompt-list>p{grid-column:1/-1;color:var(--dai-muted,#9ca3af);text-align:center;padding:25px}
 .dai-prompt-modal-foot{padding:12px 24px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:var(--dai-muted,#9ca3af)}
 @media(max-width:600px){.dai-prompt-overlay{padding:10px;align-items:flex-end}.dai-prompt-modal{max-height:88dvh;border-radius:20px 20px 14px 14px}.dai-prompt-modal-head{padding:19px 17px 13px}.dai-prompt-search{margin:0 17px 12px}.dai-prompt-list{padding:0 17px 15px;grid-template-columns:1fr}.dai-prompt-modal-foot{padding:11px 17px}.dai-prompt-library-btn span{display:none}}
+
+
+/* Chat folders and response regeneration */
+.dai-folders-heading{display:flex;align-items:center;justify-content:space-between;margin-top:18px}
+.dai-folders-heading button{border:0;background:transparent;color:var(--dai-muted,#9ca3af);font-size:20px;cursor:pointer;padding:2px 7px;border-radius:8px}
+.dai-folders-heading button:hover{background:rgba(255,255,255,.09);color:inherit}
+.dai-folder-list{display:flex;flex-direction:column;gap:3px;margin:4px 0 12px}
+.dai-folder-list>button{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;border:0;border-radius:8px;padding:8px 10px;background:transparent;color:var(--dai-muted,#a7aab5);font:inherit;font-size:12px;text-align:left;cursor:pointer}
+.dai-folder-list>button:hover,.dai-folder-list>button.active{background:rgba(255,255,255,.08);color:var(--dai-text,#f4f4f5)}
+.dai-folder-list>button span{opacity:.6;font-size:16px;padding:0 4px}
+.dai-chat-folder-select{min-width:0;max-width:70px;border:1px solid rgba(255,255,255,.12);border-radius:6px;background:transparent;color:inherit;font-size:10px;padding:3px 2px}
+.dai-chat-folder-select option{background:#17171d;color:#fff}
+.dai-message-actions button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:600px){
+  .dai-folder-list{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+  .dai-folder-list>button{min-width:0;font-size:11px;padding:8px}
+  .dai-chat-folder-select{max-width:58px;font-size:9px}
+}
