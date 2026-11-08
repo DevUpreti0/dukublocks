@@ -279,7 +279,7 @@ module.exports = async function handler(req, res) {
           "  }",
           "} }",
           "GRADLE",
-          "  if [ '" + framework + "' = flutter ]; then GRADLE_OPTS=\"-I /tmp/duku-signing.init.gradle\" flutter build appbundle --release && GRADLE_OPTS=\"-I /tmp/duku-signing.init.gradle\" flutter build apk --release; else \"$GRADLEW\" -I /tmp/duku-signing.init.gradle bundleRelease && \"$GRADLEW\" -I /tmp/duku-signing.init.gradle assembleRelease; fi",
+          "  if [ '" + framework + "' = flutter ]; then mkdir -p \"$HOME/.gradle/init.d\"; cp /tmp/duku-signing.init.gradle \"$HOME/.gradle/init.d/duku-signing.gradle\"; flutter build appbundle --release && flutter build apk --release; else \"$GRADLEW\" -I /tmp/duku-signing.init.gradle bundleRelease && \"$GRADLEW\" -I /tmp/duku-signing.init.gradle assembleRelease; fi",
           "else",
           "  if [ '" + framework + "' = flutter ]; then flutter build apk --debug; else \"$GRADLEW\" assembleDebug; fi",
           "fi",
