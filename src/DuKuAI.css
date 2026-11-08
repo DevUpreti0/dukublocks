@@ -601,3 +601,13 @@
 .dai-stream-wave i:nth-child(3n){height:10px}
 .dai-stream-wave i:nth-child(2n){height:7px}
 @media(prefers-reduced-motion:reduce){.dai-stream-live>i,.dai-stream-wave i{animation:none!important}}
+
+
+/* Calm, batched streaming and completion feedback */
+.dai-response-complete{display:inline-flex;align-items:center;gap:6px;margin:9px 0 1px;padding:5px 9px;border:1px solid #d9eee3;border-radius:20px;background:#f2faf5;color:#397c5b;font-size:9px;font-weight:700;animation:dai-complete-in .28s cubic-bezier(.2,.8,.2,1) both}
+.dai-response-complete i{display:grid;place-items:center;width:14px;height:14px;border-radius:50%;background:#d9f1e3;color:#23845c;font-size:9px;font-style:normal}
+@keyframes dai-complete-in{from{opacity:0;transform:translateY(5px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.dai-stop-btn{display:inline-flex!important;align-items:center;justify-content:center;gap:7px;min-height:34px;padding:0 13px!important;border:1px solid #f1caca!important;border-radius:18px!important;background:#fff7f7!important;color:#bd4545!important;font-size:11px!important;font-weight:700!important;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.dai-stop-btn:hover{background:#ffeded!important;border-color:#e9a9a9!important;transform:translateY(-1px)}
+.dai-stop-icon{font-size:9px}
+@media(prefers-reduced-motion:reduce){.dai-response-complete{animation:none!important}.dai-stop-btn{transition:none!important}}
