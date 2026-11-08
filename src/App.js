@@ -224,6 +224,15 @@ function TenantSite() {
   const tenant = window.location.hostname.split(".")[0];
   const [site, setSite] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [storeProducts,setStoreProducts]=useState([]);
+  const [storeCart,setStoreCart]=useState(()=>{try{return JSON.parse(localStorage.getItem("duku-store-cart-"+window.location.hostname)||"[]");}catch{return [];}});
+  const [cartOpen,setCartOpen]=useState(false);
+  const [trackingOrderId,setTrackingOrderId]=useState("");
+  const [trackingEmail,setTrackingEmail]=useState("");
+  const [trackingResult,setTrackingResult]=useState(null);
+  const [trackingBusy,setTrackingBusy]=useState(false);
+  const [trackingError,setTrackingError]=useState("");
+
   const pageSlug = window.location.pathname.split("/").filter(Boolean)[0] || "";
   const [formValues, setFormValues] = useState({});
   const [formStatus, setFormStatus] = useState({});
@@ -285,6 +294,21 @@ function TenantSite() {
     });
     return () => { active = false; };
   }, [tenant]);
+  useEffect(()=>{try{localStorage.setItem("duku-store-cart-"+window.location.hostname,JSON.stringify(storeCart));}catch(error){}},[storeCart]);
+  useEffect(()=>{
+    if(!site?.id||!isSupabaseConfigured)return;
+    let active=true;
+    supabase.from("store_products").select("id,title,slug,description,price_paise,compare_at_price_paise,inventory_quantity,track_inventory,product_type,image_url").eq("site_id",site.id).eq("status","active").order("created_at",{ascending:false}).limit(100)
+      .then(({data,error})=>{if(active&&!error)setStoreProducts(data||[]);});
+    return()=>{active=false;};
+  },[site?.id]);
+  const addStoreCartItem=(product)=>{
+    setStoreCart(rows=>{const found=rows.find(row=>row.product_id===product.id);if(found)return rows.map(row=>row.product_id===product.id?{...row,quantity:Math.min(99,Number(row.quantity||0)+1)}:row);return [...rows,{product_id:product.id,title:product.title,price_paise:Number(product.price_paise||0),image_url:product.image_url||"",quantity:1}];});
+    setCartOpen(true);
+  };
+  const updateStoreCartQuantity=(productId,quantity)=>setStoreCart(rows=>quantity<=0?rows.filter(row=>row.product_id!==productId):rows.map(row=>row.product_id===productId?{...row,quantity:Math.min(99,Math.max(1,Number(quantity)||1))}:row));
+  const lookupCustomerOrder=async(event)=>{event.preventDefault();setTrackingBusy(true);setTrackingError("");setTrackingResult(null);try{const id=trackingOrderId.trim();const email=trackingEmail.trim();if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id))throw new Error("Enter the order ID from your confirmation email.");if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error("Enter the email address used for the order.");const {data,error}=await supabase.rpc("lookup_store_order_tracking",{p_order_id:id,p_buyer_email:email});if(error)throw error;if(!data?.length)throw new Error("We couldn't find an order matching those details.");setTrackingResult(data[0]);}catch(error){setTrackingError(error.message||"Could not look up this order.");}finally{setTrackingBusy(false);}};
+  const storeCartTotal=storeCart.reduce((sum,row)=>sum+Number(row.price_paise||0)*Number(row.quantity||0),0);
   const pages = site && Array.isArray(site.pages) ? site.pages : [];
   const currentPage = pages.find(page => page.slug === pageSlug) || pages.find(page => page.is_homepage) || pages[0];
   const content = currentPage && currentPage.content ? currentPage.content : {};
@@ -310,6 +334,9 @@ function TenantSite() {
     <div className="tenant-nav"><b>{appearance.logoText||site.name}</b><nav><label className="tenant-currency-switch" title="Prices are automatically localized"><span>Currency</span><select value={visitorCurrency} onChange={e=>{setCurrencyManual(true);setVisitorCurrency(e.target.value);}}>{Object.keys(currencyNames).map(code=><option key={code} value={code}>{code}</option>)}</select></label>{pages.map(page => <a key={page.id} href={page.is_homepage ? "/" : "/" + page.slug}>{page.title}</a>)}{(()=>{const rows=String(appearance.customNavText||"").split("\n").map(line=>{const parts=line.replace(/^\s*-\s*/,"").split("|");const rawHref=(parts.slice(1).join("|")||"").trim();return {child:/^\s*-/.test(line),label:(parts[0]||"").trim(),href:rawHref==="#"?"#":safeTenantLink(rawHref)};}).filter(row=>row.label&&row.href);const output=[];for(let i=0;i<rows.length;i++){const row=rows[i];if(!row.child&&rows[i+1]?.child){const children=[];while(rows[i+1]?.child){children.push(rows[++i]);}output.push(<details className="tenant-nav-dropdown" key={"menu-"+i}><summary>{row.label}</summary><div className="tenant-nav-dropdown-menu">{children.map((child,j)=><a key={j} href={child.href} target={/^https:\/\//i.test(child.href)?"_blank":undefined} rel={/^https:\/\//i.test(child.href)?"noopener noreferrer":undefined}>{child.label}</a>)}</div></details>);}else if(!row.child){output.push(<a key={"custom-"+i} href={row.href} target={/^https:\/\//i.test(row.href)?"_blank":undefined} rel={/^https:\/\//i.test(row.href)?"noopener noreferrer":undefined}>{row.label}</a>);}}return output;})()}</nav></div>
     <main className="tenant-published-main">
       <section className="tenant-published-hero"><div className="eyebrow">POWERED BY DUKU FCA</div><h1>{content.headline || site.name}</h1><p>{content.subline || ""}</p></section>
+      {storeProducts.length>0&&<section className="tenant-storefront"><div className="tenant-storefront-heading"><div><div className="eyebrow">SHOP THE COLLECTION</div><h2>Featured products</h2><p>Discover products available from this store.</p></div><button className="tenant-cart-open" onClick={()=>setCartOpen(true)}>Cart <span>{storeCart.reduce((sum,row)=>sum+Number(row.quantity||0),0)}</span></button></div><div className="tenant-product-grid">{storeProducts.map(product=><article className="tenant-product-card" key={product.id}>{product.image_url?<img src={product.image_url} alt={product.title} loading="lazy"/>:<div className="tenant-product-image-placeholder">✦</div>}<div className="tenant-product-info"><h3>{product.title}</h3><p>{product.description||""}</p><div className="tenant-product-price">{formatLocalPrice("INR "+(Number(product.price_paise||0)/100).toFixed(2))}{product.compare_at_price_paise>product.price_paise&&<del>{formatLocalPrice("INR "+(Number(product.compare_at_price_paise)/100).toFixed(2))}</del>}</div><small>{product.track_inventory?(product.inventory_quantity>0?product.inventory_quantity+" in stock":"Out of stock"):"Available"}</small><button onClick={()=>addStoreCartItem(product)} disabled={product.track_inventory&&Number(product.inventory_quantity)<=0}>Add to cart</button></div></article>)}</div></section>}
+      {cartOpen&&<div className="tenant-cart-backdrop" onClick={()=>setCartOpen(false)}><aside className="tenant-cart-drawer" onClick={event=>event.stopPropagation()}><div className="tenant-cart-heading"><div><div className="eyebrow">YOUR SELECTION</div><h2>Your cart</h2></div><button aria-label="Close cart" onClick={()=>setCartOpen(false)}>×</button></div>{storeCart.length?<><div className="tenant-cart-items">{storeCart.map(row=><article key={row.product_id}>{row.image_url?<img src={row.image_url} alt=""/>:<div className="tenant-cart-thumb">✦</div>}<div><b>{row.title}</b><small>{formatLocalPrice("INR "+(Number(row.price_paise||0)/100).toFixed(2))}</small><div className="tenant-cart-quantity"><button onClick={()=>updateStoreCartQuantity(row.product_id,Number(row.quantity)-1)}>−</button><span>{row.quantity}</span><button onClick={()=>updateStoreCartQuantity(row.product_id,Number(row.quantity)+1)}>+</button><button className="tenant-cart-remove" onClick={()=>updateStoreCartQuantity(row.product_id,0)}>Remove</button></div></div></article>)}</div><div className="tenant-cart-total"><span>Subtotal</span><b>{formatLocalPrice("INR "+(storeCartTotal/100).toFixed(2))}</b></div><div className="tenant-checkout-note">Online checkout is not enabled for this store yet. Please contact the store owner to complete your purchase.</div><button className="tenant-checkout-disabled" disabled>Checkout setup required</button></>:<div className="tenant-cart-empty">Your cart is empty. Add a product to get started.</div>}</aside></div>}
+
       {blocks.map((block,index) => {
         const type = String(block.type || "Text").toLowerCase();
         const asset = type === "image" ? (site.assets || []).find(item => item.id === block.assetId) : null;
@@ -343,6 +370,7 @@ function TenantSite() {
         </section>;
       })}
     </main>
+    <section className="tenant-order-tracking"><div className="eyebrow">ORDER SUPPORT</div><h2>Track your order</h2><p>Enter the order ID and email address used at checkout.</p><form onSubmit={lookupCustomerOrder}><label>Order ID<input required value={trackingOrderId} onChange={event=>setTrackingOrderId(event.target.value)} placeholder="Order UUID"/></label><label>Email address<input required type="email" value={trackingEmail} onChange={event=>setTrackingEmail(event.target.value)} placeholder="you@example.com"/></label><button type="submit" disabled={trackingBusy}>{trackingBusy?"Checking…":"Find my order"}</button></form>{trackingError&&<p className="tenant-tracking-error" role="alert">{trackingError}</p>}{trackingResult&&<article className="tenant-tracking-result"><div><small>Payment status</small><b>{trackingResult.order_status}</b></div><div><small>Delivery status</small><b>{trackingResult.fulfilment_status}</b></div>{trackingResult.carrier&&<div><small>Carrier</small><b>{trackingResult.carrier}</b></div>}{trackingResult.tracking_number&&<div><small>Tracking number</small><b>{trackingResult.tracking_number}</b></div>}{trackingResult.tracking_url&&<a href={trackingResult.tracking_url} target="_blank" rel="noopener noreferrer">Track shipment ↗</a>}{trackingResult.delivered_at&&<small>Delivered {new Date(trackingResult.delivered_at).toLocaleString()}</small>}</article>}</section>
     <footer className={"tenant-footer-"+(appearance.footerLayout||"standard")}><div className="tenant-footer-copy">{appearance.footerText||("© "+new Date().getFullYear()+" "+site.name+". All rights reserved.")}</div><div className="tenant-social-links">{String(appearance.socialLinksText||"").split("\n").map((line,index)=>{const parts=line.split("|");const label=(parts[0]||"").trim();const href=safeTenantLink((parts.slice(1).join("|")||"").trim());return label&&href&&/^https:\/\//i.test(href)?<a key={"social-"+index} href={href} target="_blank" rel="noopener noreferrer">{label}</a>:null;})}</div><span className="tenant-powered-by">Built with <a href="https://dukubusiness.online">DuKu FCA</a></span></footer>
   </div>;
 }
