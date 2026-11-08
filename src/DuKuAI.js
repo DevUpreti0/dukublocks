@@ -202,7 +202,7 @@ export default function DuKuAI() {
     const existingMessages=chats.find(c=>c.id===chatId)?.messages||[];
     const baseMessages=options.regenerate?existingMessages.slice(0,-1):existingMessages;
     const nextMessages=options.regenerate?[...baseMessages,{id:makeId(),role:"assistant",content:""}]:[...baseMessages,{id:makeId(),role:"user",content:promptText || "Please analyze the attached image(s).",files:outgoingFiles.map(f=>({name:f.name,type:f.type}))},{id:makeId(),role:"assistant",content:""}];
-    setChats(prev=>prev.map(c=>c.id===chatId?{...c,title:c.messages.length?c.title:(text||"New chat").slice(0,42)+(text.length>42?"…":""),model,updatedAt:Date.now(),model:requestModel,messages:nextMessages}:c));
+    setChats(prev=>prev.map(c=>c.id===chatId?{...c,title:c.messages.length?c.title:(text||"New chat").slice(0,42)+(text.length>42?"…":""),model:requestModel,updatedAt:Date.now(),messages:nextMessages}:c));
     setInput("");setAttached([]);setBusy(true);setError("");
     const controller=new AbortController();abortRef.current=controller;
     try {
