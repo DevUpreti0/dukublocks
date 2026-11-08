@@ -125,11 +125,17 @@ module.exports = async function handler(req, res) {
     if (action === "shell-input") {
       const line = cleanText(body.command, MAX_COMMAND);
       if (!line) return res.status(400).json({ error: "Enter a shell command." });
-      const state = await getSession();
-      if (!state?.shell_command_id) return res.status(409).json({ error: "Start the persistent shell first." });
+      let state = await getSession();
+      if (!state?.shell_command_id) {
+        await sandbox.runCommand({ cmd: "bash", args: ["-lc", ": > /tmp/duku-shell.log"], cwd: WORKDIR });
+        const shellScript = "while IFS= read -r line; do printf '\\n$ %s\\n' \"$line\" >> /tmp/duku-shell.log; eval \"$line\" >> /tmp/duku-shell.log 2>&1; code=$?; printf '\\n[exit %s] %s\\n__DUKU_READY__\\n' \"$code\" \"$PWD\" >> /tmp/duku-shell.log; done";
+        const shellProcess = await sandbox.runCommand({ cmd: "bash", args: ["--noprofile", "--norc", "-c", shellScript], cwd: WORKDIR, stdin: true, detached: true });
+        await upsertSession({ shell_session_id: shellProcess.sessionId || null, shell_command_id: shellProcess.id });
+        state = await getSession();
+      }
       const shell = await sandbox.getCommand(state.shell_command_id);
-      await shell.writeStdin(line + "\n");
-      return res.status(200).json({ ok: true, output: "Command sent to persistent shell." });
+      await shell.writeStdin(line + "\\n");
+      return res.status(200).json({ ok: true, output: "Command sent to persistent Bash session.", shellReady: true });
     }
 
     if (action === "shell-read") {
@@ -192,8 +198,11 @@ module.exports = async function handler(req, res) {
           "else",
           "  \"$GRADLEW\" assembleDebug",
           "fi",
+          "mkdir -p /tmp/duku-artifacts",
+          "find . -type f \\( -name '*.apk' -o -name '*.aab' \\) -exec cp -f {} /tmp/duku-artifacts/ \\;",
+          "(python3 -m http.server 4173 --directory /tmp/duku-artifacts --bind 0.0.0.0 >/tmp/duku-artifacts-server.log 2>&1 &)",
           "echo '--- APK/AAB OUTPUTS ---'",
-          "find . -type f \\( -name '*.apk' -o -name '*.aab' \\) -printf '%p (%s bytes)\\n' | head -30"
+          "find /tmp/duku-artifacts -maxdepth 1 -type f -printf '%f (%s bytes)\\n' | head -30"
         ].join("\n");
         const scriptPath = WORKDIR + "/.duku-android-build.sh";
         await sandbox.writeFiles([{ path: "workspace/.duku-android-build.sh", content: Buffer.from(script, "utf8") }]);
@@ -241,7 +250,7 @@ module.exports = async function handler(req, res) {
       const status = exitText === "RUNNING" ? "running" : Number(exitText) === 0 ? "completed" : "failed";
       const exitCode = exitText === "RUNNING" ? null : Number(exitText);
       await db.from("dev_terminal_jobs").update({ status, exit_code: exitCode, output_tail: output, updated_at: new Date().toISOString(), finished_at: status === "running" ? null : new Date().toISOString() }).eq("id", jobId).eq("user_id", owner);
-      return res.status(200).json({ ok: true, status, exitCode, output, jobId });
+      return res.status(200).json({ ok: true, status, exitCode, output, jobId, artifactUrl: status === "completed" && job.command.startsWith("Android ") ? readSandbox.domain(4173) : null });
     }
 
     if (action === "android-build") return res.status(400).json({ error: "Build request was not initialized." });
