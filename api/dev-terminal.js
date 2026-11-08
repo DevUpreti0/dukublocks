@@ -251,7 +251,7 @@ module.exports = async function handler(req, res) {
           "yes | sdkmanager --sdk_root=\"$ANDROID_HOME\" --licenses >/dev/null || true",
           "sdkmanager --sdk_root=\"$ANDROID_HOME\" \"platform-tools\" \"platforms;android-36\" \"build-tools;36.0.0\"",
           ...bootstrap,
-          "if [ ! -d android ] && [ -f package.json ] && grep -q '\\\"expo\\\"' package.json; then npx --yes expo prebuild --platform android --non-interactive; fi",
+          "if [ ! -d android ] && [ -f app.json ] && [ -f package.json ]; then npx --yes expo prebuild --platform android --non-interactive; fi",
           "if [ ! -d android ] && [ -f package.json ] && grep -q '\"expo\"' package.json; then npx --yes expo prebuild --platform android --non-interactive; fi",
           "if [ '" + framework + "' = flutter ]; then GRADLEW=./android/gradlew; elif [ -x ./gradlew ]; then GRADLEW=./gradlew; elif [ -x ./android/gradlew ]; then cd android; GRADLEW=./gradlew; elif [ -f ./gradlew ]; then chmod +x ./gradlew; GRADLEW=./gradlew; elif [ -f ./android/gradlew ]; then cd android; chmod +x ./gradlew; GRADLEW=./gradlew; else echo 'Gradle wrapper not found. Create/import a valid Android Gradle project.'; exit 2; fi",
           "if [ '" + buildType + "' = release ]; then",
