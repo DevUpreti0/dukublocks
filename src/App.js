@@ -212,7 +212,6 @@ function TenantSite() {
   const [currencyManual,setCurrencyManual]=useState(false);
   const currencyNames={INR:"Indian Rupee",USD:"US Dollar",EUR:"Euro",GBP:"British Pound",AED:"UAE Dirham",CAD:"Canadian Dollar",AUD:"Australian Dollar",SGD:"Singapore Dollar",JPY:"Japanese Yen",SAR:"Saudi Riyal",NZD:"New Zealand Dollar",CHF:"Swiss Franc",ZAR:"South African Rand"};
   useEffect(()=>{
-    let active=true;
     const detect=()=>{
       const locale=Intl.DateTimeFormat().resolvedOptions().locale||navigator.language||"en-US";
       let region="";
@@ -223,7 +222,6 @@ function TenantSite() {
       return map[region]||"USD";
     };
     if(!currencyManual)setVisitorCurrency(detect());
-    return()=>{active=false;};
   },[currencyManual]);
   useEffect(()=>{
     if(visitorCurrency==="INR"){setCurrencyRates({INR:1});return;}
