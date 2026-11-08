@@ -34,3 +34,71 @@
 .dai-library-empty{border:1px dashed var(--dai-border,#cfd4df);border-radius:18px;padding:38px 20px;text-align:center;background:var(--dai-panel,#fff)}
 .dai-library-empty>span{font-size:34px;color:var(--dai-accent,#5b45d6)}.dai-library-empty h2{font-size:20px;color:var(--dai-text,#171923)}.dai-library-empty p{color:var(--dai-muted,#737987);font-size:13px;margin:8px 0 18px}
 @media(max-width:640px){.dai-library-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.dai-library-preview{height:130px}.dai-library-info{padding:10px}.dai-library-info p{font-size:11px}}
+
+
+/* DuKu AI responsive refinement */
+.dai-app{height:100vh;height:100dvh;min-height:0;overflow:hidden}
+.dai-main{height:100%;min-height:0;min-width:0;overflow:hidden}
+.dai-topbar{min-width:0;gap:10px}
+.dai-top-left,.dai-top-right{min-width:0}
+.dai-top-right{flex:1;justify-content:flex-end}
+.dai-studio-tabs{min-width:0;max-width:100%;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.dai-studio-tabs::-webkit-scrollbar{display:none}
+.dai-studio-tabs button{flex:0 0 auto}
+.dai-model-menu{max-width:calc(100vw - 28px)}
+.dai-composer-wrap{padding-bottom:max(13px,env(safe-area-inset-bottom))}
+.dai-conversation{min-height:0;overscroll-behavior:contain}
+.dai-studio{overscroll-behavior:contain}
+.dai-studio-card,.dai-library-item,.dai-message-body{min-width:0}
+.dai-studio-prompt{box-sizing:border-box;max-width:100%}
+.dai-video-options label,.dai-video-options select{min-width:0;max-width:100%}
+.dai-footer{flex:0 0 auto}
+@media(max-width:760px){
+  .dai-topbar{height:60px;padding:0 10px;gap:5px}
+  .dai-top-left{flex:0 1 44%;max-width:44%;display:flex;align-items:center;gap:3px}
+  .dai-model-select{min-width:0;max-width:100%;padding:8px 5px;gap:5px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .dai-top-right{flex:1;gap:5px;overflow:hidden}
+  .dai-studio-tabs{flex:1;margin:0;padding:3px;gap:2px;border-radius:9px}
+  .dai-studio-tabs button{padding:8px 9px;font-size:10px}
+  .dai-top-right>span:not(.dai-secure-dot){display:none}
+  .dai-top-right>.dai-secure-dot{display:none}
+  .dai-top-right>.dai-icon-btn{display:none}
+  .dai-conversation{width:100%}
+  .dai-welcome{padding:36px 15px 24px}
+  .dai-welcome h1{font-size:clamp(27px,8vw,34px);letter-spacing:-1.2px}
+  .dai-welcome-copy{font-size:12px;margin-bottom:22px}
+  .dai-prompt-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .dai-prompt-grid button{min-height:92px;padding:12px 28px 12px 12px}
+  .dai-prompt-grid small{font-size:9px}
+  .dai-messages{width:100%;padding:24px 13px 34px}
+  .dai-message{gap:9px}
+  .dai-message-avatar{width:27px;height:27px;flex-basis:27px}
+  .dai-message-content{font-size:13px;line-height:1.7}
+  .dai-composer-wrap{width:calc(100% - 16px);padding-top:7px}
+  .dai-composer{padding:11px 10px 9px;border-radius:15px}
+  .dai-composer textarea{font-size:14px;min-height:42px}
+  .dai-composer-tools>div{gap:6px;min-width:0}
+  .dai-composer-tools>div:last-child{gap:6px}
+  .dai-model-hint,.dai-tool-divider{display:none}
+  .dai-voice-btn{padding:6px 7px}
+  .dai-footer{height:auto;min-height:25px;padding:4px 6px 6px;font-size:8px}
+  .dai-studio{width:calc(100% - 22px);margin:18px auto 28px;max-height:calc(100dvh - 88px);overflow-y:auto}
+  .dai-studio-heading{margin-bottom:18px}
+  .dai-studio-heading h1{font-size:clamp(25px,7vw,34px)}
+  .dai-studio-heading p{font-size:12px}
+  .dai-studio-card{padding:14px;border-radius:15px}
+  .dai-studio-actions{align-items:stretch;flex-direction:column}
+  .dai-studio-actions button{width:100%;min-height:44px}
+  .dai-library-toolbar{align-items:flex-start;flex-wrap:wrap}
+}
+@media(max-width:390px){
+  .dai-top-left{flex-basis:41%;max-width:41%}
+  .dai-studio-tabs button{padding:8px 7px;font-size:9px}
+  .dai-prompt-grid{grid-template-columns:1fr}
+  .dai-prompt-grid button{min-height:74px}
+  .dai-composer-tools small{display:none}
+  .dai-composer-tools>div{gap:5px}
+  .dai-voice-btn{padding:6px}
+  .dai-library-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){.dai-app *{scroll-behavior:auto!important}}
