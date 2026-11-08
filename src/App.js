@@ -360,7 +360,7 @@ function TenantSite() {
       if(typeof cashfree!=="function")throw new Error("Cashfree checkout is unavailable. Please try again.");
       const cf= cashfree({mode:data.mode==="production"?"production":"sandbox"});
       await cf.checkout({paymentSessionId:data.payment_session_id,redirectTarget:"_modal"});
-      setCheckoutNotice("Payment window closed. Your order will be confirmed only after Cashfree verifies the payment.");
+      setCheckoutNotice("Payment window closed. Order reference: "+data.order_id+". Your order is confirmed only after Cashfree verifies the payment.");
     }catch(error){
       setCheckoutError(error?.message||"Checkout could not be started. Please try again.");
     }finally{setCheckoutBusy(false);}
