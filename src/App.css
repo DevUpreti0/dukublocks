@@ -1070,3 +1070,30 @@ footer{border-top:1px solid #e0e6eb;color:#687482}
 @media(max-width:900px){.admin-layout{grid-template-columns:205px minmax(0,1fr)!important}.admin-layout>main{padding:25px 18px!important}.admin-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:640px){.admin-dashboard>header{padding:0 13px!important}.admin-session span{display:none}.admin-layout{grid-template-columns:1fr!important}.admin-layout>aside.admin-sidebar{position:relative!important;top:auto!important;height:auto!important;max-height:270px;border-right:0!important;border-bottom:1px solid #203a33!important;padding:12px!important}.admin-layout>aside.admin-sidebar .admin-nav-group{display:none}.admin-layout>aside.admin-sidebar button{display:inline-flex!important;width:auto!important;margin:3px!important;padding:8px 10px!important;font-size:10px!important}.admin-layout>aside.admin-sidebar .admin-nav-search{margin-bottom:9px}.admin-layout>main{padding:22px 13px!important}.admin-layout>main h1{font-size:24px!important}.admin-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.admin-metrics>div{padding:13px!important}.admin-metrics b{font-size:21px!important}.admin-panels{grid-template-columns:1fr!important}}
 @media(prefers-reduced-motion:reduce){.admin-dashboard *{transition:none!important;animation:none!important}}
+
+
+/* DuKu Android App Studio — advanced live workspace */
+.android-studio-workspace{max-width:1500px!important}
+.android-studio-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:22px}
+.android-studio-heading p{max-width:720px}
+.android-live-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid #b9ead8;background:#effcf6;color:#08734e;border-radius:999px;padding:8px 12px;font-size:11px;font-weight:800;white-space:nowrap}
+.android-live-pill i{width:7px;height:7px;border-radius:50%;background:#12a66a;box-shadow:0 0 0 4px #12a66a20}
+.android-project-config{display:grid;grid-template-columns:1.3fr 1.5fr .65fr .8fr auto;gap:12px;align-items:end;background:#fff;border:1px solid #e7eaf0;border-radius:15px;padding:15px;margin:18px 0}
+.android-project-config label{display:grid;gap:7px;color:#566174;font-size:11px;font-weight:750}
+.android-project-config input,.android-project-config select{width:100%;min-width:0;height:40px;border:1px solid #dfe4ed;border-radius:9px;background:#fbfcfe;color:#1d2738;padding:0 11px;font:inherit}
+.android-project-config input[type=color]{padding:4px;height:40px}
+.android-studio-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:16px;align-items:stretch;margin-top:16px}
+.android-editor-pane,.android-preview-pane{min-width:0;background:#fff;border:1px solid #e5e9f0;border-radius:16px;overflow:hidden;box-shadow:0 8px 26px #17203308}
+.android-pane-head{min-height:48px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #edf0f4;color:#1e293b;font-size:11px;letter-spacing:.04em}
+.android-pane-head span{color:#788397;font-size:10px;font-weight:600;letter-spacing:0}
+.android-editor-pane .android-source{display:block;width:100%;min-height:490px;resize:vertical;border:0;border-radius:0;background:#101923;color:#e2eaf4;padding:18px;font:12px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;outline:none;tab-size:2}
+.android-source-footer{display:flex;justify-content:space-between;gap:10px;padding:10px 14px;color:#788397;font-size:10px;border-top:1px solid #edf0f4}
+.android-device-stage{min-height:535px;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 50% 35%,#e6ebf7 0,#f5f7fb 52%,#eef1f6 100%)}
+.android-device-stage iframe{width:100%;max-width:390px;height:510px;border:0;border-radius:10px;background:transparent;transition:width .2s ease}
+.android-device-stage.tablet-stage iframe{max-width:100%;height:430px}
+.android-preview-note{padding:0 15px 14px;margin:0;color:#7b8798;font-size:10px;line-height:1.5}
+.android-project-actions{display:flex;gap:8px;flex-wrap:wrap}
+.android-project-list .android-pane-head{margin:0 0 8px}
+.android-empty{padding:18px;color:#778397;font-size:12px}
+@media(max-width:1000px){.android-project-config{grid-template-columns:repeat(2,minmax(0,1fr))}.android-project-config>button{min-height:40px}.android-studio-grid{grid-template-columns:1fr}.android-editor-pane .android-source{min-height:340px}}
+@media(max-width:600px){.android-studio-heading{display:block}.android-live-pill{margin-top:8px}.android-project-config{grid-template-columns:1fr}.android-source-footer{display:grid}.android-device-stage{min-height:500px;padding:10px}.android-project-list article{align-items:flex-start;flex-direction:column}.android-project-actions{width:100%}}
