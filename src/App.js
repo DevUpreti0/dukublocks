@@ -62,7 +62,7 @@ function createDukuZip(fileMap) {
   const crc32=b=>{let x=0xffffffff;for(let i=0;i<b.length;i++){x^=b[i];for(let j=0;j<8;j++)x=(x>>>1)^((x&1)?0xedb88320:0);}return(x^0xffffffff)>>>0;};
   const u16=n=>[n&255,(n>>>8)&255],u32=n=>[n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255];
   const now=new Date(),tm=(now.getHours()<<11)|(now.getMinutes()<<5)|(now.getSeconds()>>1),dt=((Math.max(1980,now.getFullYear())-1980)<<9)|((now.getMonth()+1)<<5)|now.getDate();
-  Object.entries(fileMap).forEach(([path,value])=>{const nm=encoder.encode(path.replace(/^\/+/, "")),data=encoder.encode(String(value??"")),crc=crc32(data);
+  Object.entries(fileMap).forEach(([path,value])=>{const nm=encoder.encode(path.split("/").filter(Boolean).join("/")),data=encoder.encode(String(value??"")),crc=crc32(data);
     const h=new Uint8Array([...u32(0x04034b50),...u16(20),...u16(0x0800),...u16(0),...u16(tm),...u16(dt),...u32(crc),...u32(data.length),...u32(data.length),...u16(nm.length),...u16(0),...nm]);local.push(h,data);
     const d=new Uint8Array([...u32(0x02014b50),...u16(20),...u16(20),...u16(0x0800),...u16(0),...u16(tm),...u16(dt),...u32(crc),...u32(data.length),...u32(data.length),...u16(nm.length),...u16(0),...u16(0),...u16(0),...u32(0),...u32(offset),...nm]);central.push(d);offset+=h.length+data.length;});
   const size=central.reduce((n,x)=>n+x.length,0),end=new Uint8Array([...u32(0x06054b50),...u16(0),...u16(0),...u16(central.length),...u16(central.length),...u32(size),...u32(offset),...u16(0)]);
