@@ -758,3 +758,32 @@
 .dai-announcements{padding:12px 14px;background:#fbf9ff;border-bottom:1px solid #ece7fa}.dai-announcements-heading{margin:0 0 8px;color:#8974c5;font-size:9px;font-weight:800;letter-spacing:1px}.dai-announcement-item{display:flex;gap:9px;padding:10px 0;border-top:1px solid #eeeaf6}.dai-announcement-item>span{flex:0 0 25px;width:25px;height:25px;display:grid;place-items:center;border-radius:8px;background:#eee9fc;color:#795fc8}.dai-announcement-item>div{flex:1;min-width:0}.dai-announcement-item b{color:#34445b;font-size:11px}.dai-announcement-item p{margin:4px 0;color:#66758a;font-size:10px;line-height:1.5}.dai-announcement-item small{color:#9aa4b2;font-size:9px}
 
 .dai-brand-logo{display:block;width:clamp(128px,15vw,176px);height:auto;max-height:42px;object-fit:contain}.dai-auth-card .dai-brand-logo{width:176px;max-height:48px}.dai-sidebar-top .dai-brand-logo{width:150px;max-height:40px}@media(max-width:600px){.dai-sidebar-top .dai-brand-logo{width:132px}}
+
+
+/* ARTEMIDE DARK GLASS SYSTEM */
+.dai-app{color-scheme:dark;--ink:#f4f5fb;--muted:#a1a7b8;--line:rgba(255,255,255,.09);--surface:rgba(23,25,36,.78);--soft:rgba(255,255,255,.045);background:#090a0f!important;color:#f4f5fb!important}
+.dai-app,.dai-app *{scrollbar-color:#424657 #101118}
+.dai-sidebar{background:rgba(13,14,20,.94)!important;border-color:rgba(255,255,255,.08)!important;color:#f3f4f8!important;backdrop-filter:blur(24px)}
+.dai-app main,.dai-main,.dai-chat-main,.dai-workspace,.dai-content,.dai-chat-area{background:radial-gradient(ellipse at 50% 0%,rgba(115,79,210,.075),transparent 48%),#090a0f!important;color:#f4f5fb}
+.dai-app header,.dai-app nav,.dai-app aside,.dai-app section{border-color:rgba(255,255,255,.09)}
+.dai-app input,.dai-app textarea,.dai-app select,.dai-app [contenteditable=true]{background:rgba(255,255,255,.055)!important;color:#f5f6fb!important;border-color:rgba(255,255,255,.13)!important}
+.dai-app input::placeholder,.dai-app textarea::placeholder{color:#858b9c!important}
+.dai-app button,.dai-app [role=button]{border-radius:13px;transition:transform .2s ease,background .22s ease,border-color .22s ease,box-shadow .22s ease,color .22s ease}
+.dai-app button:not(:disabled):hover,.dai-app [role=button]:not([aria-disabled=true]):hover{transform:translateY(-1px);border-color:rgba(190,165,255,.38)!important;box-shadow:0 8px 24px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.09)}
+.dai-app button:active,.dai-app [role=button]:active{transform:scale(.97)}
+.dai-app button:focus-visible,.dai-app input:focus-visible,.dai-app textarea:focus-visible{outline:2px solid #a78bfa;outline-offset:2px}
+.dai-new-chat,.dai-app button.dai-primary,.dai-app .dai-send,.dai-app .dai-action-primary{background:linear-gradient(135deg,rgba(143,104,255,.28),rgba(64,145,255,.18))!important;border:1px solid rgba(174,148,255,.32)!important;color:#f7f4ff!important;box-shadow:inset 0 1px rgba(255,255,255,.16),0 7px 22px rgba(80,55,160,.16)}
+.dai-app button:not(.dai-primary):not(.dai-send):not(.dai-action-primary){background-color:rgba(255,255,255,.045);color:#e8eaf2;border-color:rgba(255,255,255,.1)}
+.dai-icon-btn{background:rgba(255,255,255,.045)!important;color:#c9cddd!important;border:1px solid rgba(255,255,255,.08)!important}
+.dai-icon-btn:hover{background:rgba(167,139,250,.14)!important;color:#fff!important}
+.dai-app .dai-message,.dai-app .dai-message-card,.dai-app .dai-panel,.dai-app .dai-modal,.dai-app .dai-popover,.dai-app .dai-dropdown,.dai-app .dai-command-panel,.dai-app .dai-image-lightbox-panel{background:rgba(24,26,37,.78)!important;color:#eef0f8!important;border:1px solid rgba(255,255,255,.09)!important;backdrop-filter:blur(22px);box-shadow:0 18px 60px rgba(0,0,0,.3)}
+.dai-app .dai-announcements{background:rgba(25,22,38,.72)!important;border-color:rgba(255,255,255,.09)!important}
+.dai-app .dai-announcement-item{border-color:rgba(255,255,255,.08)!important}
+.dai-app .dai-announcement-item b,.dai-app .dai-announcement-item p{color:#e4e6f0!important}
+.dai-app .dai-announcement-item small,.dai-app .dai-announcements-heading{color:#b8a5f4!important}
+.dai-app .dai-brand,.dai-app .dai-sidebar a,.dai-app .dai-sidebar button{color:#e8eaf4}
+.dai-app p,.dai-app label,.dai-app small,.dai-app .dai-muted{color:inherit}
+.dai-app .dai-muted,.dai-app .dai-subtitle,.dai-app .dai-meta{color:#9ba2b5!important}
+.dai-app pre,.dai-app code{background:rgba(0,0,0,.35);border-color:rgba(255,255,255,.08)}
+.dai-app .dai-brand-logo{filter:drop-shadow(0 3px 16px rgba(133,96,255,.16))}
+@media(prefers-reduced-motion:reduce){.dai-app button,.dai-app [role=button]{transition:none!important}}
