@@ -1299,7 +1299,7 @@ function MainApp() {
     } catch (error) { cloudAutosaveLastSnapshotRef.current = ""; setCloudNotice("Cloud save failed: " + (error.message || "Please try again.")); }
     finally { setCloudBusy(false); }
   };
-  const cloudAutosaveSnapshot = JSON.stringify({ siteName, siteSlug, headline, subline, blocks, seoTitle, seoDescription, pages, activePageId, mediaAssets: mediaAssets.map(({ id, name, size, type }) => ({ id, name, size, type })), brandColor, surfaceColor, siteFont, headerStyle, logoText, footerText, customNavText, socialLinksText, footerLayout, savedDesignPresets, headingSize, bodySize, textLineHeight, buttonStyle });
+  const cloudAutosaveSnapshot = JSON.stringify({ workspaceId: workspace?.id || null, cloudSiteId, siteName, siteSlug, headline, subline, blocks, seoTitle, seoDescription, pages, activePageId, mediaAssets: mediaAssets.map(({ id, name, size, type }) => ({ id, name, size, type })), brandColor, surfaceColor, siteFont, headerStyle, logoText, footerText, customNavText, socialLinksText, footerLayout, savedDesignPresets, headingSize, bodySize, textLineHeight, buttonStyle });
   const cloudAutosaveLastSnapshotRef = useRef("");
   useEffect(() => {
     if (!showEditor || !authUser || !workspace || !cloudSiteId || cloudBusy || cloudAutosaveLastSnapshotRef.current === cloudAutosaveSnapshot) return undefined;
