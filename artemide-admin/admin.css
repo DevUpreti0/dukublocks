@@ -1,2 +1,36 @@
 :root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#202124;background:#f7f8fa;font-synthesis:none}*{box-sizing:border-box}body{margin:0}.shell{min-height:100vh;display:grid;grid-template-columns:252px 1fr}.side{background:#fff;border-right:1px solid #e8eaed;padding:24px 16px;display:flex;flex-direction:column;gap:28px}.brand{font-size:21px;font-weight:750;letter-spacing:-.7px;padding:4px 10px}.brand small{display:block;font-size:10px;letter-spacing:1.7px;color:#7b8190;margin-top:5px}.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;text-align:left;padding:11px 13px;border-radius:9px;color:#59616e;font-size:13px;cursor:pointer}.nav button.active,.nav button:hover{background:#eef2f8;color:#202b3b}.side-foot{margin-top:auto;color:#8a9099;font-size:11px;padding:10px}.main{min-width:0}.top{height:68px;background:#fff;border-bottom:1px solid #e8eaed;display:flex;align-items:center;justify-content:space-between;padding:0 30px}.top strong{font-size:14px}.top span{font-size:12px;color:#7a818c}.content{max-width:1400px;margin:auto;padding:32px}.heading{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px}.heading h1{font-size:27px;letter-spacing:-.9px;margin:0 0 7px}.heading p{margin:0;color:#7a818c;font-size:13px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.panel,.metric{background:#fff;border:1px solid #e8eaed;border-radius:12px;padding:19px}.metric label{font-size:12px;color:#747b86}.metric strong{display:block;font-size:27px;margin-top:13px;letter-spacing:-.8px}.metric small{font-size:11px;color:#8a9099}.panel{margin-top:16px}.panel h2{font-size:15px;margin:0 0 15px}.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{text-align:left;padding:12px 9px;border-bottom:1px solid #eef0f2}.table th{color:#7a818c;font-weight:600}.muted{color:#7a818c}.btn{border:1px solid #d9dde3;background:#fff;padding:9px 13px;border-radius:8px;cursor:pointer;font-size:12px}.btn.primary{background:#202b3b;color:white;border-color:#202b3b}.row{display:flex;gap:10px;align-items:center}.field{display:grid;gap:7px;margin:13px 0}.field label{font-size:12px;color:#606875}.field input,.field select,.field textarea{width:100%;border:1px solid #dfe3e8;border-radius:8px;padding:11px;font:inherit;font-size:13px}.field textarea{min-height:90px}.notice{padding:12px;border-radius:8px;background:#f2f5fa;color:#536072;font-size:12px;margin:12px 0}.login{max-width:390px;margin:12vh auto;background:white;border:1px solid #e8eaed;border-radius:14px;padding:30px}.login h1{font-size:23px}.boot{padding:50px;font-weight:700}.boot span{color:#777;font-weight:400}@media(max-width:900px){.shell{grid-template-columns:1fr}.side{position:sticky;top:0;z-index:4;padding:10px 12px;border-right:0;border-bottom:1px solid #e8eaed}.brand{padding:5px}.brand small{display:inline;margin-left:8px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.side-foot{display:none}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.content{padding:20px}.top{padding:0 20px}}@media(max-width:520px){.grid{grid-template-columns:1fr 1fr}.metric strong{font-size:22px}.heading h1{font-size:22px}}
 .brand{display:flex;flex-direction:column;align-items:flex-start;gap:7px}.brand-logo{display:block;width:190px;max-width:100%;height:auto;max-height:54px;object-fit:contain}.brand small{font-size:10px;letter-spacing:.16em;opacity:.7}
+
+
+/* ARTEMIDE ADMIN — DARK GLASS THEME */
+:root{color-scheme:dark;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f3f4fa;background:#090a0f}
+*{box-sizing:border-box}
+body{margin:0;background:#090a0f;color:#f3f4fa}
+.shell{background:radial-gradient(ellipse at 75% 0%,rgba(113,78,207,.1),transparent 42%),#090a0f;color:#f3f4fa}
+.side{background:rgba(13,14,20,.94);border-color:rgba(255,255,255,.09);backdrop-filter:blur(24px)}
+.brand{color:#fff}
+.brand small{color:#a99bda}
+.nav button{color:#b9bfd0;border:1px solid transparent;border-radius:13px;transition:all .2s ease}
+.nav button.active,.nav button:hover{background:linear-gradient(135deg,rgba(143,104,255,.2),rgba(64,145,255,.12));border-color:rgba(174,148,255,.24);color:#fff;transform:translateY(-1px);box-shadow:inset 0 1px rgba(255,255,255,.08),0 8px 22px rgba(0,0,0,.18)}
+.side-foot{color:#8f96aa}
+.main{background:transparent}
+.top{background:rgba(15,16,23,.82);border-color:rgba(255,255,255,.09);backdrop-filter:blur(24px);color:#f3f4fa}
+.top span{color:#a4aabd}
+.content{color:#f3f4fa}
+.heading h1,.content h1,.content h2,.content h3{color:#f7f7fc}
+.heading p,.muted,.content p{color:#a4aabd}
+.metric,.panel,.card,.login,.notice,.content article,.content section{background:rgba(24,26,37,.76);color:#eef0f8;border:1px solid rgba(255,255,255,.09);border-radius:18px;backdrop-filter:blur(20px);box-shadow:0 14px 40px rgba(0,0,0,.2)}
+.metric label,.metric small{color:#a4aabd}
+.metric strong{color:#fff}
+input,textarea,select{background:rgba(255,255,255,.055)!important;color:#f3f4fa!important;border:1px solid rgba(255,255,255,.13)!important;border-radius:12px!important}
+input::placeholder,textarea::placeholder{color:#83899b}
+button,.btn{cursor:pointer;border-radius:13px!important;transition:transform .2s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease}
+button:hover,.btn:hover{transform:translateY(-1px);border-color:rgba(190,165,255,.38)!important;box-shadow:0 8px 24px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.08)}
+button:active,.btn:active{transform:scale(.97)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #a78bfa;outline-offset:2px}
+.btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#eef0f8}
+.btn.primary{background:linear-gradient(135deg,rgba(143,104,255,.34),rgba(64,145,255,.22));border:1px solid rgba(174,148,255,.34);color:#fff;box-shadow:inset 0 1px rgba(255,255,255,.16),0 7px 22px rgba(80,55,160,.16)}
+.login{background:rgba(20,22,32,.86);border-radius:22px;box-shadow:0 25px 90px rgba(0,0,0,.4)}
+.boot{color:#fff}
+@media(prefers-reduced-motion:reduce){button,.btn{transition:none!important}}
+@media(max-width:900px){.side{background:rgba(13,14,20,.97)}.top{background:rgba(15,16,23,.9)}}
