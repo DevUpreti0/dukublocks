@@ -1299,7 +1299,7 @@ function MainApp() {
     } catch (error) { setCloudNotice("Cloud save failed: " + (error.message || "Please try again.")); }
     finally { setCloudBusy(false); }
   };
-  const cloudAutosaveSnapshot = JSON.stringify({ siteName, siteSlug, headline, subline, blocks, seoTitle, seoDescription, pages, activePageId, mediaAssets, brandColor, surfaceColor, siteFont, headerStyle, logoText, footerText, customNavText, socialLinksText, footerLayout, savedDesignPresets, headingSize, bodySize, textLineHeight, buttonStyle });
+  const cloudAutosaveSnapshot = JSON.stringify({ siteName, siteSlug, headline, subline, blocks, seoTitle, seoDescription, pages, activePageId, mediaAssets: mediaAssets.map(({ id, name, size, type, cloudUploaded }) => ({ id, name, size, type, cloudUploaded })), brandColor, surfaceColor, siteFont, headerStyle, logoText, footerText, customNavText, socialLinksText, footerLayout, savedDesignPresets, headingSize, bodySize, textLineHeight, buttonStyle });
   useEffect(() => {
     if (!showEditor || !authUser || !workspace || !cloudSiteId || cloudBusy) return undefined;
     const timer = window.setTimeout(() => {
