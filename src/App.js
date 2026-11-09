@@ -1269,8 +1269,13 @@ function MainApp() {
         const path = workspace.id + "/" + siteId + "/" + asset.id + "-" + safeName;
         const { error: uploadError } = await supabase.storage.from("duku-fca-media").upload(path, blob, { upsert: true, contentType: asset.type });
         if (uploadError) throw uploadError;
-        const { error: assetError } = await supabase.from("site_assets").insert({ site_id: siteId, storage_path: path, file_name: asset.name, mime_type: asset.type, file_size: asset.size, client_asset_key: asset.id });
-        if (assetError) throw assetError;
+        const assetPayload = { site_id: siteId, storage_path: path, file_name: asset.name, mime_type: asset.type, file_size: asset.size, client_asset_key: asset.id };
+        const { data: existingAsset, error: assetReadError } = await supabase.from("site_assets").select("id").eq("site_id", siteId).eq("client_asset_key", asset.id).maybeSingle();
+        if (assetReadError) throw assetReadError;
+        const assetWrite = existingAsset
+          ? await supabase.from("site_assets").update(assetPayload).eq("id", existingAsset.id)
+          : await supabase.from("site_assets").insert(assetPayload);
+        if (assetWrite.error) throw assetWrite.error;
         setMediaAssets(current => current.map(item => item.id === asset.id ? { ...item, cloudUploaded: true, storagePath: path } : item));
       }
       setCloudSites(current => [{ id: siteId, name: siteName, slug: sitePayload.slug, status: sitePayload.status, updated_at: new Date().toISOString() }, ...current.filter(item => item.id !== siteId)]);
