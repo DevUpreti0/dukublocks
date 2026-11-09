@@ -189,7 +189,8 @@ function AdminPortal() {
   };
   const deleteAnnouncement=async(item)=>{
     if(!item?.id||!window.confirm("Permanently delete this announcement?"))return;
-    const {error:historyError}=await supabase.from("duku_ai_announcement_history").insert({announcement_id:item.id,title:item.title,body:item.body,category:item.category||"product",status:item.status||"draft",audience:item.audience||"all",scheduled_at:item.scheduled_at||null,changed_by:sessionUser.id,change_type:"deleted"});if(historyError){setNotice("Could not preserve announcement history: "+historyError.message);return;}\n    const {error}=await supabase.from("duku_ai_announcements").delete().eq("id",item.id);
+    const {error:historyError}=await supabase.from("duku_ai_announcement_history").insert({announcement_id:item.id,title:item.title,body:item.body,category:item.category||"product",status:item.status||"draft",audience:item.audience||"all",scheduled_at:item.scheduled_at||null,changed_by:sessionUser.id,change_type:"deleted"});if(historyError){setNotice("Could not preserve announcement history: "+historyError.message);return;}
+    const {error}=await supabase.from("duku_ai_announcements").delete().eq("id",item.id);
     if(error){setNotice(error.message);return;}
     setAnnouncementRows(rows=>rows.filter(x=>x.id!==item.id));
     await logAction("announcement.delete","duku_ai_announcements",item.id,{title:item.title});
