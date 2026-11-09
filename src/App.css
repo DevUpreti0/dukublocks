@@ -2812,3 +2812,66 @@ footer .brand .artemide-symbol{width:25px;height:25px}
  .dd-section-head{align-items:flex-start!important;gap:10px!important;flex-wrap:wrap!important}
  .dd-project-actions{flex-wrap:wrap!important}
 }
+
+
+/* Artemide Editor — professional application chrome and editing surfaces */
+.editor-overlay{background:#090a0c!important;color:#f2f2ef!important}
+.editor-top{min-height:62px!important;height:auto!important;background:#0e1013!important;border-bottom:1px solid #2c2f34!important;padding:8px 18px!important}
+.editor-brand{display:flex!important;align-items:center!important;gap:9px!important;font-weight:750!important;letter-spacing:-.35px!important}
+.editor-brand .artemide-symbol{width:27px!important;height:27px!important}
+.editor-site{gap:8px!important}
+.editor-site input{background:#090a0c!important;border:1px solid #36393f!important;border-radius:6px!important;color:#f4f4f1!important;padding:8px 10px!important}
+.editor-actions{gap:7px!important}
+.editor-actions button,.editor-actions .studio-publish{background:#17191d!important;border:1px solid #383b41!important;color:#e4e5e2!important;border-radius:6px!important;transition:background .16s ease,border-color .16s ease,transform .16s ease!important}
+.editor-actions button:hover{background:#25282d!important;border-color:#686c73!important;transform:translateY(-1px)}
+.editor-actions .studio-publish{background:#ededeb!important;border-color:#ededeb!important;color:#090a0c!important;font-weight:750!important}
+.editor-actions button:disabled{opacity:.45!important}
+.editor-workspace{grid-template-columns:238px minmax(0,1fr) 270px!important;background:#090a0c!important}
+.editor-tools,.properties{background:#101215!important;border-color:#2c2f34!important;overflow:auto!important}
+.editor-tools{padding:17px 13px!important}
+.editor-tools>b,.properties>b,.studio-panel-heading>b{color:#f0f0ed!important;font-size:10px!important;letter-spacing:1.4px!important}
+.studio-panel-heading{border-bottom:1px solid #2e3137!important;padding-bottom:13px!important;margin-bottom:14px!important}
+.studio-panel-heading small{color:#8f939a!important;letter-spacing:1.1px!important}
+.studio-element-search input,.properties input,.properties textarea,.editor-tools input:not([type=color]),.editor-tools select,.properties select{background:#090a0c!important;border:1px solid #373a40!important;border-radius:6px!important;color:#f3f3f0!important}
+.studio-setting-group{background:#15171b!important;border:1px solid #303339!important;border-radius:8px!important;padding:12px!important;margin-bottom:12px!important}
+.studio-setting-group>b,.studio-setting-group label{color:#e6e7e4!important}
+.studio-setting-group p,.studio-setting-group small{color:#a3a7ad!important}
+.studio-color-control input[type=color]{border:1px solid #555960!important;background:#0b0c0e!important;border-radius:6px!important}
+.studio-color-swatches button{border:2px solid #4b4e54!important;border-radius:5px!important}
+.editor-tools>button,.studio-element-group>button,.studio-layer-row,.studio-library-list button{background:#17191d!important;border:1px solid #35383e!important;border-radius:6px!important;color:#e1e2df!important}
+.editor-tools>button:hover,.studio-element-group>button:hover,.studio-library-list button:hover{background:#25282d!important;border-color:#686c73!important}
+.editor-help,.property-note{background:#191b1f!important;border:1px solid #34373d!important;border-radius:7px!important;color:#b8bbc0!important;padding:10px!important}
+.editor-canvas-wrap{background:#090a0c!important;overflow:auto!important}
+.canvas-toolbar{position:sticky!important;top:0!important;background:#0e1013!important;border-bottom:1px solid #292c31!important;color:#aeb1b7!important;padding:10px 15px!important;z-index:2}
+.site-canvas{border:1px solid #383b41!important;border-radius:4px!important;box-shadow:0 22px 70px #000b!important;overflow:hidden!important}
+.canvas-nav{border-bottom:1px solid #e4e4e4!important}
+.canvas-nav button{border-radius:4px!important}
+.properties{padding:17px 14px!important;border-left:1px solid #2c2f34!important}
+.properties label{color:#b8bbc0!important}
+.properties input:focus,.properties textarea:focus,.editor-tools input:focus,.editor-tools select:focus{border-color:#e3e3e0!important;box-shadow:0 0 0 2px #ffffff12!important}
+.studio-layer-row{display:flex!important;align-items:center!important;justify-content:space-between!important;padding:9px!important;margin:5px 0!important}
+.studio-layer-row:hover{border-color:#777b82!important}
+.editor-overlay button:focus-visible,.editor-overlay input:focus-visible,.editor-overlay select:focus-visible,.editor-overlay textarea:focus-visible{outline:2px solid #ededeb!important;outline-offset:2px!important}
+@media(max-width:1000px){
+ .editor-workspace{grid-template-columns:190px minmax(0,1fr) 230px!important}
+}
+@media(max-width:760px){
+ .editor-top{min-height:56px!important;padding:6px 8px!important;gap:6px!important}
+ .editor-workspace{grid-template-columns:64px minmax(0,1fr)!important}
+ .editor-tools{padding:9px 6px!important}
+ .editor-tools .studio-panel-heading small{display:none}
+ .editor-tools>button{font-size:0!important;text-align:center!important;padding:10px 3px!important}
+ .editor-tools>button span,.editor-tools>button svg{font-size:16px!important}
+ .properties{width:min(290px,84vw)!important;max-width:84vw!important;z-index:54!important;background:#111316!important}
+ .editor-canvas-wrap{min-width:0!important}
+ .site-canvas{transform-origin:top center!important}
+ .editor-actions button{font-size:9px!important;padding:7px 8px!important}
+ .editor-brand{min-width:0!important;font-size:12px!important}
+ .editor-brand .artemide-symbol{width:23px!important;height:23px!important}
+}
+@media(max-width:420px){
+ .editor-site input{width:78px!important;padding:6px!important}
+ .editor-actions{gap:4px!important}
+ .editor-actions button{font-size:8px!important;padding:6px!important}
+ .editor-top .saved{display:none!important}
+}
