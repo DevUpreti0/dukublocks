@@ -1245,7 +1245,12 @@ function MainApp() {
   const restoreRevision=async(revision)=>{if(!workspace||!cloudSiteId||revisionRestoreBusy)return;const snapshot=revision.snapshot||{};if(!snapshot.title||!snapshot.slug){setCloudNotice("This revision is incomplete and cannot be restored.");return;}if(!window.confirm("Restore this saved revision? The current page will be replaced. A new revision will be saved first."))return;setRevisionRestoreBusy(revision.id);setCloudNotice("");try{const {data:current,error:readError}=await supabase.from("site_pages").select("*").eq("id",revision.page_id).eq("site_id",cloudSiteId).single();if(readError)throw readError;const {data:last,error:lastError}=await supabase.from("site_page_revisions").select("revision_number").eq("page_id",revision.page_id).order("revision_number",{ascending:false}).limit(1).maybeSingle();if(lastError)throw lastError;const {error:historyError}=await supabase.from("site_page_revisions").insert({workspace_id:workspace.id,site_id:cloudSiteId,page_id:revision.page_id,revision_number:(last?.revision_number||0)+1,snapshot:{title:current.title,slug:current.slug,content:current.content,seo:current.seo,is_homepage:current.is_homepage,is_published:current.is_published,sort_order:current.sort_order},created_by:authUser.id});if(historyError)throw historyError;const {error:updateError}=await supabase.from("site_pages").update({title:snapshot.title,slug:snapshot.slug,content:snapshot.content||{},seo:snapshot.seo||{},is_homepage:!!snapshot.is_homepage,is_published:false,sort_order:snapshot.sort_order||0}).eq("id",revision.page_id).eq("site_id",cloudSiteId);if(updateError)throw updateError;const restored={name:snapshot.title,slug:snapshot.slug,headline:snapshot.content?.headline||"",subline:snapshot.content?.subline||"",blocks:snapshot.content?.sections||[],seoTitle:snapshot.seo?.title||"",seoDescription:snapshot.seo?.description||""};setPages(list=>list.map(page=>page.id===revision.page_id||page.slug===current.slug?{...page,...restored}:page));if(activePageId===revision.page_id||pages.some(page=>page.id===revision.page_id)||pages.some(page=>page.slug===current.slug&&page.id===activePageId)){setHeadline(restored.headline);setSubline(restored.subline);setBlocks(restored.blocks);setSiteSlug(restored.slug);setSeoTitle(restored.seoTitle);setSeoDescription(restored.seoDescription);}setPublished(false);setRevisionOpen(false);setCloudNotice("Revision restored. The page is now an unpublished draft; save or publish when ready.");}catch(error){setCloudNotice("Could not restore revision: "+(error.message||"Please try again."));}finally{setRevisionRestoreBusy("");}};
   const saveCloudDraft = async () => {
     if (!authUser) { setAuthMode("Welcome back"); setShowAuth(true); return; }
-    if (!workspace) { setCloudNotice("Your workspace is still loading. Please try again in a moment."); return; }
+    if (!workspace) { setCloudNotice("Your workspace is still loading. Please try again in a moment."); return false; }
+    const pageDrafts = pages.map(page => page.id === activePageId ? { ...page, headline, subline, blocks, seoTitle, seoDescription, slug: siteSlug } : page);
+    if (!pageDrafts.length) { setCloudNotice("Add at least one page before saving."); return false; }
+    const pageSlugs = pageDrafts.map((page,index) => (page.slug || page.name || (index ? "page-" + (index+1) : "home")).toLowerCase().replace(/[^a-z0-9-]+/g,"-").replace(/^-|-$/g,"") || (index ? "page-" + (index+1) : "home"));
+    if (new Set(pageSlugs).size !== pageSlugs.length) { setCloudNotice("Two or more pages use the same URL slug. Give each page a unique slug before saving or publishing."); return false; }
+    if (!pageSlugs.every(slug => slug.length <= 80)) { setCloudNotice("A page URL slug is too long. Keep each slug under 80 characters."); return false; }
     setCloudBusy(true); setCloudNotice("");
     try {
       let siteId = cloudSiteId;
@@ -1300,7 +1305,8 @@ function MainApp() {
       }
       setCloudSites(current => [{ id: siteId, name: siteName, slug: sitePayload.slug, status: sitePayload.status, updated_at: new Date().toISOString() }, ...current.filter(item => item.id !== siteId)]);
       setCloudNotice("Saved to your DuKu FCA cloud workspace. Your website is still a draft and is not public.");
-    } catch (error) { cloudAutosaveLastSnapshotRef.current = ""; setCloudNotice("Cloud save failed: " + (error.message || "Please try again.")); }
+      return true;
+    } catch (error) { cloudAutosaveLastSnapshotRef.current = ""; setCloudNotice("Cloud save failed: " + (error.message || "Please try again.")); return false; }
     finally { setCloudBusy(false); }
   };
   const cloudAutosaveSnapshot = JSON.stringify({ workspaceId: workspace?.id || null, cloudSiteId, siteName, siteSlug, headline, subline, blocks, seoTitle, seoDescription, pages, activePageId, mediaAssets: mediaAssets.map(({ id, name, size, type }) => ({ id, name, size, type })), brandColor, surfaceColor, siteFont, headerStyle, logoText, footerText, customNavText, socialLinksText, footerLayout, savedDesignPresets, headingSize, bodySize, textLineHeight, buttonStyle });
@@ -1315,9 +1321,19 @@ function MainApp() {
   }, [showEditor, authUser, workspace, cloudSiteId, cloudBusy, cloudAutosaveSnapshot]);
   const publishSite = async () => {
     if (!authUser) { setAuthMode("Welcome back"); setShowAuth(true); return; }
+    if (!workspace) { setCloudNotice("Your workspace is still loading. Please try again."); return; }
     if (!cloudSiteId) { setCloudNotice("Save this website to your cloud workspace first, then publish it."); return; }
-    setCloudBusy(true); setCloudNotice("");
+    if (cloudBusy) return;
+    const saved = await saveCloudDraft();
+    if (!saved) { setCloudNotice("Publishing stopped because the latest page changes could not be saved. Fix the issue and try again."); return; }
+    setCloudBusy(true); setCloudNotice("Checking every page before publishing…");
     try {
+      const { data: publishPages, error: publishPagesError } = await supabase.from("site_pages").select("id,slug,is_homepage,is_published,sort_order").eq("site_id", cloudSiteId).order("sort_order", { ascending: true });
+      if (publishPagesError) throw publishPagesError;
+      if (!publishPages?.length || publishPages.length !== pages.length) throw new Error("The saved page count does not match the editor. Save all pages and try again.");
+      const persistedSlugs = publishPages.map(page => String(page.slug || "").trim().toLowerCase());
+      if (persistedSlugs.some(slug => !slug) || new Set(persistedSlugs).size !== persistedSlugs.length) throw new Error("Every page must have a unique, non-empty URL slug before publishing.");
+      if (publishPages.filter(page => page.is_homepage).length !== 1) throw new Error("Your website must have exactly one home page before publishing.");
       const chosenSubdomain = (siteSubdomain || siteName).toLowerCase().replace(/[^a-z0-9-]+/g,"-").replace(/^-|-$/g,"");
       const { data: assets, error: assetsError } = await supabase.from("site_assets").select("id,storage_path,file_name,mime_type,client_asset_key,public_url").eq("site_id", cloudSiteId);
       if (assetsError) throw assetsError;
@@ -1338,6 +1354,7 @@ function MainApp() {
       }
       const { data, error } = await supabase.rpc("publish_site", { p_site_id: cloudSiteId, p_subdomain: chosenSubdomain });
       if (error) throw error;
+      if (!data?.url) throw new Error("The publishing service did not return a live website URL. Check your project status before retrying.");
       setPublished(true); setPublishedUrl(data.url);
       setCloudSites(current => current.map(item => item.id === cloudSiteId ? { ...item, status: "published", slug: data.subdomain } : item));
       setCloudNotice("Your website is live: " + data.url);
