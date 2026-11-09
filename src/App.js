@@ -1335,6 +1335,7 @@ function MainApp() {
       if (persistedSlugs.some(slug => !slug) || new Set(persistedSlugs).size !== persistedSlugs.length) throw new Error("Every page must have a unique, non-empty URL slug before publishing.");
       if (publishPages.filter(page => page.is_homepage).length !== 1) throw new Error("Your website must have exactly one home page before publishing.");
       const chosenSubdomain = (siteSubdomain || siteName).toLowerCase().replace(/[^a-z0-9-]+/g,"-").replace(/^-|-$/g,"");
+      if (!chosenSubdomain || chosenSubdomain.length > 63) throw new Error("Choose a website address between 1 and 63 characters before publishing.");
       const { data: assets, error: assetsError } = await supabase.from("site_assets").select("id,storage_path,file_name,mime_type,client_asset_key,public_url").eq("site_id", cloudSiteId);
       if (assetsError) throw assetsError;
       for (const asset of (assets || [])) {
