@@ -2906,3 +2906,13 @@ footer .brand .artemide-symbol{width:25px;height:25px}
  .dd-filters button{flex:0 0 auto!important}
  .dd-theme-empty{padding:18px!important}
 }
+
+/* Project actions: clear hierarchy and accessible in-progress state */
+.dd-project-actions{display:flex!important;align-items:center!important;flex-wrap:wrap!important;gap:7px!important}
+.dd-project-actions button{min-height:36px!important;padding:8px 11px!important;border-radius:6px!important;white-space:nowrap!important}
+.dd-project-actions button:disabled{opacity:.55!important;cursor:wait!important}
+.dd-project-actions button:first-child{background:#ededeb!important;border-color:#ededeb!important;color:#090a0c!important;font-weight:700!important}
+.dd-project-actions button:first-child:hover{background:#fff!important}
+.dd-project-actions button:not(:first-child){background:#191b1f!important;border:1px solid #373a40!important;color:#e5e6e3!important}
+.dd-project-actions button:not(:first-child):hover:not(:disabled){background:#292c31!important;border-color:#73777e!important}
+@media(max-width:560px){.dd-project-actions button{flex:1 1 auto!important}}
