@@ -80,7 +80,6 @@ function generateAndroidUiSource(framework, appName, packageName, widgets, accen
     const jsx = pages.map(page => {
       const pageWidgets = items.filter(w => (w.screen || pages[0]) === page);
       const content = pageWidgets.map(w => {
-        const label = esc(w.text || w.label || "");
         const target = pages.includes(w.targetScreen) ? w.targetScreen : "";
         if (w.type === "Button") return "<Pressable accessibilityRole='button' onPress={() => "+(target ? "setCurrentScreen("+JSON.stringify(target)+")" : "Alert.alert("+JSON.stringify(w.label || "Action")+", "+JSON.stringify(w.text || "Button tapped")+")")+"} style={styles.button}><Text style={styles.buttonText}>"+esc(w.text || w.label || "Button")+"</Text></Pressable>";
         if (w.type === "Navigation") return "<Pressable onPress={() => "+(target ? "setCurrentScreen("+JSON.stringify(target)+")" : "Alert.alert('Navigation', "+JSON.stringify(w.label || "Open")+")")+"} style={styles.card}><Text style={styles.text}>›  "+esc(w.label || "Open")+"</Text></Pressable>";
@@ -105,8 +104,7 @@ function generateAndroidUiSource(framework, appName, packageName, widgets, accen
     const pageBodies = pages.map((page,index) => {
       const pageItems = items.filter(w => (w.screen || pages[0]) === page);
       const children = pageItems.map(w => {
-        const label = esc(w.text || w.label || "");
-        const targetIndex = pages.indexOf(w.targetScreen);
+            const targetIndex = pages.indexOf(w.targetScreen);
         const navigate = targetIndex >= 0 ? "setState(() => _currentIndex = "+targetIndex+");" : "ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Action tapped')));";
         if (w.type === "Button") return "FilledButton(onPressed: () { "+navigate+" }, child: Text("+JSON.stringify(w.text || w.label || "Button")+")),";
         if (w.type === "Navigation") return "ListTile(leading: const Icon(Icons.arrow_forward), title: Text("+JSON.stringify(w.label || "Open")+"), onTap: () { "+navigate+" }),";
@@ -1318,7 +1316,7 @@ function MainApp() {
       saveCloudDraft();
     }, 1800);
     return () => window.clearTimeout(timer);
-  }, [showEditor, authUser, workspace, cloudSiteId, cloudBusy, cloudAutosaveSnapshot]);
+  }, [showEditor, authUser, workspace, cloudSiteId, cloudBusy, cloudAutosaveSnapshot, saveCloudDraft]);
   const publishSite = async () => {
     if (!authUser) { setAuthMode("Welcome back"); setShowAuth(true); return; }
     if (!workspace) { setCloudNotice("Your workspace is still loading. Please try again."); return; }
