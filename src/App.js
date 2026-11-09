@@ -1795,14 +1795,14 @@ function UILSubsidiaryTagline() {
 function App() {
   const host = window.location.hostname;
   let page;
-  if (host.startsWith("ai.")) page = <DuKuAI />;
+  if (host.startsWith("ai.") || host.startsWith("artemide.")) page = <DuKuAI />;
   else if (host.startsWith("domains.")) page = <DomainMarketplace />;
   else if (host.startsWith("admin.")) page = <AdminErrorBoundary><AdminPortal /></AdminErrorBoundary>;
   else if (host.startsWith("dashboard.")) page = new URLSearchParams(window.location.search).has("openSite") ? <MainApp /> : <DeveloperDashboard />;
   else if (window.location.pathname==="/blog" || window.location.pathname.startsWith("/blog/")) page = <BlogPage />;
   else if (host !== "dukubusiness.online" && host !== "www.dukubusiness.online" && !host.startsWith("admin.") && !host.startsWith("dashboard.") && host !== "localhost" && !host.endsWith(".vercel.app")) page = <TenantSite />;
   else page = <MainApp />;
-  return host.startsWith("ai.") ? page : <><UILSubsidiaryTagline />{page}</>;
+  return host.startsWith("ai.") || host.startsWith("artemide.") ? page : <><UILSubsidiaryTagline />{page}</>;
 }
 
 export default App;
