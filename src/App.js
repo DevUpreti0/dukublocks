@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 import DomainMarketplace from "./DomainMarketplace";
 import DuKuAI from "./DuKuAI";
@@ -1296,13 +1296,15 @@ function MainApp() {
       }
       setCloudSites(current => [{ id: siteId, name: siteName, slug: sitePayload.slug, status: sitePayload.status, updated_at: new Date().toISOString() }, ...current.filter(item => item.id !== siteId)]);
       setCloudNotice("Saved to your DuKu FCA cloud workspace. Your website is still a draft and is not public.");
-    } catch (error) { setCloudNotice("Cloud save failed: " + (error.message || "Please try again.")); }
+    } catch (error) { cloudAutosaveLastSnapshotRef.current = ""; setCloudNotice("Cloud save failed: " + (error.message || "Please try again.")); }
     finally { setCloudBusy(false); }
   };
-  const cloudAutosaveSnapshot = JSON.stringify({ siteName, siteSlug, headline, subline, blocks, seoTitle, seoDescription, pages, activePageId, mediaAssets: mediaAssets.map(({ id, name, size, type, cloudUploaded }) => ({ id, name, size, type, cloudUploaded })), brandColor, surfaceColor, siteFont, headerStyle, logoText, footerText, customNavText, socialLinksText, footerLayout, savedDesignPresets, headingSize, bodySize, textLineHeight, buttonStyle });
+  const cloudAutosaveSnapshot = JSON.stringify({ siteName, siteSlug, headline, subline, blocks, seoTitle, seoDescription, pages, activePageId, mediaAssets: mediaAssets.map(({ id, name, size, type }) => ({ id, name, size, type })), brandColor, surfaceColor, siteFont, headerStyle, logoText, footerText, customNavText, socialLinksText, footerLayout, savedDesignPresets, headingSize, bodySize, textLineHeight, buttonStyle });
+  const cloudAutosaveLastSnapshotRef = useRef("");
   useEffect(() => {
-    if (!showEditor || !authUser || !workspace || !cloudSiteId || cloudBusy) return undefined;
+    if (!showEditor || !authUser || !workspace || !cloudSiteId || cloudBusy || cloudAutosaveLastSnapshotRef.current === cloudAutosaveSnapshot) return undefined;
     const timer = window.setTimeout(() => {
+      cloudAutosaveLastSnapshotRef.current = cloudAutosaveSnapshot;
       saveCloudDraft();
     }, 1800);
     return () => window.clearTimeout(timer);
