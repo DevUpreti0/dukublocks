@@ -2705,3 +2705,11 @@ footer>span{color:#999da4!important}
  .launch-copy h2{font-size:27px!important}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Artemide brand asset */
+.artemide-symbol{display:block;width:30px;height:30px;object-fit:contain;flex:0 0 auto}
+.editor-brand .artemide-symbol{width:28px;height:28px}
+.admin-dashboard header .brand .artemide-symbol{width:30px;height:30px}
+footer .brand .artemide-symbol{width:25px;height:25px}
+.platform-brand-logo{max-width:145px;max-height:34px;object-fit:contain}
+@media(max-width:760px){.artemide-symbol{width:26px;height:26px}.platform-brand-logo{max-width:112px;max-height:28px}}
