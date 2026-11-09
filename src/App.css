@@ -2940,3 +2940,7 @@ footer .brand .artemide-symbol{width:25px;height:25px}
 .dd-project-status-filters button[aria-pressed=true]{background:#ededeb!important;color:#090a0c!important;border-color:#ededeb!important}
 .dd-project-status-filters button{white-space:nowrap!important}
 @media(max-width:560px){.dd-project-status-filters{display:flex!important;gap:6px!important;overflow-x:auto!important;max-width:100%!important;padding-bottom:5px!important}.dd-project-status-filters button{flex:0 0 auto!important}}
+
+
+/* FCA workspace project management — crisp monochrome controls */
+.dd-project{border-color:#d8dce3;box-shadow:0 8px 24px #11182708}.dd-project-art{background:linear-gradient(135deg,#f5f6f8,#e1e4e9);color:#111827}.dd-project-art small{background:#111827;color:#fff;text-transform:uppercase;letter-spacing:.06em}.dd-project-meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 2px}.dd-project-meta span{display:inline-flex;align-items:center;border:1px solid #d9dde4;background:#f8f9fb;color:#4b5563;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:700}.dd-project-actions button,.dd-project-live-link{border:1px solid #cbd1da;background:#fff;color:#111827;border-radius:8px;padding:9px 11px;font-size:12px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center}.dd-project-actions button:hover,.dd-project-live-link:hover{background:#111827;border-color:#111827;color:#fff}.dd-project-actions button:disabled{opacity:.5;cursor:not-allowed}.dd-project h3{color:#111827}.dd-project p{color:#626b79}
