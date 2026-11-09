@@ -2519,3 +2519,11 @@ a:hover{ text-decoration-thickness:2px }
 .announcement-history { margin-top: 7px; font-size: 12px; color: #596579; }
 .announcement-history summary { cursor: pointer; font-weight: 650; }
 .announcement-history small { display: block; padding: 5px 0; border-top: 1px solid #e8ebf0; }
+
+/* Android Studio screen manager */
+.ref-screen-row{display:flex;align-items:center;gap:3px;min-width:0;border-radius:5px;padding-right:3px}
+.ref-screen-row.selected{background:#292e49}
+.ref-screen-list .ref-screen-row .ref-screen-open{flex:1;min-width:0;background:transparent}
+.ref-screen-list .ref-screen-row .ref-screen-menu{width:25px;min-width:25px;flex:0 0 25px;justify-content:center;padding:5px 2px;color:#8290ad;background:transparent;opacity:.65}
+.ref-screen-list .ref-screen-row:hover .ref-screen-menu,.ref-screen-list .ref-screen-row.selected .ref-screen-menu{opacity:1}
+.ref-screen-list .ref-screen-row .ref-screen-menu:hover{background:#3a4262;color:#fff}
