@@ -2713,3 +2713,6 @@ footer>span{color:#999da4!important}
 footer .brand .artemide-symbol{width:25px;height:25px}
 .platform-brand-logo{max-width:145px;max-height:34px;object-fit:contain}
 @media(max-width:760px){.artemide-symbol{width:26px;height:26px}.platform-brand-logo{max-width:112px;max-height:28px}}
+
+.workspace-icon{padding:4px!important;background:transparent!important;border:0!important}
+.workspace-icon img{width:100%;height:100%;object-fit:contain}
