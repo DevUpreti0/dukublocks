@@ -118,7 +118,7 @@ function androidSourceArchive(project) {
     const ext=framework==="kotlin"?"kt":"java",packagePath=pkg.split(".").join("/");
     const key=Object.keys(files).find(k=>k.endsWith("MainActivity."+ext));
     let source=files[key]||androidStarterFor(framework,safeName);source=source.replace(/package\s+[a-zA-Z0-9_.]+/,"package "+pkg);
-    files["settings.gradle"]="pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }\ndependencyResolutionManagement { repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS); repositories { google(); mavenCentral() } }\nrootProject.name = '"+safeName.replace(/'/g,"")+"'\\ninclude ':app'\\n";
+    files["settings.gradle"]="pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }\ndependencyResolutionManagement { repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS); repositories { google(); mavenCentral() } }\nrootProject.name = '"+safeName.replace(/'/g,"")+"'\ninclude ':app'\n";
     files["build.gradle"]="plugins { id 'com.android.application' version '8.6.1' apply false }\n"+(framework==="kotlin"?"plugins { id 'org.jetbrains.kotlin.android' version '2.0.21' apply false }\n":"");
     files["gradle.properties"]="org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8\nandroid.useAndroidX=true\n";
     files["app/build.gradle"]="plugins { id 'com.android.application' }\n"+(framework==="kotlin"?"apply plugin: 'org.jetbrains.kotlin.android'\n":"")+"android { namespace '"+pkg+"'; compileSdk 35; defaultConfig { applicationId '"+pkg+"'; minSdk 23; targetSdk 35; versionCode 1; versionName '1.0' } }\ndependencies { implementation 'androidx.appcompat:appcompat:1.7.0' }\n";
