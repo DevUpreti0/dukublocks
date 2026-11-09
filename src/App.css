@@ -2875,3 +2875,34 @@ footer .brand .artemide-symbol{width:25px;height:25px}
  .editor-actions button{font-size:8px!important;padding:6px!important}
  .editor-top .saved{display:none!important}
 }
+
+/* Theme discovery and workspace identity refinement */
+.dd-brand-mark{width:30px!important;height:30px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:3px!important;background:transparent!important;border:0!important;overflow:visible!important}
+.dd-brand-mark img{width:100%!important;height:100%!important;object-fit:contain!important;display:block!important}
+.dd-brand{gap:9px!important;color:#f5f5f2!important;font-size:15px!important}
+.dd-brand>b{color:#aeb1b6!important;font-size:10px!important;letter-spacing:1.5px!important}
+.dd-results-meta{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;margin:16px 0 12px!important;padding:0 2px!important;color:#aeb1b7!important;font-size:11px!important}
+.dd-results-meta b{color:#f4f4f1!important;font-variant-numeric:tabular-nums!important}
+.dd-results-meta button{background:transparent!important;border:1px solid #3b3e44!important;color:#e7e8e5!important;border-radius:6px!important;padding:7px 10px!important;font-size:11px!important;cursor:pointer!important}
+.dd-results-meta button:hover{background:#24272c!important;border-color:#777b82!important}
+.dd-theme-empty{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:9px!important;padding:25px!important}
+.dd-theme-empty h3{margin:0!important;color:#f5f5f2!important}
+.dd-theme-empty p{margin:0 0 5px!important;max-width:540px!important;color:#aeb1b7!important}
+.dd-theme-empty .dd-secondary{padding:9px 13px!important}
+.dd-filters{display:flex!important;flex-wrap:wrap!important;gap:7px!important}
+.dd-filters button{min-height:34px!important;padding:7px 11px!important;white-space:nowrap!important}
+.dd-theme-grid{align-items:stretch!important}
+.dd-theme{display:flex!important;flex-direction:column!important;min-width:0!important}
+.dd-theme h3{margin:15px 16px 6px!important}
+.dd-theme p{margin:0 16px 16px!important;line-height:1.55!important;flex:1!important}
+.dd-theme>button{margin:0 16px 16px!important;min-height:38px!important;align-self:flex-start!important}
+.dd-project{min-width:0!important}
+.dd-project h3{overflow-wrap:anywhere!important}
+.dd-project-actions button{min-height:36px!important}
+.dd-page button:focus-visible,.dd-page a:focus-visible,.dd-page input:focus-visible{outline:2px solid #ededeb!important;outline-offset:3px!important}
+@media(max-width:560px){
+ .dd-results-meta{align-items:flex-start!important;flex-wrap:wrap!important}
+ .dd-filters{flex-wrap:nowrap!important;overflow-x:auto!important;padding-bottom:6px!important;scrollbar-width:thin!important}
+ .dd-filters button{flex:0 0 auto!important}
+ .dd-theme-empty{padding:18px!important}
+}
