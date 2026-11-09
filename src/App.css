@@ -2931,3 +2931,12 @@ footer .brand .artemide-symbol{width:25px;height:25px}
 .dd-project-empty p{color:#aeb1b7}
 .dd-project-empty button{margin-top:4px}
 @media(max-width:560px){.dd-project-toolbar{align-items:flex-start}.dd-project-status-filters{width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}.dd-project-status-filters button{flex:0 0 auto}.dd-project-sort{width:100%;justify-content:space-between}.dd-project-sort select{max-width:65%}.dd-project-empty{padding:18px}}
+
+/* Project lifecycle actions */
+.dd-project-actions button{transition:background .16s ease,border-color .16s ease,opacity .16s ease!important}
+.dd-project-actions button:disabled{opacity:.48!important;cursor:wait!important}
+.dd-project-actions button:nth-child(2),.dd-project-actions button:nth-child(3){background:#191b1f!important;border:1px solid #373a40!important;color:#e5e6e3!important}
+.dd-project-actions button:nth-child(2):hover:not(:disabled),.dd-project-actions button:nth-child(3):hover:not(:disabled){background:#292c31!important;border-color:#73777e!important}
+.dd-project-status-filters button[aria-pressed=true]{background:#ededeb!important;color:#090a0c!important;border-color:#ededeb!important}
+.dd-project-status-filters button{white-space:nowrap!important}
+@media(max-width:560px){.dd-project-status-filters{display:flex!important;gap:6px!important;overflow-x:auto!important;max-width:100%!important;padding-bottom:5px!important}.dd-project-status-filters button{flex:0 0 auto!important}}
