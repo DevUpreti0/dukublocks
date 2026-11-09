@@ -2916,3 +2916,18 @@ footer .brand .artemide-symbol{width:25px;height:25px}
 .dd-project-actions button:not(:first-child){background:#191b1f!important;border:1px solid #373a40!important;color:#e5e6e3!important}
 .dd-project-actions button:not(:first-child):hover:not(:disabled){background:#292c31!important;border-color:#73777e!important}
 @media(max-width:560px){.dd-project-actions button{flex:1 1 auto!important}}
+
+/* Project library toolbar */
+.dd-project-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:16px 0 14px;padding:11px 12px;background:#111316;border:1px solid #303339;border-radius:8px}
+.dd-project-status-filters{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.dd-project-status-filters button{background:#191b1f;border:1px solid #373a40;color:#c6c8cc;border-radius:6px;padding:7px 11px;font-size:11px;cursor:pointer;transition:background .16s ease,border-color .16s ease}
+.dd-project-status-filters button:hover{border-color:#777b82;color:#fff}
+.dd-project-status-filters button.active{background:#ededeb;border-color:#ededeb;color:#090a0c;font-weight:700}
+.dd-project-sort{display:flex;align-items:center;gap:8px;color:#aeb1b7;font-size:11px}
+.dd-project-sort select{background:#090a0c;border:1px solid #3a3d43;color:#ededeb;border-radius:6px;padding:8px 10px;font:inherit;max-width:190px}
+.dd-project-sort select:focus-visible,.dd-project-status-filters button:focus-visible{outline:2px solid #ededeb;outline-offset:2px}
+.dd-project-empty{display:flex;align-items:flex-start;flex-direction:column;gap:9px;padding:24px}
+.dd-project-empty h3,.dd-project-empty p{margin:0}
+.dd-project-empty p{color:#aeb1b7}
+.dd-project-empty button{margin-top:4px}
+@media(max-width:560px){.dd-project-toolbar{align-items:flex-start}.dd-project-status-filters{width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}.dd-project-status-filters button{flex:0 0 auto}.dd-project-sort{width:100%;justify-content:space-between}.dd-project-sort select{max-width:65%}.dd-project-empty{padding:18px}}
