@@ -2981,3 +2981,58 @@ button,input,textarea,select{font-family:inherit}input,textarea,select{border-ra
 @media(max-width:1050px){.topbar{padding:0 18px}.top-links{gap:12px}.top-links a{font-size:10px}.sidebar{width:225px}.main-content{padding-left:25px;padding-right:25px}}
 @media(max-width:760px){.corporate-ticker{font-size:9px;gap:7px;padding:7px 10px}.topbar{height:62px;padding:0 14px;gap:10px}.brand{font-size:15px}.brand small{display:none}.top-links{display:none}.top-actions{margin-left:auto;gap:8px}.signed-in-label{display:none}.mobile-menu{display:block;color:#111;font-size:21px}.layout{display:block}.sidebar{position:fixed;z-index:50;left:0;top:62px;bottom:0;height:auto;width:min(290px,86vw);transform:translateX(-105%);transition:transform .22s ease;box-shadow:12px 0 35px #0002}.sidebar.open{transform:translateX(0)}.main-content{padding:25px 16px 0}.welcome-row{align-items:flex-start}.welcome-orb{display:none}.launch-card{display:block;min-height:0}.launch-copy{width:100%;padding:26px 22px}.launch-copy h2{font-size:30px}.launch-art{width:100%;min-height:230px}.stats-strip{overflow-x:auto;gap:0}.stats-strip>div{padding:0 16px;white-space:nowrap}.section-heading{align-items:flex-start;gap:14px;flex-direction:column}.editor-top{flex-wrap:wrap;height:auto;min-height:58px;padding:10px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+
+/* FCA dashboard refinement — hierarchy, density and mobile navigation */
+.dd-page{background:#f2f2f0!important;color:#111!important}
+.dd-top{background:#fff!important;border-bottom:1px solid #dededb!important;box-shadow:0 3px 18px #00000008!important}
+.dd-brand{color:#111!important;letter-spacing:-.035em!important}.dd-brand b{color:#777!important;letter-spacing:.12em!important}
+.dd-brand-mark{background:#111!important;border-radius:5px!important}.dd-brand-mark img{filter:brightness(0) invert(1)!important}
+.dd-top-search input{background:#f5f5f3!important;border:1px solid #dededb!important;color:#111!important;border-radius:5px!important}
+.dd-shell,.dd-main{background:#f2f2f0!important}.dd-sidebar{background:#fff!important;border-right:1px solid #dededb!important}
+.dd-side-home{color:#898984!important;letter-spacing:.15em!important;font-weight:800!important}
+.dd-sidebar>button{border-radius:4px!important;color:#555!important;transition:background .16s,color .16s!important}
+.dd-sidebar>button:hover{background:#f1f1ee!important;color:#111!important}
+.dd-sidebar>button.dd-side-active{background:#111!important;color:#fff!important;box-shadow:none!important}
+.dd-sidebar>button i{background:#ededeb!important;color:#333!important;border-radius:3px!important}
+.dd-sidebar>button.dd-side-active i{background:#fff!important;color:#111!important}
+.dd-side-bottom{border-top:1px solid #e5e5e2!important;color:#111!important}
+.dd-hero{border-radius:5px!important;background:#111!important;box-shadow:none!important;border:1px solid #111!important}
+.dd-hero-content p,.dd-hero-content span{color:#c8c8c3!important}.dd-hero-content h1{color:#fff!important;letter-spacing:-.055em!important}
+.dd-hero-content a{background:#fff!important;color:#111!important;border-radius:3px!important;font-weight:800!important}
+.dd-hero-announcement{background:#fff!important;color:#111!important;border:1px solid #dededb!important;border-radius:3px!important}
+.dd-stats{gap:12px!important}.dd-stat-card{background:#fff!important;border:1px solid #dededb!important;border-radius:5px!important;box-shadow:none!important}
+.dd-stat-card:hover{border-color:#111!important;transform:translateY(-2px)!important}
+.dd-stat-card small{color:#777!important;font-weight:750!important}.dd-stat-card b{color:#111!important;font-size:clamp(23px,2.2vw,30px)!important;letter-spacing:-.045em!important}.dd-stat-card span{color:#777!important}
+.dd-stat-icon,.dd-stat-blue,.dd-stat-teal,.dd-stat-violet{background:#f0f0ed!important;color:#111!important;border:1px solid #dededb!important;border-radius:4px!important}
+.dd-section{scroll-margin-top:90px!important}.dd-section-head{border-bottom:1px solid #d9d9d5!important;padding-bottom:17px!important;margin-bottom:18px!important}
+.dd-section-head h2,.dd-section h2{color:#111!important;letter-spacing:-.045em!important}.dd-section-head p,.dd-section>p{color:#666!important;line-height:1.65!important}
+.dd-kicker,.dd-section-head .dd-kicker{color:#777!important;letter-spacing:.15em!important;font-weight:800!important}
+.dd-project,.dd-theme,.dd-project-card,.dd-feature-card,.dd-extension-card,.dd-app-tile,.dd-creative-card,.dd-mini-widget,.dd-settings-card,.dd-panel,.dd-chart-panel,.dd-domain-card,.dd-card,.dd-data-panel,.dd-table-wrap{background:#fff!important;border:1px solid #dededb!important;border-radius:5px!important;box-shadow:none!important}
+.dd-project:hover,.dd-theme:hover,.dd-project-card:hover,.dd-extension-card:hover,.dd-app-tile:hover,.dd-feature-card:hover{border-color:#111!important;transform:translateY(-2px)!important;box-shadow:0 10px 24px #0000000a!important}
+.dd-project h3,.dd-theme h3,.dd-project-card h3,.dd-feature-card h3,.dd-extension-card h3,.dd-app-tile h3{color:#111!important}
+.dd-project p,.dd-theme p,.dd-project-card p,.dd-feature-card p,.dd-extension-card p,.dd-app-tile p{color:#666!important}
+.dd-project-actions{border-top:1px solid #e5e5e2!important}
+.dd-project-actions button,.dd-sharing button,.dd-filters button,.dd-secondary,.dd-settings-options button,.dd-dev-tabs button,.dd-chart-period button{background:#fff!important;border:1px solid #d8d8d4!important;color:#222!important;border-radius:4px!important}
+.dd-project-actions button:hover,.dd-sharing button:hover,.dd-filters button:hover,.dd-secondary:hover,.dd-settings-options button:hover,.dd-dev-tabs button:hover{background:#111!important;border-color:#111!important;color:#fff!important}
+.dd-filters button.active,.dd-settings-options button.selected,.dd-dev-tabs button.active,.dd-chart-period button.active{background:#111!important;color:#fff!important;border-color:#111!important}
+.dd-notice{background:#fff!important;border:1px solid #111!important;color:#111!important;border-radius:4px!important}
+.dd-empty,.dd-domain-empty,.dd-empty-state{background:#fff!important;border:1px dashed #c8c8c3!important;color:#666!important;border-radius:5px!important}
+.dd-page button:focus-visible,.dd-page a:focus-visible,.dd-page input:focus-visible,.dd-page select:focus-visible,.dd-page textarea:focus-visible{outline:2px solid #111!important;outline-offset:3px!important}
+.dd-page button:disabled{opacity:.45!important;cursor:not-allowed!important;transform:none!important}
+@media(max-width:900px){.dd-top-actions{gap:6px!important}.dd-user-meta{display:none!important}.dd-main{padding:20px!important}}
+@media(max-width:560px){
+ .dd-top{padding:0 10px!important;gap:8px!important}.dd-brand{font-size:13px!important}.dd-brand-mark{width:27px!important;height:27px!important}
+ .dd-top-actions .dd-icon-button{display:none!important}.dd-pro-button{font-size:10px!important;padding:8px 9px!important}.dd-signout{font-size:10px!important;padding:7px 8px!important}
+ .dd-shell{display:block!important}
+ .dd-sidebar{position:sticky!important;top:58px!important;z-index:20!important;display:flex!important;flex-direction:row!important;align-items:center!important;overflow-x:auto!important;overflow-y:hidden!important;width:100%!important;max-width:100%!important;border-right:0!important;border-bottom:1px solid #dededb!important;padding:8px 10px!important;gap:6px!important;scrollbar-width:thin!important}
+ .dd-sidebar>button{display:inline-flex!important;flex:0 0 auto!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:max-content!important;height:36px!important;padding:0 11px!important;font-size:11px!important;white-space:nowrap!important;border:1px solid #e2e2de!important;background:#fff!important;color:#444!important}
+ .dd-sidebar>button span,.dd-sidebar>button i,.dd-sidebar .dd-side-home,.dd-sidebar .dd-side-bottom{display:none!important}
+ .dd-sidebar>button.dd-side-active{background:#111!important;border-color:#111!important;color:#fff!important}
+ .dd-main{padding:13px!important}.dd-hero{min-height:220px!important;padding:20px!important}.dd-hero-content h1{font-size:27px!important}.dd-hero-announcement{display:none!important}
+ .dd-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.dd-stat-card{padding:11px!important;gap:8px!important;min-width:0!important}
+ .dd-stat-card small{font-size:10px!important}.dd-stat-card b{font-size:22px!important}.dd-stat-card span{font-size:10px!important;line-height:1.35!important}
+ .dd-stat-icon{width:30px!important;height:30px!important;flex:0 0 30px!important}.dd-project-grid,.dd-theme-grid,.dd-app-grid,.dd-extension-grid{grid-template-columns:1fr!important}
+ .dd-section-head{align-items:flex-start!important;flex-direction:column!important}.dd-project-actions{flex-wrap:wrap!important}
+}
+@media(prefers-reduced-motion:reduce){.dd-page *{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}}
