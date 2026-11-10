@@ -3444,3 +3444,46 @@ button,input,textarea,select{font-family:inherit}input,textarea,select{border-ra
 .app-public-shell .careers-section{order:9}
 .app-public-shell footer{order:10}
 .app-public-shell .stats-strip{margin:0 auto 74px}
+
+
+/* Premium template catalogue — editorial previews and clear product hierarchy */
+.app-public-shell .templates-section{padding:clamp(44px,6vw,82px) 0;border-top:1px solid #e5e5e1}
+.app-public-shell .templates-section .section-heading{align-items:flex-end;gap:24px}
+.app-public-shell .templates-section .section-heading h2{font-size:clamp(34px,4.5vw,58px);letter-spacing:-.065em;line-height:.98;max-width:620px}
+.app-public-shell .templates-section .section-heading p{max-width:510px;line-height:1.7;color:#686864}
+.app-public-shell .template-tools{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:30px 0 22px}
+.app-public-shell .filter-pills{display:flex;gap:7px;flex-wrap:wrap}
+.app-public-shell .filter-pills button{padding:9px 13px;font-size:10px;font-weight:650;letter-spacing:.01em;transition:background .18s,border-color .18s,color .18s}
+.app-public-shell .filter-pills button:not(.active):hover{background:#ededeb;border-color:#999;color:#111}
+.app-public-shell .search-box{min-width:220px;max-width:280px;height:38px;display:flex;align-items:center;gap:9px;padding:0 12px}
+.app-public-shell .search-box input{min-width:0;width:100%;outline:none;border:0;background:transparent;color:#111;font-size:11px}
+.app-public-shell .template-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.app-public-shell .template-card{background:#fff;border:1px solid #deded9;border-radius:3px;box-shadow:none;min-width:0;transition:border-color .2s,transform .2s}
+.app-public-shell .template-card:hover{transform:translateY(-4px);border-color:#777;box-shadow:0 14px 32px #1111110d}
+.app-public-shell .template-preview{height:auto;min-height:225px;aspect-ratio:1.72/1;padding:22px;background:#e9e9e5;place-items:center}
+.app-public-shell .template-preview.violet,.app-public-shell .template-preview.blue,.app-public-shell .template-preview.orange,.app-public-shell .template-preview.green{background:#e9e9e5}
+.app-public-shell .template-window{width:88%;height:100%;min-height:176px;max-height:220px;border:1px solid #c9c9c4;border-radius:2px;background:#f8f8f6;box-shadow:0 12px 28px #1111111c;transform:translateY(4px);transition:transform .25s}
+.app-public-shell .template-card:hover .template-window{transform:translateY(0)}
+.app-public-shell .window-top{height:21px;padding:0 9px;background:#efefec;border-bottom:1px solid #dcdcd7}
+.app-public-shell .window-top span{font-size:7px;letter-spacing:1px}
+.app-public-shell .window-top small{font-size:7px;color:#666}
+.app-public-shell .preview-design{height:calc(100% - 21px);min-height:155px;padding:clamp(15px,2.4vw,25px)}
+.app-public-shell .preview-design.studio,.app-public-shell .preview-design.forma,.app-public-shell .preview-design.morrow,.app-public-shell .preview-design.north{background:#e4e4df}
+.app-public-shell .preview-copy{width:72%}
+.app-public-shell .preview-copy small{font-size:7px;letter-spacing:1.4px;color:#555}
+.app-public-shell .preview-copy b{font-size:clamp(16px,2vw,24px);line-height:1.02;max-width:230px;color:#171715}
+.app-public-shell .preview-copy i{width:48px;height:3px;background:#222;margin-top:15px}
+.app-public-shell .forma .preview-copy i,.app-public-shell .morrow .preview-copy i,.app-public-shell .north .preview-copy i{background:#222}
+.app-public-shell .preview-shape{width:clamp(72px,10vw,120px);height:clamp(72px,10vw,120px);right:-8px;bottom:-12px;background:#bcbcb6;border:1px solid #777}
+.app-public-shell .forma .preview-shape,.app-public-shell .morrow .preview-shape,.app-public-shell .north .preview-shape{background:#bcbcb6}
+.app-public-shell .template-tag{top:12px;left:12px;padding:6px 9px;background:#111;color:#fff;border:0;border-radius:1px;font-size:8px;letter-spacing:.08em;text-transform:uppercase}
+.app-public-shell .template-meta{padding:17px 18px;gap:12px;align-items:center}
+.app-public-shell .template-meta>div{min-width:0}
+.app-public-shell .template-meta b{font-size:13px;font-weight:750;letter-spacing:-.025em}
+.app-public-shell .template-meta small{font-size:10px;margin-top:5px;text-transform:capitalize}
+.app-public-shell .template-meta button{flex:none;padding:9px 11px;border:1px solid #d5d5d0;border-radius:2px;background:#fff;font-size:10px;font-weight:700;white-space:nowrap;transition:background .18s,color .18s,border-color .18s}
+.app-public-shell .template-meta button:hover{background:#111;color:#fff;border-color:#111}
+.app-public-shell .template-featured-note{margin-top:22px;color:#777;font-size:11px}
+.app-public-shell .template-featured-note .text-link{font-weight:750;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:900px){.app-public-shell .template-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.app-public-shell .template-preview{min-height:205px}}
+@media(max-width:620px){.app-public-shell .templates-section .section-heading{align-items:flex-start;flex-direction:column}.app-public-shell .template-tools{align-items:stretch;flex-direction:column}.app-public-shell .filter-pills{flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px;scrollbar-width:thin}.app-public-shell .filter-pills button{flex:none}.app-public-shell .search-box{max-width:none;width:100%}.app-public-shell .template-grid{grid-template-columns:1fr;gap:13px}.app-public-shell .template-preview{min-height:215px;aspect-ratio:1.55/1}.app-public-shell .template-window{width:90%;min-height:170px}.app-public-shell .template-meta{padding:15px}.app-public-shell .template-meta small{font-size:9px}}
