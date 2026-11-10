@@ -3408,3 +3408,7 @@ button,input,textarea,select{font-family:inherit}input,textarea,select{border-ra
  .app-auth-shell .launch-card{padding:24px 18px}.app-auth-shell .stats-strip{grid-template-columns:1fr 1fr}
 }
 @media(prefers-reduced-motion:reduce){.app-public-shell *{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Public navigation has no workspace drawer; workspace drawer is account-only. */
+.app-public-shell .mobile-menu{display:none}
+.app-auth-shell .mobile-menu{display:inline-flex}
