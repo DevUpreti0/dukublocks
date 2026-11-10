@@ -3487,3 +3487,88 @@ button,input,textarea,select{font-family:inherit}input,textarea,select{border-ra
 .app-public-shell .template-featured-note .text-link{font-weight:750;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:900px){.app-public-shell .template-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.app-public-shell .template-preview{min-height:205px}}
 @media(max-width:620px){.app-public-shell .templates-section .section-heading{align-items:flex-start;flex-direction:column}.app-public-shell .template-tools{align-items:stretch;flex-direction:column}.app-public-shell .filter-pills{flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px;scrollbar-width:thin}.app-public-shell .filter-pills button{flex:none}.app-public-shell .search-box{max-width:none;width:100%}.app-public-shell .template-grid{grid-template-columns:1fr;gap:13px}.app-public-shell .template-preview{min-height:215px;aspect-ratio:1.55/1}.app-public-shell .template-window{width:90%;min-height:170px}.app-public-shell .template-meta{padding:15px}.app-public-shell .template-meta small{font-size:9px}}
+
+
+/* Artemide-grade public showcase: DuKu Brain + connected platform */
+.app-public-shell .duku-brain-public-section{
+  position:relative;isolation:isolate;min-height:440px;grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr);
+  align-items:center;gap:clamp(28px,5vw,76px);padding:clamp(34px,5.5vw,76px);
+  background:#111!important;border:1px solid #111;border-radius:2px;overflow:hidden;
+}
+.app-public-shell .duku-brain-public-glow{display:none}
+.app-public-shell .duku-brain-public-copy{position:relative;z-index:2;max-width:620px}
+.app-public-shell .duku-brain-kicker{display:inline-flex;align-items:center;gap:10px;color:#aaa;font-size:9px;font-weight:750;letter-spacing:.19em;text-transform:uppercase}
+.app-public-shell .duku-brain-public-copy h2{max-width:590px;margin:22px 0 18px;color:#fff;font-size:clamp(38px,5.4vw,68px);font-weight:720;line-height:.98;letter-spacing:-.075em}
+.app-public-shell .duku-brain-public-copy>p{max-width:520px;color:#b9b9b5;font-size:13px;line-height:1.85}
+.app-public-shell .duku-brain-points{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;margin:28px 0 30px}
+.app-public-shell .duku-brain-points span{display:flex;align-items:center;gap:9px;color:#e7e7e3;font-size:11px}
+.app-public-shell .duku-brain-points span:first-letter{color:#fff}
+.app-public-shell .duku-brain-cta{min-height:46px;padding:0 18px;background:#fff;color:#111;border:1px solid #fff;border-radius:2px;font-size:11px;font-weight:750;transition:background .2s,color .2s}
+.app-public-shell .duku-brain-cta:hover{background:#dcdcd8;color:#111}
+.app-public-shell .duku-brain-cta b{margin-left:18px}
+.app-public-shell .duku-brain-public-copy>small{display:block;max-width:390px;margin-top:15px;color:#898985;font-size:9px;line-height:1.65}
+.app-public-shell .duku-brain-visual{position:relative;min-height:330px;display:grid;place-items:center;isolation:isolate}
+.app-public-shell .brain-orbit{border:1px solid #ffffff24;border-radius:2px;transform:rotate(-8deg)}
+.app-public-shell .brain-orbit-a{width:86%;height:72%}
+.app-public-shell .brain-orbit-b{width:68%;height:92%;transform:rotate(12deg)}
+.app-public-shell .brain-core{width:148px;height:148px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:#f2f2ee;color:#111;border:1px solid #fff;border-radius:2px;box-shadow:12px 12px 0 #ffffff14}
+.app-public-shell .brain-core>span{font-size:20px}
+.app-public-shell .brain-core>b{font-size:22px;letter-spacing:-.08em}
+.app-public-shell .brain-core>small{font-size:8px;letter-spacing:.22em}
+.app-public-shell .brain-float{position:absolute;z-index:3;padding:12px 16px;background:#20201e;color:#fff;border:1px solid #555;border-radius:2px;font-size:10px;font-weight:650;box-shadow:0 12px 28px #0005}
+.app-public-shell .brain-float-one{top:13%;left:0}
+.app-public-shell .brain-float-two{right:0;top:37%}
+.app-public-shell .brain-float-three{bottom:9%;left:13%}
+.app-public-shell .duku-platform-suite{padding:clamp(38px,5vw,68px) 0 0}
+.app-public-shell .duku-suite-heading{max-width:720px;margin:0 0 30px}
+.app-public-shell .duku-suite-heading>span{display:block;margin-bottom:16px;color:#777;font-size:9px;font-weight:750;letter-spacing:.19em}
+.app-public-shell .duku-suite-heading h2{max-width:660px;margin:0;color:#111;font-size:clamp(36px,5vw,62px);line-height:1;letter-spacing:-.07em}
+.app-public-shell .duku-suite-heading h2 em{font-style:normal;color:#777}
+.app-public-shell .duku-suite-heading p{max-width:540px;margin:17px 0 0;color:#666;font-size:13px;line-height:1.8}
+.app-public-shell .duku-suite-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.app-public-shell .duku-suite-card{position:relative;min-width:0;min-height:460px;padding:clamp(22px,3vw,34px)!important;background:#fff;border:1px solid #dcdcd7;border-radius:2px!important;overflow:hidden;transition:border-color .2s,transform .2s}
+.app-public-shell .duku-suite-card:hover{transform:translateY(-3px);border-color:#888}
+.app-public-shell .duku-suite-card .suite-icon{width:38px;height:38px;display:grid;place-items:center;margin-bottom:25px;background:#111;color:#fff;border-radius:2px;font-size:17px}
+.app-public-shell .duku-suite-card>span{display:block;margin-bottom:12px;color:#777;font-size:9px;font-weight:750;letter-spacing:.16em}
+.app-public-shell .duku-suite-card h3{max-width:390px;margin:0 0 12px;color:#111;font-size:clamp(22px,2.5vw,30px);line-height:1.08;letter-spacing:-.055em}
+.app-public-shell .duku-suite-card>p{max-width:440px;min-height:66px;margin:0;color:#666;font-size:12px;line-height:1.75}
+.app-public-shell .duku-suite-card ul{display:flex;flex-wrap:wrap;gap:8px 18px;margin:18px 0 20px;padding:0;list-style:none}
+.app-public-shell .duku-suite-card li{position:relative;padding-left:12px;color:#333;font-size:10px}
+.app-public-shell .duku-suite-card li:before{position:absolute;left:0;content:"";top:5px;width:4px;height:4px;background:#111}
+.app-public-shell .duku-suite-card button{position:relative;z-index:2;min-height:38px;padding:0 13px;background:#111;color:#fff!important;border:1px solid #111;border-radius:2px;font-size:10px;font-weight:700}
+.app-public-shell .duku-suite-card button:hover{background:#444}
+.app-public-shell .duku-suite-card button b{margin-left:12px}
+.app-public-shell .suite-browser,.app-public-shell .suite-phone,.app-public-shell .suite-commerce-art,.app-public-shell .suite-ai-chat{position:relative;opacity:1;filter:grayscale(1)}
+.app-public-shell .suite-browser{width:72%;height:145px;margin:24px 0 -34px auto;border:1px solid #bcbcb6;border-bottom:0;border-radius:3px 3px 0 0;background:#f1f1ed;box-shadow:0 0 0 7px #f7f7f4}
+.app-public-shell .suite-browser-top{height:20px;background:#e6e6e1}
+.app-public-shell .suite-browser-top small{font-size:7px}
+.app-public-shell .suite-browser-body{height:calc(100% - 20px)}
+.app-public-shell .suite-browser-page{padding:17px}
+.app-public-shell .suite-browser-page b{font-size:13px}
+.app-public-shell .suite-phone{width:92px;height:156px;margin:20px 28px -40px auto;padding:20px 9px 8px;border:4px solid #222;border-radius:14px;background:#f4f4f0;box-shadow:0 0 0 6px #ecece8}
+.app-public-shell .suite-phone-camera{top:6px}
+.app-public-shell .suite-phone>b{font-size:8px}
+.app-public-shell .suite-commerce-art{width:66%;height:105px;margin:26px 0 -30px auto}
+.app-public-shell .commerce-product{background:#d2d2cc;border:1px solid #aaa}
+.app-public-shell .suite-ai-chat{max-width:270px;margin:22px 0 -30px auto;padding:14px;background:#f1f1ed;border:1px solid #d5d5cf}
+.app-public-shell .suite-ai-chat small{color:#777;font-size:8px;letter-spacing:.14em}
+.app-public-shell .suite-ai-chat p{color:#222;font-size:10px}
+.app-public-shell .suite-ai-chat>div{color:#555;font-size:9px}
+@media(max-width:900px){
+ .app-public-shell .duku-suite-grid{grid-template-columns:1fr 1fr}
+ .app-public-shell .duku-suite-card{min-height:470px}
+}
+@media(max-width:760px){
+ .app-public-shell .duku-brain-public-section{grid-template-columns:1fr;gap:18px;min-height:0;padding:30px 22px}
+ .app-public-shell .duku-brain-public-copy h2{font-size:clamp(38px,11vw,54px)}
+ .app-public-shell .duku-brain-points{gap:11px 9px}
+ .app-public-shell .duku-brain-points span{font-size:10px}
+ .app-public-shell .duku-brain-visual{min-height:245px;margin-top:0}
+ .app-public-shell .brain-core{width:118px;height:118px}
+ .app-public-shell .brain-float{padding:10px 12px;font-size:9px}
+ .app-public-shell .duku-suite-grid{grid-template-columns:1fr;gap:10px}
+ .app-public-shell .duku-suite-card{min-height:420px;padding:23px!important}
+ .app-public-shell .duku-suite-card>p{min-height:0}
+ .app-public-shell .duku-suite-card ul{margin:15px 0}
+ .app-public-shell .suite-browser{width:78%;margin-top:22px}
+}
