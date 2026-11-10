@@ -3110,3 +3110,139 @@ button,input,textarea,select{font-family:inherit}input,textarea,select{border-ra
  .dd-page .dd-domain-form{display:grid!important;grid-template-columns:1fr!important}
  .dd-page .dd-brain-layout{grid-template-columns:1fr!important}
 }
+
+
+/* Public homepage — complete Artemide monochrome design system */
+:root{
+  --bg:#f4f4f2!important;--panel:#fff!important;--panel2:#efefed!important;
+  --line:#dededb!important;--muted:#666662!important;--text:#111110!important;
+  --purple:#111110!important;--cyan:#555550!important;--ink:#10100f!important;
+  --paper:#fff!important;--soft:#f4f4f1!important;--border:#dededb!important;
+}
+.app-shell{background:#f4f4f2!important;color:#111110!important}
+.app-shell .corporate-ticker{background:#10100f!important;color:#d8d8d4!important;border-bottom:1px solid #292927!important}
+.app-shell .corporate-ticker b{color:#fff!important}
+.app-shell .topbar{background:#fff!important;border-bottom:1px solid #dededb!important;box-shadow:0 5px 24px #00000008!important}
+.app-shell .brand,.app-shell .brand span{color:#10100f!important}
+.app-shell .top-links a{color:#494946!important}
+.app-shell .top-links a:hover{color:#000!important}
+.app-shell .text-btn{color:#171715!important}
+.app-shell .primary-btn{background:#10100f!important;border:1px solid #10100f!important;color:#fff!important;box-shadow:none!important;border-radius:6px!important}
+.app-shell .primary-btn:hover{background:#333!important;border-color:#333!important;transform:translateY(-1px)}
+.app-shell .ghost-btn,.app-shell .view-all,.app-shell .text-link{color:#171715!important;border-color:#c9c9c5!important}
+.app-shell .layout{background:#f4f4f2!important}
+.app-shell .sidebar{background:#111210!important;border-right:1px solid #292a27!important;color:#f4f4f0!important}
+.app-shell .workspace{background:#1b1c19!important;border:1px solid #33342f!important}
+.app-shell .workspace b,.app-shell .profile-row b{color:#fff!important}
+.app-shell .workspace small,.app-shell .profile-row small,.app-shell .side-label{color:#a4a49e!important}
+.app-shell .side-link{color:#c9c9c3!important;border-radius:5px!important}
+.app-shell .side-link:hover,.app-shell .side-link.selected{background:#292a26!important;color:#fff!important}
+.app-shell .side-link.selected{box-shadow:inset 2px 0 #fff!important}
+.app-shell .upgrade-card{background:#20211e!important;border:1px solid #3a3b36!important;color:#fff!important}
+.app-shell .upgrade-card p{color:#b7b7b0!important}
+.app-shell .upgrade-card button{background:#fff!important;color:#111!important;border-radius:4px!important}
+.app-shell .main-content{background:#f4f4f2!important;color:#111110!important}
+.app-shell .welcome-copy h1,.app-shell .welcome-copy h2,.app-shell .section-heading h2,
+.app-shell .feature-section h2,.app-shell .suite-heading h2,.app-shell .platform-capabilities-section h2{color:#111110!important}
+.app-shell .welcome-copy p,.app-shell .section-heading p,.app-shell .feature-section>p{color:#62625d!important}
+.app-shell .welcome-orb{filter:grayscale(1)!important;opacity:.8}
+.app-shell .launch-card{background:#10100f!important;border:1px solid #10100f!important;border-radius:10px!important;box-shadow:0 20px 55px #00000012!important;overflow:hidden}
+.app-shell .launch-copy{color:#fff!important}
+.app-shell .launch-copy .eyebrow,.app-shell .launch-copy .pill{background:#242522!important;border:1px solid #41423d!important;color:#e8e8e3!important}
+.app-shell .launch-copy h1,.app-shell .launch-copy h2,.app-shell .launch-copy h3{color:#fff!important;letter-spacing:-.055em!important}
+.app-shell .launch-copy p,.app-shell .launch-copy small{color:#c4c4bd!important}
+.app-shell .launch-copy .primary-btn{background:#fff!important;color:#111!important;border-color:#fff!important}
+.app-shell .launch-copy .ghost-btn,.app-shell .launch-copy a{color:#fff!important;border-color:#555650!important}
+.app-shell .trust-line{color:#aead a6!important;color:#adada6!important}
+.app-shell .launch-art{background:#1a1b18!important;border-left:1px solid #30312c!important}
+.app-shell .launch-art *{filter:grayscale(1)!important}
+.app-shell .browser-mock,.app-shell .float-card{background:#f4f4f1!important;border:1px solid #d8d8d2!important;color:#111!important;box-shadow:0 16px 45px #0004!important}
+.app-shell .browser-bar,.app-shell .mock-nav{background:#e8e8e4!important;color:#222!important}
+.app-shell .mock-hero{background:#d8d8d3!important;color:#111!important}
+.app-shell .mock-button{background:#111!important;color:#fff!important}
+.app-shell .mock-image,.app-shell .mock-sun,.app-shell .mock-arch,.app-shell .art-glow{filter:grayscale(1)!important}
+.app-shell .stats-strip{background:#fff!important;border:1px solid #dededb!important;border-radius:8px!important;box-shadow:0 8px 26px #00000006!important}
+.app-shell .stats-strip>div{border-color:#e4e4e0!important}
+.app-shell .stats-strip strong,.app-shell .stats-strip b{color:#111!important}
+.app-shell .stats-strip span,.app-shell .stats-note{color:#6a6a65!important}
+.app-shell .ecosystem-section{background:#fff!important;border-color:#e2e2de!important}
+.app-shell .ecosystem-heading h2,.app-shell .ecosystem-heading p{color:#111!important}
+.app-shell .ecosystem-wordmark{color:#555!important;filter:grayscale(1)!important;opacity:.72!important}
+.app-shell .templates-section,.app-shell .feature-section,.app-shell .platform-suite-section,
+.app-shell .platform-capabilities-section,.app-shell .pricing-section,.app-shell .careers-section{background:#f4f4f2!important;color:#111!important}
+.app-shell .section-heading h2,.app-shell .feature-section h2,.app-shell .suite-heading h2,
+.app-shell .platform-capabilities-section h2,.app-shell .pricing-section h2,.app-shell .careers-section h2{color:#111!important}
+.app-shell .section-heading p,.app-shell .suite-heading p,.app-shell .platform-capabilities-section p{color:#656560!important}
+.app-shell .filter-pills button{background:#fff!important;border:1px solid #d8d8d3!important;color:#444!important}
+.app-shell .filter-pills button.active{background:#111!important;border-color:#111!important;color:#fff!important}
+.app-shell .search-box{background:#fff!important;border:1px solid #d8d8d3!important;border-radius:6px!important}
+.app-shell .search-box input{color:#111!important}
+.app-shell .template-card,.app-shell .feature-card,.app-shell .suite-card,
+.app-shell .public-plan,.app-shell .pricing-card,.app-shell .career-role{
+  background:#fff!important;border:1px solid #dededb!important;border-radius:8px!important;
+  box-shadow:0 8px 26px #00000007!important;color:#111!important
+}
+.app-shell .template-card:hover,.app-shell .feature-card:hover,.app-shell .suite-card:hover{border-color:#858580!important;box-shadow:0 14px 34px #0000000d!important}
+.app-shell .template-meta b,.app-shell .feature-card h3,.app-shell .suite-card h3,
+.app-shell .public-plan h3,.app-shell .pricing-card h3,.app-shell .career-role h3{color:#111!important}
+.app-shell .template-meta p,.app-shell .feature-card p,.app-shell .suite-card p,
+.app-shell .public-plan p,.app-shell .pricing-card p,.app-shell .career-role p{color:#656560!important}
+.app-shell .template-tag,.app-shell .template-featured-note{background:#eee!important;color:#222!important;border-color:#ddd!important}
+.app-shell .template-window,.app-shell .preview-shape,.app-shell .suite-visual{filter:grayscale(1)!important}
+.app-shell .duku-brain-public-section{background:#111!important;color:#fff!important;border:1px solid #30302d!important;border-radius:10px!important;box-shadow:none!important}
+.app-shell .duku-brain-public-section h2,.app-shell .duku-brain-public-section h3{color:#fff!important}
+.app-shell .duku-brain-public-section p,.app-shell .duku-brain-public-copy{color:#c4c4be!important}
+.app-shell .duku-brain-kicker,.app-shell .duku-brain-points span{color:#bcbcb5!important}
+.app-shell .duku-brain-cta{background:#fff!important;color:#111!important;border:1px solid #fff!important;border-radius:5px!important}
+.app-shell .duku-brain-public-glow,.app-shell .brain-orbit,.app-shell .brain-float{filter:grayscale(1)!important;opacity:.35!important}
+.app-shell .duku-platform-suite{background:#fff!important;color:#111!important}
+.app-shell .duku-suite-card{background:#f7f7f5!important;border:1px solid #dededb!important;box-shadow:none!important}
+.app-shell .duku-suite-card h3,.app-shell .duku-suite-card p,.app-shell .duku-suite-card>span{color:#111!important}
+.app-shell .suite-browser,.app-shell .suite-phone,.app-shell .suite-commerce-art,.app-shell .suite-ai-chat{filter:grayscale(1)!important}
+.app-shell .public-pricing-grid .featured,.app-shell .pricing-card.featured,.app-shell .public-plan.featured{background:#111!important;border-color:#111!important;color:#fff!important}
+.app-shell .public-pricing-grid .featured h3,.app-shell .pricing-card.featured h3,.app-shell .public-plan.featured h3,
+.app-shell .public-pricing-grid .featured p,.app-shell .pricing-card.featured p,.app-shell .public-plan.featured p{color:#fff!important}
+.app-shell .public-pricing-grid .featured .primary-btn,.app-shell .pricing-card.featured .primary-btn,.app-shell .public-plan.featured .primary-btn{background:#fff!important;color:#111!important}
+.app-shell .career-form,.app-shell .career-fields input,.app-shell .career-fields textarea{background:#fff!important;border-color:#d8d8d3!important;color:#111!important}
+.app-shell .platform-suite-section{background:#ededeb!important}
+.app-shell .suite-card{background:#fff!important;border:1px solid #d9d9d4!important;box-shadow:none!important}
+.app-shell .suite-card h3,.app-shell .suite-card p{color:#111!important}
+.app-shell .capability-list>div{border-color:#dededb!important}
+.app-shell .capability-list>div>span{color:#111!important}
+.app-shell .bottom-cta{background:#111!important;border:1px solid #111!important;border-radius:8px!important;color:#fff!important}
+.app-shell .bottom-cta h2,.app-shell .bottom-cta p{color:#fff!important}
+.app-shell footer{background:#10100f!important;border-top:1px solid #30302d!important;color:#fff!important}
+.app-shell footer a,.app-shell footer span,.app-shell footer p{color:#c5c5be!important}
+.app-shell footer a:hover{color:#fff!important}
+.app-shell .platform-popup{background:#fff!important;border:1px solid #dededb!important;color:#111!important}
+.app-shell .platform-popup h2,.app-shell .platform-popup p{color:#111!important}
+.app-shell .modal-backdrop{background:#0009!important}
+.app-shell .auth-modal,.app-shell .checkout-modal{background:#fff!important;border:1px solid #dededb!important;color:#111!important}
+.app-shell .auth-modal h2,.app-shell .auth-modal label,.app-shell .auth-modal p{color:#111!important}
+.app-shell input,.app-shell select,.app-shell textarea{border-color:#c9c9c4!important;background:#fff!important;color:#111!important;border-radius:5px!important}
+.app-shell input:focus,.app-shell select:focus,.app-shell textarea:focus{outline:2px solid #111!important;outline-offset:1px;box-shadow:none!important}
+.app-shell button:focus-visible,.app-shell a:focus-visible{outline:2px solid #111!important;outline-offset:3px}
+@media(max-width:1050px){
+ .app-shell .top-links{gap:12px}
+ .app-shell .main-content{padding-left:24px;padding-right:24px}
+}
+@media(max-width:760px){
+ .app-shell .corporate-ticker{font-size:8px;justify-content:center}
+ .app-shell .topbar{background:#fff!important}
+ .app-shell .main-content{padding:22px 15px 0!important}
+ .app-shell .launch-card{border-radius:8px!important}
+ .app-shell .launch-copy{padding:26px 20px!important}
+ .app-shell .launch-copy h1,.app-shell .launch-copy h2{font-size:clamp(30px,9vw,43px)!important}
+ .app-shell .launch-art{min-height:215px!important;border-left:0!important;border-top:1px solid #30312c!important}
+ .app-shell .stats-strip{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:0!important;overflow:visible!important}
+ .app-shell .stats-strip>div{padding:15px 12px!important;white-space:normal!important;border-bottom:1px solid #e4e4e0!important}
+ .app-shell .ecosystem-section{padding:38px 16px!important}
+ .app-shell .templates-section,.app-shell .feature-section,.app-shell .platform-suite-section,
+ .app-shell .platform-capabilities-section,.app-shell .pricing-section,.app-shell .careers-section{padding:54px 16px!important}
+ .app-shell .duku-brain-public-section{margin:32px 0!important;padding:28px 20px!important;border-radius:8px!important}
+ .app-shell .template-grid,.app-shell .feature-grid,.app-shell .duku-suite-grid,.app-shell .public-pricing-grid{grid-template-columns:1fr!important}
+ .app-shell .bottom-cta{padding:25px 20px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .app-shell *,.app-shell *::before,.app-shell *::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
