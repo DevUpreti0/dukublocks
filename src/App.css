@@ -3246,3 +3246,165 @@ button,input,textarea,select{font-family:inherit}input,textarea,select{border-ra
 @media(prefers-reduced-motion:reduce){
  .app-shell *,.app-shell *::before,.app-shell *::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
+
+
+/* ARTEMIDE / DUKU — public platform redesign, structural layout pass */
+.app-public-shell{--ink:#111;--paper:#f6f6f4;--surface:#fff;--muted:#686868;--rule:#dededb;min-height:100vh;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app-public-shell *{box-sizing:border-box}
+.app-public-shell .corporate-ticker{min-height:34px;padding:8px clamp(18px,5vw,76px);background:#111;color:#f5f5f3;border:0;display:flex;align-items:center;gap:14px;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.app-public-shell .ticker-live{width:6px;height:6px;background:#fff;border-radius:50%;box-shadow:0 0 0 4px #ffffff20}
+.app-public-shell .topbar{height:82px;padding:0 clamp(18px,5vw,76px);background:#f6f6f4;border:0;border-bottom:1px solid var(--rule);display:flex;gap:36px;align-items:center;position:sticky;top:0;z-index:60;box-shadow:none}
+.app-public-shell .brand{display:flex;align-items:center;gap:11px;color:#111;font-size:19px;font-weight:800;letter-spacing:-.055em;text-decoration:none;white-space:nowrap}
+.app-public-shell .brand .artemide-symbol,.app-public-shell .brand img{width:30px;height:30px;object-fit:contain}
+.app-public-shell .brand small{font-size:8px;letter-spacing:.17em;color:#777;margin-left:3px;font-weight:700}
+.app-public-shell .top-links{display:flex;align-items:center;justify-content:center;gap:clamp(14px,2.4vw,34px);margin:0 auto}
+.app-public-shell .top-links a{color:#414141;font-size:12px;font-weight:650;text-decoration:none;transition:color .2s}
+.app-public-shell .top-links a:hover{color:#000}
+.app-public-shell .top-actions{display:flex;align-items:center;gap:14px}
+.app-public-shell .text-btn{color:#111;font-size:12px;font-weight:700}
+.app-public-shell .primary-btn,.app-public-shell .ghost-btn{border-radius:3px;min-height:44px;padding:0 20px;font-size:12px;font-weight:750;letter-spacing:.01em;box-shadow:none}
+.app-public-shell .primary-btn{background:#111;color:#fff;border:1px solid #111}
+.app-public-shell .primary-btn:hover{background:#333}
+.app-public-shell .ghost-btn{background:transparent;color:#111;border:1px solid #aaa}
+.app-public-shell .layout{display:block;max-width:none;width:100%;margin:0;padding:0}
+.app-public-shell .sidebar{display:none}
+.app-public-shell .main-content{width:100%;max-width:none;margin:0;padding:0;display:flex;flex-direction:column;overflow:hidden}
+.app-public-shell .welcome-row{width:min(1320px,calc(100% - 64px));margin:0 auto;padding:92px 0 34px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:60px;align-items:center;position:relative}
+.app-public-shell .welcome-row .eyebrow,.app-public-shell .eyebrow{color:#6c6c68;font-size:9px;font-weight:800;letter-spacing:.18em}
+.app-public-shell .welcome-row h1{max-width:800px;margin:22px 0 20px;color:#111;font-size:clamp(46px,7.2vw,94px);line-height:.98;letter-spacing:-.075em;font-weight:760}
+.app-public-shell .welcome-copy{max-width:570px;color:#60605c;font-size:clamp(15px,1.5vw,19px);line-height:1.75}
+.app-public-shell .welcome-orb{width:min(300px,100%);aspect-ratio:1;margin:auto;background:#111;border-radius:50%;display:grid;place-items:center;box-shadow:0 35px 80px #0002;position:relative}
+.app-public-shell .orb-inner{width:68%;height:68%;border:1px solid #ffffff70;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:70px;font-weight:800;letter-spacing:-.1em}
+.app-public-shell .orb-inner span{font-size:18px;margin-left:-10px}
+.app-public-shell .orbit-dot{background:#fff;border:7px solid #111;box-shadow:0 0 0 1px #111;width:28px;height:28px;border-radius:50%;position:absolute}
+.app-public-shell .orbit-dot.one{top:14%;right:7%}.app-public-shell .orbit-dot.two{bottom:10%;left:6%}
+.app-public-shell .launch-card{width:min(1320px,calc(100% - 64px));margin:20px auto 70px;padding:clamp(28px,5vw,68px);background:#111;color:#fff;border-radius:4px;display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:38px;align-items:center;min-height:510px;position:relative;overflow:hidden;box-shadow:none}
+.app-public-shell .launch-card:before{content:"";position:absolute;inset:0 0 0 auto;width:42%;background:linear-gradient(135deg,#ffffff0b,#ffffff00 55%);pointer-events:none}
+.app-public-shell .launch-copy,.app-public-shell .launch-art{position:relative;z-index:1}
+.app-public-shell .launch-copy .pill{border:1px solid #ffffff50;background:transparent;border-radius:2px;color:#e8e8e8;font-size:9px;letter-spacing:.16em;padding:10px 12px}
+.app-public-shell .launch-copy .pill span{background:#fff}
+.app-public-shell .launch-copy h2{font-size:clamp(34px,4.8vw,61px);line-height:1.02;letter-spacing:-.065em;color:#fff;max-width:590px;margin:28px 0 18px}
+.app-public-shell .launch-copy p{font-size:15px;line-height:1.8;color:#c5c5c1;max-width:490px}
+.app-public-shell .launch-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.app-public-shell .launch-actions .primary-btn{background:#fff;color:#111;border-color:#fff}
+.app-public-shell .launch-actions .ghost-btn{border-color:#777;color:#fff}
+.app-public-shell .trust-line{color:#aaa;font-size:10px;margin-top:22px;letter-spacing:.02em}
+.app-public-shell .trust-line span{color:#fff}
+.app-public-shell .browser-mock{background:#f4f4f2;border:1px solid #777;border-radius:4px;padding:7px;box-shadow:0 30px 80px #0008;transform:rotate(1deg)}
+.app-public-shell .browser-bar{height:27px;background:#e8e8e5;color:#777;border-radius:2px;display:flex;align-items:center;gap:5px;padding:0 9px}
+.app-public-shell .browser-bar i{width:6px;height:6px;border-radius:50%;background:#aaa}
+.app-public-shell .browser-bar span{margin:auto;font-size:8px;color:#777}
+.app-public-shell .mock-page{background:#fff;color:#111;min-height:290px;padding:20px 24px}
+.app-public-shell .mock-nav{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e5e5e2;padding-bottom:16px}
+.app-public-shell .mock-nav b{font-size:13px;letter-spacing:-.04em}
+.app-public-shell .mock-nav small{font-size:7px;letter-spacing:.15em;color:#666}
+.app-public-shell .mock-hero{display:grid;grid-template-columns:1fr .8fr;gap:16px;align-items:center;padding-top:28px}
+.app-public-shell .mock-hero strong{font-size:clamp(24px,3vw,42px);line-height:.98;letter-spacing:-.06em}
+.app-public-shell .mock-hero strong i{font-style:normal;color:#888}
+.app-public-shell .mock-hero>div:first-child>small{display:block;font-size:7px;letter-spacing:.14em;margin-bottom:14px;color:#777}
+.app-public-shell .mock-button{display:inline-block;margin-top:20px;padding:9px 12px;background:#111;color:#fff;font-size:7px;letter-spacing:.12em}
+.app-public-shell .mock-image{height:170px;background:linear-gradient(145deg,#d8d8d3,#8d8d87);position:relative;overflow:hidden}
+.app-public-shell .mock-sun{position:absolute;width:78px;height:78px;border-radius:50%;background:#f4f4f0;top:17px;right:24px}
+.app-public-shell .mock-arch{position:absolute;bottom:-20px;left:15%;width:70%;height:125px;border-radius:90px 90px 0 0;background:#333}
+.app-public-shell .float-card{border-radius:3px;border:1px solid #ddd;background:#fff;color:#111;box-shadow:0 12px 35px #0002}
+.app-public-shell .float-card small{color:#777}
+.app-public-shell .stats-strip{width:min(1320px,calc(100% - 64px));margin:-22px auto 74px;padding:25px 0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;background:transparent}
+.app-public-shell .stats-strip>div{display:flex;align-items:center;gap:12px;color:#333;font-size:12px}
+.app-public-shell .stats-strip>div>b{font-size:11px;color:#888}
+.app-public-shell .stats-strip .stats-note{justify-content:flex-end;color:#777}
+.app-public-shell .feature-section,.app-public-shell .platform-suite-section,.app-public-shell .templates-section,.app-public-shell .pricing-section,.app-public-shell .careers-section,.app-public-shell .ecosystem-section,.app-public-shell .duku-brain-public-section,.app-public-shell .duku-platform-suite{width:min(1320px,calc(100% - 64px));margin:0 auto 100px;padding:0;background:transparent;border:0;box-shadow:none}
+.app-public-shell .feature-section h2,.app-public-shell .section-heading h2,.app-public-shell .suite-heading h2,.app-public-shell .duku-suite-heading h2,.app-public-shell .ecosystem-heading h2{font-size:clamp(34px,5vw,58px);line-height:1.04;letter-spacing:-.065em;color:#111;font-weight:750}
+.app-public-shell .feature-section h2 em,.app-public-shell .section-heading h2 em,.app-public-shell .suite-heading h2 em,.app-public-shell .duku-suite-heading h2 em,.app-public-shell .ecosystem-heading h2 em{color:#777;font-style:normal}
+.app-public-shell .feature-grid,.app-public-shell .suite-grid,.app-public-shell .template-grid,.app-public-shell .duku-suite-grid{gap:12px}
+.app-public-shell .feature-card,.app-public-shell .suite-card,.app-public-shell .template-card,.app-public-shell .duku-suite-card{background:#fff;border:1px solid #dededb;border-radius:3px;box-shadow:none;transition:transform .25s,border-color .25s}
+.app-public-shell .feature-card:hover,.app-public-shell .suite-card:hover,.app-public-shell .template-card:hover,.app-public-shell .duku-suite-card:hover{transform:translateY(-3px);border-color:#999;box-shadow:none}
+.app-public-shell .feature-card{padding:28px;min-height:210px}
+.app-public-shell .feature-card>span,.app-public-shell .suite-icon{width:38px;height:38px;border-radius:2px;background:#111;color:#fff;display:grid;place-items:center}
+.app-public-shell .feature-card h3,.app-public-shell .suite-card h3,.app-public-shell .duku-suite-card h3{font-size:18px;letter-spacing:-.035em;color:#111}
+.app-public-shell .feature-card p,.app-public-shell .suite-card p,.app-public-shell .duku-suite-card p{color:#666;font-size:13px;line-height:1.75}
+.app-public-shell .suite-card{padding:22px}
+.app-public-shell .suite-card-top{color:#777}
+.app-public-shell .suite-visual{background:#efefec;border:1px solid #e1e1dd;border-radius:2px}
+.app-public-shell .template-preview{border-radius:2px}
+.app-public-shell .template-meta{padding:16px}
+.app-public-shell .template-meta b{color:#111}
+.app-public-shell .template-meta small{color:#777}
+.app-public-shell .template-meta button,.app-public-shell .view-all,.app-public-shell .text-link{color:#111}
+.app-public-shell .filter-pills button{border:1px solid #ccc;border-radius:2px;background:transparent;color:#555}
+.app-public-shell .filter-pills button.active{background:#111;color:#fff;border-color:#111}
+.app-public-shell .search-box{border:1px solid #ccc;border-radius:2px;background:#fff}
+.app-public-shell .duku-brain-public-section{background:#111;color:#fff;border-radius:3px;padding:clamp(28px,5vw,70px);display:grid;grid-template-columns:1.1fr .9fr;gap:36px;overflow:hidden}
+.app-public-shell .duku-brain-public-copy h2{font-size:clamp(34px,4.8vw,58px);line-height:1.03;letter-spacing:-.06em;color:#fff}
+.app-public-shell .duku-brain-public-copy p,.app-public-shell .duku-brain-public-copy small{color:#c2c2be}
+.app-public-shell .duku-brain-kicker{color:#ccc;letter-spacing:.16em;font-size:9px}
+.app-public-shell .duku-brain-cta{background:#fff;color:#111;border:1px solid #fff;border-radius:2px}
+.app-public-shell .brain-core{background:#fff;color:#111;box-shadow:none}
+.app-public-shell .brain-orbit{border-color:#ffffff50}
+.app-public-shell .brain-float{background:#222;color:#fff;border:1px solid #555;border-radius:2px}
+.app-public-shell .duku-platform-suite{padding:0}
+.app-public-shell .duku-suite-card{border-radius:3px;padding:26px}
+.app-public-shell .duku-suite-card>span{color:#777;font-size:9px;letter-spacing:.14em}
+.app-public-shell .duku-suite-card button{color:#111}
+.app-public-shell .pricing-category{margin-top:36px}
+.app-public-shell .public-pricing-grid{gap:12px}
+.app-public-shell .public-plan{background:#fff;border:1px solid #d8d8d4;border-radius:3px;box-shadow:none;padding:26px}
+.app-public-shell .public-plan.featured{background:#111;color:#fff;border-color:#111;transform:none}
+.app-public-shell .public-plan.featured small,.app-public-shell .public-plan.featured strong,.app-public-shell .public-plan.featured li{color:#fff}
+.app-public-shell .public-plan strong{color:#111;letter-spacing:-.05em}
+.app-public-shell .public-plan li{color:#555}
+.app-public-shell .public-plan .primary-btn{background:#fff;color:#111;border-color:#fff}
+.app-public-shell .public-plan .ghost-btn{background:transparent;color:#111;border-color:#aaa}
+.app-public-shell .corporate-footer,.app-public-shell footer{background:#111;color:#fff;border:0}
+.app-public-shell .corporate-footer a,.app-public-shell footer a{color:#ddd}
+.app-public-shell .blog-card-grid article,.app-public-shell .career-card{background:#fff;border:1px solid #ddd;border-radius:3px;box-shadow:none}
+.app-public-shell .modal-backdrop .auth-modal{border-radius:3px}
+.app-public-shell .auth-modal input,.app-public-shell .auth-modal select,.app-public-shell .auth-modal textarea{border-radius:2px}
+.app-auth-shell .layout{display:grid;grid-template-columns:248px minmax(0,1fr);align-items:stretch}
+.app-auth-shell .sidebar{display:flex;position:sticky;top:82px;height:calc(100vh - 82px);overflow:auto;border:0;border-right:1px solid #ddd;border-radius:0;background:#f1f1ee;padding:22px 14px}
+.app-auth-shell .main-content{min-width:0;padding:38px clamp(20px,3.2vw,48px);overflow:visible}
+.app-auth-shell .topbar{position:sticky}
+.app-auth-shell .welcome-row{width:100%;padding:10px 0 26px;grid-template-columns:1fr auto}
+.app-auth-shell .welcome-row h1{font-size:clamp(36px,4.6vw,62px)}
+.app-auth-shell .launch-card{width:100%;margin:0 0 32px;min-height:420px}
+.app-auth-shell .stats-strip{width:100%;margin:0 0 50px}
+.app-auth-shell .feature-section,.app-auth-shell .platform-suite-section,.app-auth-shell .templates-section,.app-auth-shell .pricing-section,.app-auth-shell .careers-section,.app-auth-shell .ecosystem-section,.app-auth-shell .duku-brain-public-section,.app-auth-shell .duku-platform-suite{width:100%;margin:0 0 64px}
+.app-auth-shell .sidebar .workspace{border:1px solid #ddd;background:#fff;border-radius:3px}
+.app-auth-shell .sidebar .side-link{border-radius:2px;color:#555}
+.app-auth-shell .sidebar .side-link.selected{background:#111;color:#fff}
+.app-auth-shell .sidebar .side-link.selected span{color:#fff}
+.app-auth-shell .sidebar .side-label{color:#888;letter-spacing:.16em}
+.app-auth-shell .sidebar .upgrade-card{background:#111;border-radius:3px;color:#fff}
+.app-auth-shell .sidebar .upgrade-card p{color:#bbb}
+.app-auth-shell .sidebar .profile-row{border-top:1px solid #ddd}
+.app-public-shell .dd-page{background:#f6f6f4}
+@media(max-width:1050px){
+ .app-public-shell .top-links{gap:14px}.app-public-shell .top-links a{font-size:11px}
+ .app-public-shell .launch-card{grid-template-columns:1fr;gap:35px}.app-public-shell .launch-art{max-width:760px;width:100%;margin:auto}
+ .app-public-shell .welcome-row{gap:25px}.app-public-shell .welcome-orb{width:220px}
+ .app-auth-shell .layout{grid-template-columns:220px minmax(0,1fr)}
+}
+@media(max-width:760px){
+ .app-public-shell .corporate-ticker{font-size:8px;letter-spacing:.08em;overflow:hidden;white-space:nowrap}
+ .app-public-shell .topbar{height:68px;padding:0 17px;gap:10px}.app-public-shell .brand{font-size:16px}.app-public-shell .brand small{display:none}
+ .app-public-shell .top-links{display:none}.app-public-shell .top-actions{margin-left:auto;gap:8px}
+ .app-public-shell .top-actions .primary-btn{min-height:38px;padding:0 12px;font-size:10px}
+ .app-public-shell .welcome-row,.app-public-shell .launch-card,.app-public-shell .stats-strip,.app-public-shell .feature-section,.app-public-shell .platform-suite-section,.app-public-shell .templates-section,.app-public-shell .pricing-section,.app-public-shell .careers-section,.app-public-shell .ecosystem-section,.app-public-shell .duku-brain-public-section,.app-public-shell .duku-platform-suite{width:calc(100% - 32px)}
+ .app-public-shell .welcome-row{padding:55px 0 20px;grid-template-columns:1fr}
+ .app-public-shell .welcome-row h1{font-size:clamp(42px,12vw,66px)}
+ .app-public-shell .welcome-orb{display:none}
+ .app-public-shell .launch-card{margin:14px auto 48px;padding:26px 20px;min-height:0}
+ .app-public-shell .launch-copy h2{font-size:38px}
+ .app-public-shell .mock-page{min-height:220px;padding:14px}
+ .app-public-shell .mock-hero{grid-template-columns:1fr .7fr}.app-public-shell .mock-image{height:120px}
+ .app-public-shell .stats-strip{grid-template-columns:1fr 1fr;margin:0 auto 52px;gap:16px}
+ .app-public-shell .stats-strip .stats-note{justify-content:flex-start}
+ .app-public-shell .feature-section,.app-public-shell .platform-suite-section,.app-public-shell .templates-section,.app-public-shell .pricing-section,.app-public-shell .careers-section,.app-public-shell .ecosystem-section,.app-public-shell .duku-brain-public-section,.app-public-shell .duku-platform-suite{margin-bottom:56px}
+ .app-public-shell .feature-grid,.app-public-shell .suite-grid,.app-public-shell .template-grid,.app-public-shell .duku-suite-grid,.app-public-shell .public-pricing-grid{grid-template-columns:1fr}
+ .app-public-shell .duku-brain-public-section{grid-template-columns:1fr;padding:28px 20px}
+ .app-public-shell .duku-brain-visual{min-height:240px}
+ .app-auth-shell .layout{display:block}.app-auth-shell .sidebar{position:fixed;z-index:90;top:68px;left:0;width:280px;height:calc(100vh - 68px);transform:translateX(-110%);transition:transform .25s}.app-auth-shell .sidebar.open{transform:translateX(0)}
+ .app-auth-shell .main-content{padding:24px 16px}
+ .app-auth-shell .welcome-row{grid-template-columns:1fr}.app-auth-shell .welcome-orb{display:none}
+ .app-auth-shell .launch-card{padding:24px 18px}.app-auth-shell .stats-strip{grid-template-columns:1fr 1fr}
+}
+@media(prefers-reduced-motion:reduce){.app-public-shell *{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
