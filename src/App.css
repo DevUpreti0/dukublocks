@@ -3412,3 +3412,19 @@ button,input,textarea,select{font-family:inherit}input,textarea,select{border-ra
 /* Public navigation has no workspace drawer; workspace drawer is account-only. */
 .app-public-shell .mobile-menu{display:none}
 .app-auth-shell .mobile-menu{display:inline-flex}
+
+
+/* Homepage information architecture: deliberate section sequence */
+.app-public-shell .ecosystem-section{order:1.4}
+.app-public-shell .platform-suite-section{order:1.6}
+.app-public-shell .templates-section{order:2}
+.app-public-shell .duku-brain-public-section{order:2.5}
+.app-public-shell .duku-platform-suite{order:3}
+.app-public-shell .pricing-section{order:4}
+.app-public-shell .careers-section{order:5}
+.app-public-shell .principle-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:32px}
+.app-public-shell .principle-grid article{min-height:210px;padding:24px;background:#fff;border:1px solid #dededb;display:flex;flex-direction:column;align-items:flex-start}
+.app-public-shell .principle-grid article>span{font-size:10px;letter-spacing:.14em;color:#888;margin-bottom:38px}
+.app-public-shell .principle-grid article>b{font-size:17px;letter-spacing:-.035em;color:#111}
+.app-public-shell .principle-grid article>p{font-size:12px;line-height:1.75;color:#666;margin:10px 0 0}
+@media(max-width:760px){.app-public-shell .principle-grid{grid-template-columns:1fr 1fr;gap:8px}.app-public-shell .principle-grid article{min-height:175px;padding:17px}.app-public-shell .principle-grid article>span{margin-bottom:22px}}
