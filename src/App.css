@@ -3428,3 +3428,19 @@ button,input,textarea,select{font-family:inherit}input,textarea,select{border-ra
 .app-public-shell .principle-grid article>b{font-size:17px;letter-spacing:-.035em;color:#111}
 .app-public-shell .principle-grid article>p{font-size:12px;line-height:1.75;color:#666;margin:10px 0 0}
 @media(max-width:760px){.app-public-shell .principle-grid{grid-template-columns:1fr 1fr;gap:8px}.app-public-shell .principle-grid article{min-height:175px;padding:17px}.app-public-shell .principle-grid article>span{margin-bottom:22px}}
+
+
+/* Remove legacy duplicate product-suite layout from public homepage */
+.app-public-shell .platform-suite-section{display:none!important}
+.app-public-shell .welcome-row{order:0}
+.app-public-shell .launch-card{order:1}
+.app-public-shell .stats-strip{order:2}
+.app-public-shell .ecosystem-section{order:3}
+.app-public-shell .feature-section{order:4}
+.app-public-shell .templates-section{order:5}
+.app-public-shell .duku-brain-public-section{order:6}
+.app-public-shell .duku-platform-suite{order:7}
+.app-public-shell .pricing-section{order:8}
+.app-public-shell .careers-section{order:9}
+.app-public-shell footer{order:10}
+.app-public-shell .stats-strip{margin:0 auto 74px}
